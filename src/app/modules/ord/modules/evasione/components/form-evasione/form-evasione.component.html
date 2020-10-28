@@ -1,0 +1,233 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formEvasione" *ngIf="testataEvasione">
+    <div class="row">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.STRUCTURE' | translate}}</h5>
+        <div class="form-group col-sm-2" formGroupName="settore">
+            <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codice">{{ 'ORD.EVASIONE.FIELD.COD_SECTOR' | translate }}</label>
+            <div *ngIf="formEvasione.touched && !formEvasione.valid && !fSettore.codice.disabled && !fSettore.codice.valid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        </div>
+        <div class="form-group col-sm-4" formGroupName="settore">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.FIELD.DESCRIPTION' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3 text-left">
+            <ng-select class="form-control" [items]="listaUffici" [virtualScroll]="true"
+                [searchFn]="searchUfficio" formControlName="ufficio" cpassIsInvalidClass>
+                <ng-template ng-label-tmp let-item="item">
+                    <span>{{ item.codice + '-' + item.descrizione }}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                    <span title="{{ item.codice + '-' + item.descrizione }}">{{ item.codice + '-' + item.descrizione }}</span>
+                </ng-template>
+            </ng-select>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="ufficioDescrizione" class="float-label">{{ 'ORD.EVASIONE.FIELD.COD_UNIVOCO' | translate }}</label>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.NAME' | translate}}</h5>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="evasioneAnno" formControlName="evasioneAnno" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="evasioneAnno">{{ 'ORD.EVASIONE.FIELD.YEAR' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="evasioneNumero" formControlName="evasioneNumero" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="evasioneNumero">{{ 'ORD.EVASIONE.FIELD.NUMBER' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-5 text-left">
+            <input type="text" class="form-control" id="compilatore" formControlName="compilatore" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="compilatore">{{ 'ORD.EVASIONE.FIELD.COMPILER' | translate }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-3" formGroupName="stato">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.FIELD.STATUS' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="dataInserimento" formControlName="dataInserimento" ngbDatepicker cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="dataInserimento">{{ 'ORD.EVASIONE.FIELD.INPUT_DATE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3 text-left">
+            <input type="text" class="form-control" id="dataAutorizzazione" formControlName="dataAutorizzazione" ngbDatepicker cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="dataAutorizzazione">{{ 'ORD.EVASIONE.FIELD.AUTH_DATE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3 text-left">
+            <input type="text" class="form-control" id="dataInvioContabilita" formControlName="dataInvioContabilita" ngbDatepicker cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="dataInvioContabilita">{{ 'ORD.EVASIONE.FIELD.DATE_SEND_CONT' | translate }}</label>
+        </div>
+    </div>
+    <br>
+    <div class="row fake-accordion" *ngIf="!listaEsiti || listaEsiti.length < 1">
+        {{ 'ORD.EVASIONE.FIELD.RESULT_SEND_CONT' | translate }}
+    </div>
+    <div class="row fake-accordion-section" *ngIf="!listaEsiti || listaEsiti.length < 1">
+        <div class="col-md-12" style="color: grey">
+            {{ 'ORD.EVASIONE.FIELD.NO_RESULT' | translate }}
+        </div>
+    </div>
+    <div class="row fake-accordion" *ngIf="listaMessaggiEsiti && listaMessaggiEsiti.length > 0">
+        {{ 'ORD.EVASIONE.FIELD.RESULT_SEND_CONT' | translate }}
+    </div>
+    <div class="row fake-accordion-section scroll-section lista-esiti-section" *ngIf="listaMessaggiEsiti && listaMessaggiEsiti.length > 0"> <!--LISTA ESITO INVIO-->
+        <table class="table table-striped">
+            <tbody>
+                <tr *ngFor="let esito of listaMessaggiEsiti; let i = index" >
+                    <td>
+                        <div [ngStyle]="getRowStyle(i)">
+                            <button type="button" class="btn-simple" (click)="toggleExpandedRow(i)">{{getToggleSymbol(i)}}</button>
+                            {{esito}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass cpassIsInvalidClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.FIELD.DESCRIPTION' | translate }}</label>
+            <div *ngIf="formEvasione.touched && !formEvasione.valid && !f.descrizione?.valid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input type="text" class="form-control" id="note" formControlName="note" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="note">{{ 'ORD.EVASIONE.FIELD.NOTE' | translate }}</label>
+        </div>
+    </div>
+    
+    <div class="row fake-accordion" >
+        {{'ORD.EVASIONE.FIELD.ASS_ORD.NAME' | translate}}
+    </div>
+    <div class="row fake-accordion-section scroll-section">
+        <table class="table" *ngIf="listaOrdiniAssociati && listaOrdiniAssociati.length > 0">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 20%;">{{'ORD.EVASIONE.FIELD.ASS_ORD.ORD' | translate}}</th>  
+                    <th scope="col">{{'ORD.EVASIONE.FIELD.ASS_ORD.DESC' | translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ordine of listaOrdiniAssociati">
+                    <td scope="row">{{ordine.anno}}/{{ordine.numero}}</td>  
+                    <td scope="row">{{ordine.descrizione}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-md-12" *ngIf="!listaOrdiniAssociati || listaOrdiniAssociati.length < 1">-</div>
+    </div>
+
+    <br>
+
+    <div class="row fake-accordion" >
+        {{'ORD.EVASIONE.FIELD.FORNITORE.NAME' | translate}}
+    </div>
+    <div class="row fake-accordion-section" formGroupName="fornitore">
+        <div class="form-group col-md-3">
+            <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codice">{{ 'ORD.EVASIONE.FIELD.FORNITORE.CODE' | translate }}</label>
+        </div>
+        <div class="form-group col-md-3">
+            <input type="text" class="form-control" id="codiceFiscale" formControlName="codiceFiscale" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codiceFiscale">{{ 'ORD.EVASIONE.FIELD.FORNITORE.CF' | translate }}</label>
+        </div>
+        <div class="form-group col-md-3">
+            <input type="text" class="form-control" id="partitaIva" formControlName="partitaIva" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="partitaIva">{{ 'ORD.EVASIONE.FIELD.FORNITORE.P_IVA' | translate }}</label>
+        </div>
+        <div class="form-group col-md-12">
+            <input type="text" class="form-control" id="ragioneSociale" formControlName="ragioneSociale" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="ragioneSociale">{{ 'ORD.EVASIONE.FIELD.FORNITORE.RAG_SOC' | translate }}</label>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row fake-accordion" >
+        {{'ORD.EVASIONE.DATI_CONSEGNA' | translate}}
+    </div>
+    <div class="row fake-accordion-section">
+        <div class="form-group col-md-12">
+            <input type="text" class="form-control" id="documentoConsegna" formControlName="documentoConsegna" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="documentoConsegna">{{ 'ORD.EVASIONE.FIELD.DATI_CONSEGNA.DOC' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-4">
+            <div class="input-group">
+                <input type="text" class="form-control" maxlength="10" id="dataConsegna" formControlName="dataConsegna" cpassIsInvalidClass
+                cpassHasValueClass ngbDatepicker #d_dataConsegna="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+                <div class="input-group-append">
+                    <i class="far fa-calendar-alt" (click)="d_dataConsegna.toggle()" [ngStyle]="pickerVisibility"></i>
+                </div>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="dataConsegna">{{ 'ORD.EVASIONE.FIELD.DATI_CONSEGNA.DATE_DOC' | translate }}</label>
+                <div *ngIf="formEvasione.touched && !formEvasione.valid && !f.dataConsegna?.valid" class="text-danger">{{ 'MESSAGES.ORD-ORD-E-0099' | translate }}</div>
+            </div>
+        </div>
+        <div class="form-group col-sm-4">
+            <div class="input-group">
+                <input type="text" class="form-control" maxlength="10" id="documentoDataConsegna" formControlName="documentoDataConsegna" cpassIsInvalidClass
+                    cpassHasValueClass ngbDatepicker #d_dataDocumentoConsegna="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+                <div class="input-group-append">
+                    <i class="far fa-calendar-alt" (click)="d_dataDocumentoConsegna.toggle()" [ngStyle]="pickerVisibility"></i>
+                </div>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="documentoDataConsegna">{{ 'ORD.EVASIONE.FIELD.DATI_CONSEGNA.DATE_CONS' | translate }}</label>
+                <div *ngIf="formEvasione.touched && !formEvasione.valid && !f.documentoDataConsegna?.valid" class="text-danger">{{ 'MESSAGES.ORD-ORD-E-0099' | translate }}</div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-info" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+            &nbsp;
+            <button type="button" class="btn btn-info" (click)="onClickReset()" [disabled]="cleanBtnDisabled">{{ 'APP.CLEAN' | translate }}</button>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-info ml-auto" [disabled]="saveBtnDisabled" (click)="onClickSave()">{{ 'APP.SAVE' | translate }}</button>
+        </div>
+    </div>
+
+</form>

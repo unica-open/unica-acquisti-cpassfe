@@ -1,0 +1,378 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formIntervento" *ngIf="intervento">
+    <div class="row">
+      <div class="form-group col-12 col-sm-6 col-md-4" formGroupName="programma">
+      <ng-select class="form-control" [items]="elencoProgrammi" [virtualScroll]="true" bindLabel="anno" bindValue="id" formControlName="id" id="programmaInput" (change)="onChangeProgramma()"
+      [compareWith]="compareById"
+      cpassIsInvalidClass>
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione }}">{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione }}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="programmaInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.TYPE' | translate }}</label>
+    </div>
+    <ng-container formGroupName="programma">
+      <div class="form-group col-12 col-sm-6 col-md-4" formGroupName="ente">
+        <input type="text" class="form-control" id="amministrazioneInput" formControlName="denominazione" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="amministrazioneInput">{{ 'PBA.INTERVENTION.FIELD.AUTHORITY.DENOMINATION' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-container formGroupName="programma">
+      <div class="form-group col-12 col-sm-6 col-md-4" formGroupName="utenteReferente">
+        <input type="text" class="form-control has-value" id="referenteProgrammaInput"
+        disabled
+        value="{{ formIntervento.get('programma.utenteReferente.cognome').value ? formIntervento.get('programma.utenteReferente.cognome').value + ' ' + formIntervento.get('programma.utenteReferente.nome').value : ''}}"
+        >
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="referenteProgrammaInput">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.REFERENT' | translate }}</label>
+      </div>
+    </ng-container>
+    <div class="form-group col-12 col-sm-5 col-md-3" formGroupName="stato">
+      <input type="text" class="form-control" id="statoInterventoInput" formControlName="descrizione" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="statoInterventoInput">{{ 'PBA.INTERVENTION.FIELD.STATE.LONG' | translate }}</label>
+    </div>
+    <div class="form-group col-1 col-sm-1 col-md-1">
+      <ng-template #popStatoTitle>
+        {{ 'PBA.INTERVENTION.FIELD.STATE.HISTORY.LABEL' | translate }}
+        <button type="button" class="float-right btn btn-sm rup-close-btn">
+          {{ 'APP.CLOSE' | translate }}
+        </button>
+      </ng-template>
+      <ng-template #popStatoContent>
+        <table class="table table-striped rup-table" *ngIf="statiInfo && statiInfo.length > 0">
+          <thead>
+            <th>
+              {{ 'PBA.INTERVENTION.FIELD.STATE.HISTORY.STATUS_DESC' | translate }}
+            </th>
+            <th>
+              {{ 'PBA.INTERVENTION.FIELD.STATE.HISTORY.DATE' | translate }}
+            </th>
+            <th>
+              {{ 'PBA.INTERVENTION.FIELD.STATE.HISTORY.USER_EDIT' | translate }}
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stato of statiInfo">
+              <td>
+                {{stato.stato}}
+              </td>
+              <td>
+                {{stato?.dataInserimento|date: 'dd/MM/yyyy HH:mm'}}
+              </td>
+              <td>
+                {{stato.utenteCognome + ' ' + stato.utenteNome}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="rup-body" *ngIf="!statiInfo || statiInfo.length < 1">
+          <span>-</span>
+        </div>
+      </ng-template>
+      <button type="button" class="btn info-btn" [ngbPopover]="popStatoContent" [popoverTitle]="popStatoTitle" (click)="statiInfoBtnClicked()">
+        <span class="info-btn-content">
+          i
+        </span>
+      </button>
+    </div>
+    <div class="form-group col-11 col-sm-5 col-md-3" *ngIf="!disableRupInput">
+     <ng-select class="form-control" [items]="elencoRup" [virtualScroll]="true" bindLabel="codiceFiscale" formControlName="utenteRup" cpassIsInvalidClass>
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.cognome + ' ' + item.nome }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.cognome + ' ' + item.nome }}">{{ item.cognome + ' ' + item.nome }}</span >
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="utenteRupInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.RUP.LONG' | translate }}</label>
+      <div *ngIf="f.utenteRup.touched && f.utenteRup.errors" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-11 col-sm-5 col-md-3" *ngIf="disableRupInput">
+      <input type="text" class="form-control" disabled cpassHasValueClass
+       [value]="initialIntervento.utenteRup?.cognome + ' ' + initialIntervento.utenteRup?.nome">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="cui">{{ 'PBA.INTERVENTION.FIELD.RUP.LONG' | translate }}</label>
+    </div>
+    <div class="form-group col-1 col-sm-1 col-md-1">
+      <ng-template #popRupTitle>
+        {{ 'PBA.INTERVENTION.FIELD.RUP.HISTORY.LABEL' | translate }}
+        <button type="button" class="float-right btn btn-sm rup-close-btn">
+          {{ 'APP.CLOSE' | translate }}
+        </button>
+      </ng-template>
+      <ng-template #popRupContent>
+        <table class="table table-striped rup-table" *ngIf="storicoRup && storicoRup.length > 0">
+          <thead>
+            <th>
+              {{ 'PBA.INTERVENTION.FIELD.RUP.HISTORY.RUP_USER' | translate }}
+            </th>
+            <th>
+              {{ 'PBA.INTERVENTION.FIELD.RUP.HISTORY.DATE' | translate }}
+            </th>
+            <th>
+              {{ 'PBA.INTERVENTION.FIELD.RUP.HISTORY.USER_EDIT' | translate }}
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stoRup of storicoRup">
+              <td>
+                {{stoRup.utenteRup.cognome + ' ' + stoRup.utenteRup.nome}}
+              </td>
+              <td>
+                {{stoRup.dataStoricizzazione|date: 'dd/MM/yyyy HH:mm'}}
+              </td>
+              <td>
+                {{stoRup.utente.cognome + ' ' + stoRup.utente.nome}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="rup-body" *ngIf="!storicoRup || storicoRup.length < 1">
+          <span>-</span>
+        </div>
+      </ng-template>
+      <button type="button" class="btn info-btn" [ngbPopover]="popRupContent" [popoverTitle]="popRupTitle" (click)="storicoRupBtnClicked()">
+        <span class="info-btn-content">
+          i
+        </span>
+      </button>
+     </div>
+    <div class="form-group col-12 col-sm-6 col-md-4">
+      <input type="text" class="form-control" id="cui" formControlName="cui" cpassHasValueClass cpassIsInvalidClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="cui">{{ 'PBA.INTERVENTION.FIELD.CUI.LONG' | translate }}</label>
+      <div *ngIf="f.cui.touched && f.cui?.errors" class="text-danger">
+        <div *ngIf="f.cui?.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        <div *ngIf="f.cui?.errors.pattern">{{ 'MESSAGES.PBA-ACQ-P-0018' | translate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-12 col-sm-6 col-md-3">
+      <ng-select class="form-control" [items]="elencoSettori" [virtualScroll]="true" bindLabel="descrizione" formControlName="settoreInterventi" (change)="computeElencoCpv()" cpassIsInvalidClass></ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="settoreInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.SECTOR' | translate }}</label>
+      <div *ngIf="f.settoreInterventi.touched && f.settoreInterventi.errors" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-3">
+      <input type="text" class="form-control" id="primaAnnualitaInput" formControlName="annoAvvio" cpassHasValueClass cpassIsInvalidClass cpassDigitOnly maxlength="4">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="primaAnnualitaInput">{{ 'PBA.INTERVENTION.FIELD.START_YEAR' | translate }}</label>
+      <div *ngIf="f.annoAvvio.touched && f.annoAvvio.errors" class="text-danger">
+        <div *ngIf="f.annoAvvio.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        <div *ngIf="f.annoAvvio.errors.annoAvvioValidate">{{ 'ERROR.FIELD.INTERVENTION_START_YEAR' | translate }}</div>
+      </div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-3 has-error">
+      <ng-select class="form-control" [items]="elencoPriorita" [virtualScroll]="true" bindLabel="descrizione" formControlName="priorita" cpassIsInvalidClass></ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="prioritaInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.PRIORITY' | translate }}</label>
+      <div *ngIf="f.priorita.touched && f.priorita.errors" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-3">
+      <input type="text" class="form-control" id="durataInput" formControlName="durataMesi" cpassIsInvalidClass cpassHasValueClass cpassDigitOnly maxlength="3">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="durataInput">{{ 'PBA.INTERVENTION.FIELD.DURATION' | translate }}</label>
+      <div *ngIf="f.durataMesi.touched && f.durataMesi.errors" class="text-danger">
+        <div *ngIf="f.durataMesi.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        <div *ngIf="!f.durataMesi.valid && f.durataMesi.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-12">
+      <textarea class="form-control" rows="2" id="descrizioneInput" formControlName="descrizioneAcquisto" cpassHasValueClass cpassIsInvalidClass maxlength="200"></textarea>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="descrizioneInput">{{ 'PBA.INTERVENTION.FIELD.DESCRIPTION' | translate }}</label>
+      <div *ngIf="f.descrizioneAcquisto.touched && f.descrizioneAcquisto.errors" class="text-danger">
+        <div *ngIf="f.descrizioneAcquisto.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group checkbox col-12 col-sm-6 col-md-3">
+      <input type="checkbox" id="lottoInput" formControlName="lottoFunzionale" />
+      <!-- [ripristina]='ripristinaCheckbox' -->
+      <label for="lottoInput" cpassCustomCheckbox [controlDisabled]='controlDisabled'  >{{ 'PBA.INTERVENTION.FIELD.FUNCTIONAL_BATCH' | translate }}</label>
+    </div>
+    <div class="form-group checkbox col-12 col-sm-6 col-md-3">
+      <input type="checkbox" id="nuovoAffidamentoInput" formControlName="nuovoAffidamento" />
+      <label for="nuovoAffidamentoInput" cpassCustomCheckbox [controlDisabled]='controlDisabled' >{{ 'PBA.INTERVENTION.FIELD.NEW_TRUST' | translate }}</label>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-xl-3">
+      <ng-select class="form-control" [items]="elencoNuts" [virtualScroll]="true" bindLabel="descrizione" formControlName="nuts" cpassIsInvalidClass>
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.codice + '-' + item.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.codice + '-' + item.descrizione }}">{{ item.codice + '-' + item.descrizione }}</span >
+          </ng-template>
+        </ng-select>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label for="nutsInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.NUTS' | translate }}</label>
+        <div *ngIf="f.nuts.touched && f.nuts.errors" class="text-danger">
+          <div *ngIf="f.nuts.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- START MODIFICATION -->
+      <div class="form-group col-9 col-md-3">
+        <input type="text" class="form-control" id="searchCpv" formControlName="textRicercaCpv" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label for="searchCpv" class="float-label">{{ 'PBA.INTERVENTION.FIELD.CPV.SHORT' | translate }}</label>
+      </div>
+      <div class="form-group col-3 col-md-2 col-xl-1" >
+        <button type="button" class="btn btn-raised btn-default col" (click)="openModalCpvs()" [disabled]="controlDisabled">{{ 'APP.SEARCH' | translate }}</button>
+      </div>
+      <!-- END MODIFICATION -->
+      <div class="form-group col-12 col-md-7 col-xl-6" formGroupName="cpv">
+        <input type="text" class="form-control has-value" id="cpvTree" disabled
+          formControlName="id" cpassIsInvalidClass
+          value="{{ formIntervento.get('cpv.codice').value ? formIntervento.get('cpv.codice').value + ' - ' + formIntervento.get('cpv.descrizione').value : ''}}">
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label for="cpvTree" class="float-label">{{ 'PBA.INTERVENTION.FIELD.CPV.SHORT' | translate }}</label>
+        <div *ngIf="f.cpv.touched && f.cpv.controls.codiceDescrizione?.errors" class="text-danger">
+          <div *ngIf="f.cpv.controls.codiceDescrizione?.errors">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-2">
+        <span [ngClass]="{'text-danger': cupExemptionInvalidClass}">{{ 'PBA.INTERVENTION.FIELD.CUP_EXEMPTION' | translate }}</span>
+        <span *ngIf="f.esenteCup?.errors" class="text-danger"><br><br>{{ 'ERROR.FIELD.REQUIRED' | translate }}</span>
+      </div>
+      <div class="form-group col-1">
+        <div class="checkbox">
+          <label class="radio-label" for="cons_yes">
+            <input type="radio" id="cons_yes" (click)="handleEsenzioneCup(true)" [checked]="isEsente" [disabled]="controlDisabled"/>
+            <span class="label"></span> Si
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-1 col-sm-3">
+        <div class="checkbox">
+          <label class="radio-label" for="cons_no">
+            <input type="radio" id="cons_no" (click)="handleEsenzioneCup(false)" [checked]="isNotEsente" [disabled]="controlDisabled"/>
+            <span class="label"></span> No
+          </label>
+        </div>
+      </div>
+    <div class="form-group col-6">
+      <input type="text" class="form-control" id="cupInput" formControlName="cup" cpassHasValueClass cpassIsInvalidClass maxlength="15">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="cupInput">{{ 'PBA.INTERVENTION.FIELD.CUP' | translate }}</label>
+      <div *ngIf="f.cup.touched" class="text-danger">
+        <div *ngIf="f.cup.errors && f.cup.value?.length < 15">{{ 'ERROR.FIELD.LENGTH_EXACT' | translate:{length: 15} }}</div>
+        <div *ngIf="f.cup.errors?.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+      <ng-select class="form-control" [items]="elencoModAffidamento" [virtualScroll]="true" bindLabel="descrizione" formControlName="modalitaAffidamento" cpassIsInvalidClass (change)="onChangeAffidamento()"></ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="modalitaAffidamentoInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.ASSIGNMENT_METHOD' | translate }}</label>
+      <div *ngIf="f.modalitaAffidamento.touched && f.modalitaAffidamento.errors" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+      <ng-select class="form-control" [items]="elencoRicompresoTipo" [virtualScroll]="true" bindLabel="descrizione" formControlName="ricompresoTipo" (change)="onChangeRicompreso()" cpassIsInvalidClass
+        placement="left" cpassTooltip="PBA.INTERVENTION.TOOLTIP.INCLUDED"></ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="nutsInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.INCLUDED' | translate }}</label>
+      <div *ngIf="f.ricompresoTipo.touched && f.ricompresoTipo.errors" class="text-danger">
+        <div *ngIf="f.ricompresoTipo.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+      <input type="text" class="form-control" id="ricompresoCui" formControlName="ricompresoCui" cpassHasValueClass cpassIsInvalidClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="cuiRicompreso">{{ 'PBA.INTERVENTION.FIELD.INCLUDED_CUI' | translate }}</label>
+      <div *ngIf="f.ricompresoCui.touched && f.ricompresoCui?.errors" class="text-danger">
+        <div *ngIf="f.ricompresoCui?.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+        <div *ngIf="f.ricompresoCui?.errors.pattern">{{ 'MESSAGES.PBA-ACQ-P-0018' | translate }}</div>
+      </div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-8 col-lg-6">
+      <ng-select id="ausaInput" class="form-control" [items]="elencoAusa" [virtualScroll]="true" bindLabel="descrizione" formControlName="ausa" cpassIsInvalidClass>
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.codice + '-' + item.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.codice + '-' + item.descrizione }}">{{ item.codice + '-' + item.descrizione }}</span >
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="ausaInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.AUSA' | translate }}</label>
+      <div *ngIf="f.ausa.touched && f.ausa.errors" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+      <ng-select class="form-control" [items]="elencoAcquistoVariato" [virtualScroll]="true" bindLabel="descrizione" formControlName="acquistoVariato" cpassIsInvalidClass></ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="" class="float-label">{{ 'PBA.INTERVENTION.FIELD.ADDED_CHANGED' | translate }}</label>
+      <div *ngIf="f.acquistoVariato.touched && f.acquistoVariato.errors" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 radio-inline">
+      <label>
+        <input type="radio" value="COPIA_MANTENENDO_CUI" formControlName="interventoCopiaTipo" (change)="onChangeRadio()">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.WITH_CUI.SHORT' | translate }}
+      </label>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 radio-inline">
+      <label>
+        <input type="radio" value="ACQ_NON_RIPROPOSTO" formControlName="interventoCopiaTipo" (change)="onChangeRadio()">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.NOT_REPEATED' | translate }}
+      </label>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+      <input type="text" class="form-control" id="motivazioneNonRiproposto" formControlName="motivazioneNonRiproposto" cpassHasValueClass cpassIsInvalidClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="motivazioneNonRiproposto">{{ 'PBA.INTERVENTION.FIELD.COPY.MOTIVATION.SHORT' | translate }}</label>
+      <div *ngIf="f.motivazioneNonRiproposto.touched && f.motivazioneNonRiproposto?.errors" class="text-danger">
+        <div *ngIf="f.motivazioneNonRiproposto?.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <cpass-back-button (click)="onBackClicked()"></cpass-back-button>
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openConfirmModal()" [disabled]="controlDisabled">{{ 'APP.RESET' | translate }}</button>
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-info ml-auto" (click)="ngbTabset.select('tabAltriDati')" [disabled]="!formIntervento.valid || controlDisabled">{{ 'APP.PROCEED' | translate }}</button>
+    </div>
+  </div>
+</form>

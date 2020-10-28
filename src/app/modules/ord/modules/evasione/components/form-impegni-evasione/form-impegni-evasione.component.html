@@ -1,0 +1,221 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="row">
+  <div class="col-md-2 offset-10 text-right right-btns">
+    <button type="button" class="btn btn-info" (click)="onClickImpegniOrdini()" [disabled]="impegniOrdiniBtnDisabled">
+      {{ 'APP.IMPEGNI_ORDINI' | translate }}
+    </button>
+  </div>
+</div>
+
+<form [formGroup]="formItems" *ngIf="impegniEvasioneItemList && impegniEvasioneItemList.length > 0">
+
+  <div class="row">
+    <div class="form-group col-sm-12">
+
+      <table class="table table-striped table-impegni">
+        <thead>
+          <tr>
+            <th>Sel.</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.COMMITMENT_ON_ORD' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.COMMITMENT_YEAR' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.COMMITMENT_NUMBER' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.SUB_COMMITMENT_YEAR' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.SUB_COMMITMENT_NUMBER' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.TOT_SPREADABLE' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.SPREAD' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.SUSPENDED' | translate }}</th>
+            <th>{{ 'ORD.EVASIONE.IMPEGNO.FIELD.SUSPENSION_DATE' | translate }}</th>
+            <th>
+              {{ 'ORD.EVASIONE.IMPEGNO.FIELD.CAUSAL' | translate }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </th>
+          </tr>
+        </thead>
+
+        <tbody formArrayName="orders">
+          <tr *ngFor="let order of fOrders.controls; let i = index" [formGroupName]="i">
+
+            <td>
+              <!-- id: <input type="text" class="form-control text-right" formControlName="id"> --> 
+              <input type="radio" value="{{ i }}" (click)="onClickSel(i)" formControlName="sel"
+                [checked]="iSelected == i">
+            </td>
+
+            <td>{{impegniEvasioneItemList[i].impegnoSuOrdineAnno}} /
+              {{impegniEvasioneItemList[i].impegnoSuOrdineNumero}}</td>
+
+            <td>
+              <!-- {{impegnoItem.annoImpegno}} -->
+              <input type="text" class="form-control text-right" formControlName="annoImpegno" cpassIsInvalidClass
+                [readonly]="controlDisabled || impegniEvasioneItemList[i].isAnnoImpegnoOrdineCurrent" maxlength="4">
+            </td>
+            <td>
+              <!-- {{impegniEvasioneItemList[i].numeroImpegno}} -->
+              <input type="text" class="form-control text-right" formControlName="numeroImpegno" cpassIsInvalidClass
+                [readonly]="controlDisabled || impegniEvasioneItemList[i].isAnnoImpegnoOrdineCurrent">
+            </td>
+            <td>
+              <!-- {{impegniEvasioneItemList[i].annoSubimpegno}} -->
+              <input type="text" class="form-control text-right" formControlName="annoSubimpegno" cpassIsInvalidClass
+                [readonly]="controlDisabled || impegniEvasioneItemList[i].isAnnoImpegnoOrdineCurrent" maxlength="4">
+            </td>
+            <td>
+              <!-- {{impegniEvasioneItemList[i].numeroSubimpegno}} -->
+              <input type="text" class="form-control text-right" formControlName="numeroSubimpegno" cpassIsInvalidClass
+                [readonly]="controlDisabled || impegniEvasioneItemList[i].isAnnoImpegnoOrdineCurrent">
+            </td>
+            <td>{{impegniEvasioneItemList[i].totaleRipartibile | currency:'EUR'}}</td>
+            <td>
+              <!-- {{impegniEvasioneItemList[i].ripartito | currency:'EUR'}} -->
+              <input type="text" class="form-control text-right" formControlName="ripartito"
+                (focusout)="aggiornaTotaleRipartito()" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}" cpassIsInvalidClass
+                [disabled]="controlDisabled" [readonly]="controlDisabled">
+            </td>
+
+            <td>
+              <!-- {{impegniEvasioneItemList[i].sospeso | currency:'EUR'}} -->
+              <input type="text" class="form-control text-right" formControlName="sospeso"
+                (focusout)="aggiornaTotaleSospeso()" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}" cpassIsInvalidClass
+                [disabled]="controlDisabled || disabledSospeso(i) || !currentComponentActive" [readonly]="controlDisabled || disabledSospeso(i) || !currentComponentActive">
+            </td>
+            <td>
+              <!-- {{impegniEvasioneItemList[i].dataSospensione | date:"dd/MM/yyyy"}} -->
+              <div class="input-group">
+                <input type="text" class="form-control" id="dataSospensioneInput" formControlName="dataSospensione"
+                  cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker #d_dataSospensione="ngbDatepicker"
+                  (dateSelect)="triggerUiUpdate()" [disabled]="controlDisabled || disabledDataSospensione(i) || !currentComponentActive"
+                  [readonly]="controlDisabled || disabledDataSospensione(i) || !currentComponentActive">
+                <div class="input-group-append">
+                  <i class="far fa-calendar-alt" (click)="d_dataSospensione.toggle()"></i>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <!-- <div ngbDropdown>
+                <button class="btn" id="dropdownBasic1" ngbDropdownToggle
+                  [disabled]="selectCausaleDisabled">{{impegniEvasioneItemList[i].causale?.causaleSospensioneDescrizione}}</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button *ngFor="let causale of listaCausaliSospensione"
+                    (click)="selectCausaleImpegno(impegniEvasioneItemList[i], causale)"
+                    ngbDropdownItem>{{causale.causaleSospensioneDescrizione}}</button>
+                </div>
+              </div> -->
+
+              <ng-select class="form-control" [items]="listaCausaliSospensione" [virtualScroll]="true"
+                [searchFn]="searchCausale" formControlName="causale" cpassIsInvalidClass
+                [disabled]="controlDisabled || disabledCausale(i) || !currentComponentActive" [readonly]="controlDisabled || disabledCausale(i) || !currentComponentActive">
+                <ng-template ng-label-tmp let-item="item">
+                  <span>{{ item?.causaleSospensioneDescrizione }}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                  <span title="{{ item.causaleSospensioneDescrizione }}">{{ item.causaleSospensioneDescrizione }}</span>
+                </ng-template>
+              </ng-select>
+              <!-- <div *ngIf="f.tipoProcedura.touched && f.tipoProcedura.errors" class="text-danger">
+                    <div *ngIf="f.tipoProcedura.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                </div> -->
+            </td>
+
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="form-group col-sm-8">
+      &nbsp;
+      <input type="hidden" id="idRigaSelezionata" class="form-control text-right font-weight-bold"
+        formControlName="idRigaSelezionata" cpassHasValueClass>
+
+    </div>
+    <div class="form-group col-sm-2">
+
+      <input type="text" id="totaleRigheRipartito" class="form-control text-right font-weight-bold"
+        formControlName="totaleRigheRipartito" cpassHasValueClass currencyMask
+        [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label"
+        for="totaleRigheRipartito">{{ 'ORD.EVASIONE.IMPEGNO.FIELD.TOT_SPREAD' | translate }}</label>
+
+    </div>
+    <div class="form-group col-sm-2">
+
+      <input type="text" id="totaleRigheSospeso" class="form-control text-right font-weight-bold"
+        formControlName="totaleRigheSospeso" cpassHasValueClass currencyMask
+        [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label"
+        for="totaleRigheSospeso">{{ 'ORD.EVASIONE.IMPEGNO.FIELD.TOT_SUSPENDED' | translate }}</label>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" class="btn btn-danger ml-auto" [disabled]="deleteBtnDisabled"
+        (click)="showConfirmDeleteModal()">{{ 'APP.DELETE' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" class="btn btn-info ml-auto" [disabled]="editBtnDisabled"
+        (click)="onClickEdit()">{{ 'APP.MODIFY' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" (click)="onClickClean()" class="btn btn-info ml-auto"
+        [disabled]="cleanBtnDisabled">{{ 'APP.CLEAN' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" (click)="onClickDuplica()" class="btn btn-info ml-auto"
+        [disabled]="duplicaBtnDisabled">{{ 'APP.DUPLICATE' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 offset-7 text-left left-btns">
+      <button type="button" class="btn btn-info ml-auto" (click)="onSubmit()" [disabled]="saveBtnDisabled">
+        <!-- || !this.formItems.valid -->
+        {{ 'APP.SAVE' | translate }}
+      </button>
+    </div>
+  </div>
+
+</form>
+
+<ng-template #modalConfirmDelete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD.EVASIONE.DETAIL.COMMITMENT.NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0037' | translate }}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmDelete(modal)">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalCtrlClasseSogg let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.EVASIONE.DETAIL.COMMITMENT.NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0097' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>

@@ -1,0 +1,20 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background-color: #b6dff2;
+}
+
+.link-like {
+    cursor: pointer;
+    color: blue;
+}
+
+.link-like:hover {
+    text-decoration: underline;
+}

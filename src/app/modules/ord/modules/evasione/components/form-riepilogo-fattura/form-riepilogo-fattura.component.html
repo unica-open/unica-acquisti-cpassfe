@@ -1,0 +1,355 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="form-group" style="margin-top: 15px;">
+    <button type="submit" class="btn btn-info" [disabled]="cambiaFatturaBtnDisabled" (click)="onClickChangeFattura()">{{ 'APP.CHANGE_INVOICE' | translate }}</button>
+</div>
+<div class="row fake-accordion" >
+    {{'ORD.EVASIONE.SUMMARY.INVOICE_DATA.NAME' | translate}}
+</div>
+<div class="row fake-accordion-section">
+    <div class="col-md-12">
+        <div class="col-md-12" style="padding: 5px 0 0 0;">
+            <h5>{{'ORD.EVASIONE.SUMMARY.INVOICE_DATA.SEARCH_PROTOCOL' | translate}}</h5>
+        </div>
+    </div>
+    <form class="col-md-12" [formGroup]="formRicercaPerProtocollo" (ngSubmit)="onSumbitRicercaPerProtocollo()">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-md-3" style="margin-top: 15px;">
+                    <input type="text" class="form-control" id="fatturaProtocolloAnno" formControlName="fatturaProtocolloAnno" cpassHasValueClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="fatturaProtocolloAnno">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.PROTOCOL_YEAR' | translate }}</label>
+                </div>
+                <div class="form-group col-md-4" style="margin-top: 15px;">
+                    <input type="text" class="form-control" id="fatturaProtocolloNumero" formControlName="fatturaProtocolloNumero" cpassHasValueClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="fatturaProtocolloNumero">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.PROTOCOL_NUMBER' | translate }}</label>
+                </div>
+                <div class="form-group col-md-3" style="margin-top: 15px;">
+                    <button type="submit" class="btn btn-info" [disabled]="cercaPerProtocolloBtnDisabled">{{ 'APP.SEARCH_INVOICE' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr class="col-md-11">
+    <div class="col-md-12" style="margin-top: 15px;">
+        <h5 class="col-md-2">{{'ORD.EVASIONE.SUMMARY.INVOICE_DATA.SEARCH_DATA' | translate}}</h5>
+    </div>
+    <form [formGroup]="formRicercaPerEstremiFattura" (ngSubmit)="onSumbitRicercaPerEstremiFattura()" class="col-md-12">
+        <div class="row fake-accordion" style="margin-top: 0;">
+            <div class="col-md-12" style="padding: 0;">
+                {{'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FORNITORE' | translate}}
+            </div>
+        </div>
+        <div class="row fake-accordion-section">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="form-group col-sm-2">
+                        <input type="text" class="form-control" id="fatturaCodice" formControlName="fatturaCodice" (change)="searchFornitoreWrapper()" cpassHasValueClass cpassIsInvalidClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="fatturaCodice">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.CODE' | translate }}</label>
+                        <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                            formRicercaPerEstremiFattura.controls.fatturaCodice?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                    </div>
+                    <div class="form-group col-sm-2" formGroupName="fornitoreFattura">
+                        <input type="text" class="form-control" id="codiceFiscale" formControlName="codiceFiscale" cpassHasValueClass cpassIsInvalidClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="codiceFiscale">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.CF' | translate }}</label>
+                        <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                            formRicercaPerEstremiFattura.controls.fornitoreFattura['controls'].codiceFiscale?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                    </div>
+                    <div class="form-group col-sm-2" formGroupName="fornitoreFattura">
+                        <input type="text" class="form-control" id="partitaIva" formControlName="partitaIva" cpassHasValueClass cpassIsInvalidClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="partitaIva">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.P_IVA' | translate }}</label>
+                        <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                            formRicercaPerEstremiFattura.controls.fornitoreFattura['controls'].partitaIva?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" formGroupName="fornitoreFattura">
+                <div class="row">
+                    <div class="form-group col-sm-10">
+                        <input type="text" class="form-control" id="ragioneSociale" formControlName="ragioneSociale" cpassHasValueClass cpassIsInvalidClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="ragioneSociale">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.RAG_SOC' | translate }}</label>
+                        <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                            formRicercaPerEstremiFattura.controls.fornitoreFattura['controls'].ragioneSociale?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                    </div>
+                    <div class="form-group col-sm-1">
+                        <button type="button" class="btn btn-info" (click)="onClickSearchFornitore()" [disabled]="cercaPerFornitoreBtnDisabled">{{ 'APP.SEARCH' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="fatturaAnno" formControlName="fatturaAnno" cpassHasValueClass cpassIsInvalidClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="fatturaAnno">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.YEAR' | translate }}</label>
+                <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                    formRicercaPerEstremiFattura.controls.fatturaAnno?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+            </div>
+            <div class="form-group col-sm-4">
+                <input type="text" class="form-control" id="fatturaNumero" formControlName="fatturaNumero" cpassHasValueClass cpassIsInvalidClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="fatturaNumero">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.NUMBER' | translate }}</label>
+                <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                    formRicercaPerEstremiFattura.controls.fatturaNumero?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="fatturaTipo" formControlName="fatturaTipo" cpassHasValueClass cpassIsInvalidClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="fatturaTipo">{{ 'ORD.EVASIONE.SUMMARY.INVOICE_DATA.FIELD.TYPE' | translate }}</label>
+                <div *ngIf="!formRicercaPerEstremiFattura.valid && !cercaPerEstremiBtnDisabled &&
+                    formRicercaPerEstremiFattura.controls.fatturaTipo?.invalid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+            </div>
+            <div class="form-group col-sm-2 offset-2 text-left left-btns">
+                <button type="submit" class="btn btn-info" [disabled]="cercaPerEstremiBtnDisabled">{{ 'APP.SEARCH_INVOICE' | translate }}</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row fake-accordion">
+    {{'ORD.EVASIONE.SUMMARY.TOTALS.NAME' | translate}}
+</div>
+<form [formGroup]="formRiepilogoTotali">
+    <div class="row fake-accordion-section">
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="fatturaTotale" formControlName="fatturaTotale" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="fatturaTotale">{{ 'ORD.EVASIONE.SUMMARY.TOTALS.FIELD.INVOICE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="fatturaTotaleLiquidabile" formControlName="fatturaTotaleLiquidabile" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="fatturaTotaleLiquidabile">{{ 'ORD.EVASIONE.SUMMARY.TOTALS.FIELD.PAYABLE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="arrotondamento" formControlName="arrotondamento" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="arrotondamento">{{ 'ORD.EVASIONE.SUMMARY.TOTALS.FIELD.NCD' | translate }}</label>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="totaleEvaso" formControlName="totaleEvaso" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleEvaso">{{ 'ORD.EVASIONE.SUMMARY.TOTALS.FIELD.PROCESSED' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="totaleRipartito" formControlName="totaleRipartito" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleRipartito">{{ 'ORD.EVASIONE.SUMMARY.TOTALS.FIELD.SPREAD' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="totaleDaRipartire" formControlName="totaleDaRipartire" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleDaRipartire">{{ 'ORD.EVASIONE.SUMMARY.TOTALS.FIELD.TO_SPREAD' | translate }}</label>
+        </div>
+    </div>
+</form>
+<div class="row fake-accordion">
+    {{'ORD.EVASIONE.SUMMARY.COMMITMENTS.NAME' | translate}}
+</div>
+<div class="row fake-accordion-section">
+    <div class="form-group col-sm-12">
+        <table class="table table-striped table-impegni">
+
+          <thead>
+            <tr>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.COMMITMENT_YEAR' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.COMMITMENT_NUMBER' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.SUB_COMMITMENT_YEAR' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.SUB_COMMITMENT_NUMBER' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.TOTAL_SPREAD' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.SUSPENDED' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.SUSPENSION_DATE' | translate }}</th>
+              <th>{{ 'ORD.EVASIONE.SUMMARY.COMMITMENTS.CAUSAL' | translate }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let impegno of impegni;">
+              <td>{{impegno.impegnoAnno ? impegno.impegnoAnno : ''}}</td>
+              <td>{{impegno.impegnoNumero ? impegno.impegnoNumero : ''}}</td>
+              <td>{{impegno.subimpegnoNumero ? impegno.subimpegnoAnno : ''}}</td>
+              <td>{{impegno.subimpegnoNumero ? impegno.subimpegnoNumero : ''}}</td>
+              <td>{{impegno.ripartito && impegno.ripartito != 0 ? impegno.ripartito : ''}}</td>
+              <td>{{impegno.sospeso && impegno.sospeso != 0 ? impegno.sospeso : '' }}</td>
+              <td>{{(impegno.sospeso && impegno.sospeso != 0 ? impegno.dataSospensione : '') | date:"dd/MM/yyyy"}}</td>
+              <td>{{impegno.sospeso && impegno.sospeso != 0 ? impegno.causaleSospensioneDescrizione : ''}}</td>
+            </tr>
+          </tbody>
+        
+        </table>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-sm-1 text-left left-btns">
+        <button type="button" class="btn btn-info ml-auto" [disabled]="backBtnDisabled" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+        <button type="button" class="btn btn-info ml-auto" [disabled]="editBtnDisabled" (click)="onClickEdit()">{{ 'APP.MODIFY' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+        <button type="button" (click)="onClickClean()" class="btn btn-info ml-auto" [disabled]="cleanBtnDisabled">{{ 'APP.CLEAN' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 offset-8 text-left left-btns">
+        <button type="button" class="btn btn-info ml-auto" (click)="onClickSave(false)" [disabled]="saveBtnDisabled" >{{ 'APP.SAVE' | translate }}</button>
+    </div>
+</div>
+
+<ng-template #modalConfirmChangeInvoice let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD.EVASIONE.TAB_NAME' | translate }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0100' | translate }}</ngb-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmChangeFattura(modal)">{{ 'APP.YES' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+    </div>
+</ng-template>
+
+<ng-template #modalConfirmFornitore let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD.EVASIONE.TAB_NAME' | translate }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0098' | translate }}</ngb-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmFornitore(modal)">{{ 'APP.YES' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+    </div>
+</ng-template>
+
+<ng-template #modalDocumentiSpesa let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-approva-title">{{ 'ORD.ORDER.OPERATION.FIND_INVOICE.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_INVOICE.TEXT' | translate}}
+        </ngb-alert>
+        
+        <form [formGroup]="formModalDocumentoSpesa" *ngIf="modalElencoDocumentiSpesa">
+
+        <table class="table table-hover table-sm table-responsive">
+            <tbody>
+                <tr>
+                    <td style="width: 5%;">&nbsp;</td>
+                    <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.INVOICE.DOC_YEAR' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.INVOICE.DOC_NUMBER' | translate }}</td>
+                    <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.INVOICE.DOC_TYPE' | translate }}</td>
+                    <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.INVOICE.SUBJ_CODE' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.INVOICE.DOC_TOTAL' | translate }}</td>
+                    <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.INVOICE.DOC_LIQ_TOTAL' | translate }}</td>
+                    <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.INVOICE.DESC_STATUS' | translate }}</td>
+                </tr>
+                <tr *ngFor="let modalDocumentoSpesa of modalElencoDocumentiSpesa; let i = index">
+                    <td class="border-0" >
+                        <input type="radio" value="{{i}}" formControlName="modalDocumentoSpesaIdx">
+                    </td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.annoDocumento }}</td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.numeroDocumento }}</td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.tipoDocumento }}</td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.codiceFornitore }}</td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.totaleDocumento }} </td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.totaleLiquidabileDocumento }}</td>
+                    <td class="border-0" >{{ modalDocumentoSpesa.descrizioneStato }} </td>
+                </tr>
+            </tbody>
+        </table>
+
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modalDocumentiSpesaClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+    </div>
+</ng-template>
+
+<ng-template #modalFornitori let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-approva-title">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TEXT' | translate}}
+        </ngb-alert>
+        
+        <form [formGroup]="formModalFornitori" *ngIf="modalElencoFornitori">
+
+        <table class="table table-hover table-sm table-responsive">
+            <tbody>
+                <tr>
+                    <td style="width: 5%;">&nbsp;</td>
+                    <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.CODE' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.BUSINESS_NAME' | translate }}</td>
+                    <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.CF' | translate }}</td>
+                    <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.VAT_NUMBER' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.ADDRESS' | translate }}</td>
+                    <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.RESORT' | translate }}</td>
+                    <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.POSTAL_CODE' | translate }}</td>
+                    <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.PROVINCE' | translate }}</td>
+                </tr>
+                <tr *ngFor="let modalFornitore of modalElencoFornitori;">
+                    <td class="border-0" >
+                        <input type="radio" value="{{ modalFornitore.codice }}" formControlName="modalFornitoreId">
+                    </td>
+                    <td class="border-0" >{{ modalFornitore.codice }}</td>
+                    <td class="border-0" >{{ modalFornitore.ragioneSociale }}</td>
+                    <td class="border-0" >{{ modalFornitore.codiceFiscale }}</td>
+                    <td class="border-0" >{{ modalFornitore.partitaIva }}</td>
+                    <td class="border-0" >{{ modalFornitore.indirizzo }} {{ modalFornitore.numeroCivico }}</td>
+                    <td class="border-0" >{{ modalFornitore.comune }} </td>
+                    <td class="border-0" >{{ modalFornitore.cap }} </td>
+                    <td class="border-0" >{{ modalFornitore.provincia }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modalFornitoriClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+    </div>
+</ng-template>

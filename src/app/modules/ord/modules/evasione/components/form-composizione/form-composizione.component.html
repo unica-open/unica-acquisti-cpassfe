@@ -1,0 +1,180 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/', 'ord']">{{ 'SIDEBAR.ORDINI.TITLE' | translate }}</a>
+        </li>
+        <li class="breadcrumb-item active">{{ title | translate }}</li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-3">
+
+    <form [formGroup]="formTestataEvasione" (ngSubmit)="onSubmit(false)" *ngIf="testataEvasione">
+
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <input type="text" class="form-control" id="descrizioneInput" formControlName="descrizione"
+                    cpassHasValueClass cpassIsInvalidClass >
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceInput">{{ 'ORD.EVASIONE.FIELD.DESCR' | translate }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <input type="text" class="form-control" id="documentoConsegnaInput" formControlName="documentoConsegna"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="codiceInput">{{ 'ORD.EVASIONE.FIELD.DOCUMENT_DELIVERY' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="documentoDataConsegnaInput"
+                        formControlName="documentoDataConsegna" cpassHasValueClass maxlength="10" cpassIsInvalidClass
+                        ngbDatepicker #d_documentoDataConsegna="ngbDatepicker" (change)="onChangeDateConsegna()"
+                        (dateSelect)="onChangeDateConsegna()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_documentoDataConsegna.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label"
+                        for="codiceInput">{{ 'ORD.EVASIONE.FIELD.DOCUMENT_DATE_DELIVERY' | translate }}</label>
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dataConsegnaInput" formControlName="dataConsegna"
+                        cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                        #d_dataConsegna="ngbDatepicker" (change)="onChangeDateConsegna()"
+                        (dateSelect)="onChangeDateConsegna()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_dataConsegna.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label"
+                        for="codiceInput">{{ 'ORD.EVASIONE.FIELD.DATE_DELIVERY' | translate }}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-4" formGroupName="fornitore">
+                <input type="hidden" class="form-control" id="idInput" formControlName="id">
+                <input type="text" class="form-control" id="codiceInput" formControlName="codice" cpassHasValueClass
+                    cpassIsInvalidClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.CODE' | translate }}</label>
+            </div>
+
+            <div class="form-group col-sm-8" formGroupName="fornitore">
+                <input type="text" class="form-control" id="ragioneSocialeInput" formControlName="ragioneSociale"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="ragioneSocialeInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.BUSINESS_NAME' | translate }}</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <input type="text" class="form-control" id="noteInput" formControlName="note" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceInput">{{ 'ORD.EVASIONE.FIELD.NOTE' | translate }}</label>
+            </div>
+        </div>
+
+
+        <div class="row fake-accordion">
+            {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.NAME' | translate}}
+        </div>
+        <div class="row fake-accordion-section scroll-section" >
+            <form [formGroup]="formItems" *ngIf="bInitCompleted" >
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.ORDER' | translate}}</th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.PROGRESS_DEST' | translate}}
+                            </th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.SECTOR' | translate}}</th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.PROGRESS_ROW' | translate}}</th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.CPV' | translate}}</th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.ODS' | translate}}</th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.TOTAL_ROW' | translate}}</th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.TOTAL_PROCESSABLE' | translate}}
+                            </th>
+                            <th scope="col" style="width: 10%;">
+                                {{'ORD.EVASIONE.COMPOSITION.LIST_SELECTED_ITEMS.AMOUNT_TO_PROCESS' | translate}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="orders">
+
+                        <tr *ngFor="let order of fOrders.controls; let i = index" [formGroupName]="i">
+                            <td scope="row">
+                                {{righeOrdine[i].destinatario.testataOrdine.anno}}/{{righeOrdine[i].destinatario.testataOrdine.numero}}
+                            </td>
+                            <td scope="row">{{righeOrdine[i].destinatario.progressivo}}</td>
+                            <td scope="row">{{righeOrdine[i].destinatario.testataOrdine.settore.codice}} -
+                                {{righeOrdine[i].destinatario.testataOrdine.settore.descrizione}}</td>
+                            <td scope="row">{{righeOrdine[i].progressivo}}</td>
+                            <td scope="row">{{righeOrdine[i].ods.cpv.codice}}</td>
+                            <td scope="row">{{righeOrdine[i].ods.codice}} - {{righeOrdine[i].ods.descrizione}}</td>
+                            <td scope="row">{{righeOrdine[i].importoTotale}}</td>
+                            <td scope="row">{{righeOrdine[i].importoDaEvadere}}</td>
+                            <td scope="row">
+                                <input type="text" class="form-control text-right" formControlName="importo"
+                                    (focusout)="aggiornaTotale(i)" currencyMask
+                                    [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}"
+                                     [ngClass]="{'is-invalid': (order.get('errore').value == true)}" >
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="col-md-12" *ngIf="!righeOrdine || righeOrdine.length < 1">-</div>
+
+                <input type="hidden" class="form-control text-right font-weight-bold" formControlName="totaleRigheImporti"
+                    cpassHasValueClass currencyMask
+                    [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+
+            </form>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <cpass-back-button></cpass-back-button>
+                <!-- <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button> -->
+                <button type="button" class="btn btn-outline-secondary btn-sm"
+                    (click)="onClickReset()">{{ 'APP.CLEAN' | translate }}</button>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary ml-auto"
+                    [disabled]="!formTestataEvasione.valid || !importiValidi">{{ 'APP.SAVE' | translate }}</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

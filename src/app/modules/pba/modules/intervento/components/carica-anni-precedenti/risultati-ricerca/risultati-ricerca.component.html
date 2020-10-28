@@ -1,0 +1,39 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">{{ 'APP.SEARCH_RESULT' | translate }}</li>
+    </ol>
+  </nav>
+  <div class="mt-5 scrollbar-table scrollbar-primary">
+    <cpass-paginated-table [pagedResponse]="pagedResponse" (changePaginationData)="onChangePaginationData($event)" #pagedTable [columnNumber]="7" [limit]="currentPaginationData.limit">
+      <ng-template cpassPaginationHead>
+        <tr>
+          <th scope="col">
+            <input type="checkbox" name="selectAll" (click)="onSelectAll(!selectAll)" [checked]="isSelectAll()"> Sel.
+          </th>
+          <th cpassSortable="annoProgramma" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.TYPE' | translate }}</th>
+          <th cpassSortable="stato" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.STATE.SHORT' | translate }}</th>
+          <th cpassSortable="cui" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.CUI.SHORT' | translate }}</th>
+          <th cpassSortable="settore" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.SECTOR' | translate }}</th>
+          <th cpassSortable="rup" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.RUP.SHORT' | translate }}</th>
+          <th cpassSortable="descrizione" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.DESCRIPTION' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template cpassPaginationBody let-el>
+        <tr>
+            <!-- (click)="onInterventoSelect(el)" [checked]="selectedIntervento?.id === el.id" -->
+          <td><input type="checkbox" name="intervento" (click)="onInterventoSelect(el)" [checked]="isInterventoSelect(el)"></td>
+          <td>{{ el.programma?.anno +' / ' + (+el.programma?.anno+1) +' vers. '+ el.programma?.versione}}</td>
+          <td>{{ el.stato?.descrizione }}</td>
+          <td>{{ el.cui }}</td>
+          <td>{{ el.settoreInterventi?.descrizione }}</td>
+          <td>{{ el.utenteRup?.cognome +' '+el.utenteRup?.nome}}</td>
+          <td>{{ el.descrizioneAcquisto }}</td>
+        </tr>
+      </ng-template>
+    </cpass-paginated-table>
+  </div>
+

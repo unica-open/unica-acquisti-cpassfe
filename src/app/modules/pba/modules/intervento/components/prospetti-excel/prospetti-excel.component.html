@@ -1,0 +1,72 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/', 'pba']">{{ 'SIDEBAR.PBA.TITLE' | translate }}</a></li>
+      <li class="breadcrumb-item active">{{ title | translate }}</li>
+  </ol>
+</nav>
+
+<form [formGroup]="formProspetto">
+  <div class="row">
+    <div class="form-group col-12">
+      <ng-select class="form-control" [items]="elencoProgrammi" [virtualScroll]="true" bindLabel="anno" formControlName="programma" cpassIsInvalidClass id="programmaInput">
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione +' - ' + item.ente.denominazione + ' - ' + item?.utenteReferente?.nome +' '+ item?.utenteReferente?.cognome  }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span >{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione +' - ' + item.ente.denominazione + ' - ' + item?.utenteReferente?.nome +' '+ item?.utenteReferente?.cognome }}</span >
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="programmaInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.TYPE' | translate }}</label>
+      <div *ngIf="f.programma.touched && f.programma?.errors" class="text-danger">
+        <div *ngIf="f.programma.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- VECCHIA IMPLEMENTAZIONE (spostata nella consultazione acquisto)
+      <div class="form-group col-12 radio-inline">
+      <label>
+        <input type="radio" value="STAMPA_INTERVENTI" formControlName="nomeStampa" (change)="onNomeStampa()">
+        {{ 'PBA.INTERVENTION.FIELD.PRINTS.PRINT_INTERVENTIONS' | translate }}
+      </label>
+    </div>-->
+    <div class="form-group col-12 radio-inline">
+      <label>
+        <input type="radio" value="ALLEGATO_II" formControlName="nomeStampa" (change)="onNomeStampa()">
+        {{ 'PBA.INTERVENTION.FIELD.PRINTS.PROSPECTUS_ANNEX_II' | translate }}
+      </label>
+    </div>
+    <div class="form-group col-12 radio-inline">
+      <label>
+        <input type="radio" value="REPORT_SOGGETTI_AGGREGATORI" formControlName="nomeStampa" (change)="onNomeStampa()">
+        {{ 'PBA.INTERVENTION.FIELD.PRINTS.REPORT_BY_AGGREGATOR_SUBJECTS' | translate }}
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <cpass-back-button></cpass-back-button>
+      <button type="reset" class="btn btn-outline-secondary btn-sm" (click)="onReset()">{{ 'APP.RESET' | translate }}</button>
+    </div>
+
+    <div class="col-auto">
+      <button type="button" class="btn btn-info ml-auto" (click)="stampa('default')" [disabled]="!formProspetto.valid">
+        <i class="far fa-file mr-1"></i>{{ 'PBA.INTERVENTION.OPERATION.PRINT' | translate }}
+      </button>
+      <!--
+      <button type="button" class="btn btn-info ml-auto" (click)="stampa('pdf')" [disabled]="!formProspetto.valid">
+        <i class="far fa-file-pdf mr-1"></i>{{ 'PBA.INTERVENTION.OPERATION.PRINT' | translate }}
+      </button>
+      -->
+    </div>
+  </div>
+</form>

@@ -1,0 +1,42 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+  <div class="row">
+    <div class="form-group col-sm-6 text-left">
+      <button class="btn btn-info ml-auto" (click)="addDestinatario()" [disabled]="destinatarioBtnDisabled">{{ 'ORD.DETAIL.NUOVO_DESTINATARIO' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-6 text-right">
+      <button class="btn btn-info ml-auto" (click)="togglePanels()">{{ getTooglePanelsLabel() | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 text-left">
+      <ngb-accordion id="dest_accordion" *ngFor="let destinatario of testataOrdine.listDestinatario; let i = index" [activeIds]="activePanels">
+        <ngb-panel id="panel_dest_{{0 + i}}"
+                   title="{{getTitleByIndex(i)}}" type="primary">
+          <ng-template ngbPanelContent>
+            <cpass-form-destinatario
+              [testataOrdine]="testataOrdine"
+              [elencoUnitaMisura]="elencoUnitaMisura"
+              [elencoAliquoteIva]="elencoAliquoteIva"
+              [elencoStatiElOrdineDestinatario]="elencoStatiElOrdineDestinatario"
+              [elencoStatiElOrdineRiga]="elencoStatiElOrdineRiga"
+              [destinatario]="destinatario"
+              (onSaveDestinatario)="onSaveDestinatario($event, i)"
+              (onDeleteDestinatario)="onDeleteDestinatario($event)"
+              (onBackClicked)="onBackClicked"></cpass-form-destinatario>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <!-- <cpass-back-button></cpass-back-button> -->
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+    </div>
+  </div>
+</div>

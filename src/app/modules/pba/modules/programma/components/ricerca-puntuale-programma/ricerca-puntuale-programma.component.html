@@ -1,0 +1,36 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formRicerca" (submit)="onSubmitCerca()">
+  <div class="row">
+    <div class="col-12 col-xl-9 form-group">
+      <ng-select class="form-control" [items]="elencoProgrammi" [virtualScroll]="true" bindLabel="anno" formControlName="programma" id="programmaInput" >
+        <!-- [compareWith]="compareById" -->
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione +' - '+ item.stato.descrizione}}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione  +' - '+ item.stato.descrizione}}">{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione  +' - '+ item.stato.descrizione}}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="programmaInput" class="float-label">{{ 'PBA.PROGRAM.FIELD.PROGRAMMA' | translate }}</label>
+    </div>
+<!--
+    <div class="col-12 col-xl-9 form-group">
+      <input type="text" class="form-control" id="primaAnnualita" required [formControl]="primaAnnualita" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="primaAnnualita">{{ 'PBA.PROGRAM.FIELD.FIRST_YEAR' | translate }}</label>
+      <div *ngIf="primaAnnualita.touched && primaAnnualita.errors" class="text-danger">
+        <div *ngIf="primaAnnualita.errors.pattern">{{ 'MESSAGES.PBA-PRG-E-0034' | translate }}</div>
+      </div>
+    </div> -->
+    <div class="form-group col-12 col-xl-3">
+      <button type="submit" class="btn btn-raised btn-default col" [disabled]="!formRicerca.valid">{{ 'APP.SEARCH' | translate }}</button>
+    </div>
+  </div>
+</form>
+

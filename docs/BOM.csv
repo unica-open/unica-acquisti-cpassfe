@@ -1,0 +1,47 @@
+name*,version*,license*,vendor/community,end-of-support,dependencies,language
+@angular-devkit/build-angular,0.803.23,MIT,,,,javascript
+@angular/animations,8.2.14,MIT,,,tslib,javascript
+@angular/cli,8.3.23,MIT,,,,javascript
+@angular/common,8.2.14,MIT,,,tslib,javascript
+@angular/compiler,8.2.14,MIT,,,tslib,javascript
+@angular/compiler-cli,8.2.14,MIT,,,,javascript
+@angular/core,8.2.14,MIT,,,tslib,javascript
+@angular/forms,8.2.14,MIT,,,tslib,javascript
+@angular/language-service,8.2.14,MIT,,,,javascript
+@angular/platform-browser,8.2.14,MIT,,,tslib,javascript
+@angular/platform-browser-dynamic,8.2.14,MIT,,,tslib,javascript
+@angular/router,8.2.14,MIT,,,tslib,javascript
+@biesbjerg/ngx-translate-extract,4.2.0,MIT,,,,javascript
+@biesbjerg/ngx-translate-extract-marker,1.0.0,MIT,,,tslib,javascript
+@fortawesome/fontawesome-free,5.12.0,"CC-BY-4.0,OFL-1.1,MIT",,,,javascript
+@ng-bootstrap/ng-bootstrap,5.2.1,MIT,,,tslib,javascript
+@ng-select/ng-select,3.7.2,MIT,,,tslib,javascript
+@ngx-translate/core,11.0.1,MIT,,,tslib,javascript
+@types/jasmine,3.3.16,MIT,,,,javascript
+@types/jasminewd2,2.0.8,MIT,,,,javascript
+@types/node,8.9.5,MIT,,,,javascript
+bignumber.js,9.0.0,MIT,,,,javascript
+bootstrap,4.4.1,MIT,,,,javascript
+codelyzer,5.2.1,MIT,,,,javascript
+deepmerge,2.1.1,MIT,,,,javascript
+jasmine-core,3.4.0,MIT,,,,javascript
+jasmine-spec-reporter,4.2.1,Apache 2.0,,,,javascript
+karma,4.1.0,MIT,,,,javascript
+karma-chrome-launcher,2.2.0,MIT,,,,javascript
+karma-coverage-istanbul-reporter,2.0.6,MIT,,,,javascript
+karma-jasmine,2.0.1,MIT,,,,javascript
+karma-jasmine-html-reporter,1.4.2,MIT,,,,javascript
+ng-sidebar,9.2.0,MIT,,,,javascript
+ngx-currency,2.3.3,MIT,,,tslib,javascript
+ngx-mask,8.1.7,MIT,,,tslib,javascript
+ngx-nestable,0.9.4,MIT,,,tslib,javascript
+ngx-spinner,8.1.0,MIT,,,tslib,javascript
+ngx-toastr,11.3.2,MIT,,,tslib,javascript
+ngx-translate-multi-http-loader,3.0.0,MIT,,,"deepmerge,tslib",javascript
+protractor,5.4.3,MIT,,,,javascript
+rxjs,6.5.4,Apache 2.0,,,tslib,javascript
+ts-node,7.0.1,MIT,,,,javascript
+tslib,1.10.0,Apache 2.0,,,,javascript
+tslint,5.15.0,Apache 2.0,,,,javascript
+typescript,3.5.3,Apache 2.0,,,,javascript
+zone.js,0.10.2,MIT,,,,javascript

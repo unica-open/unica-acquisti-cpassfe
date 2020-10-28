@@ -1,0 +1,52 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav aria-label="Navigazione">
+  <div class="col-12 row">
+    <div class="col-3 col-sm-2 col-xl-1">
+      <ng-select class="form-control" [items]="pageSizes" [virtualScroll]="true" [ngModel]="limit" (change)="changePageSize($event)" cpassIsInvalidClass [clearable]="false"></ng-select>
+    </div>
+    <div class="col-9 col-sm-10 col-xl-11">
+      <ngb-pagination class="d-flex justify-content-end" [collectionSize]="pagedResponse.totalElements" [(page)]="page" [pageSize]="limit" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="goToPage($event)">
+        <ng-template ngbPaginationFirst>{{ 'PAGINATION.FIRST' | translate }}</ng-template>
+        <ng-template ngbPaginationLast>{{ 'PAGINATION.LAST' | translate }}</ng-template>
+        <ng-template ngbPaginationPrevious>{{ 'PAGINATION.PREV' | translate }}</ng-template>
+        <ng-template ngbPaginationNext>{{ 'PAGINATION.NEXT' | translate }}</ng-template>
+      </ngb-pagination>
+    </div>
+  </div>
+</nav>
+<div class="scrollbar-table scrollbar-primary">
+  <!-- table-sortable -->
+  <!-- <table class="table table-bordered table-striped table-hover table-sortable" id="infoTable"> -->
+  <table [ngClass]="{'table':true, 'table-bordered':true, 'table-striped':true, 'table-hover':true, 'table-sortable':tableSortable}" id="infoTable">
+    <thead>
+      <ng-template [ngTemplateOutlet]="tplHead?.templateRef"></ng-template>
+    </thead>
+    <tbody *ngIf="pagedResponse.totalElements > 0; else noData">
+      <ng-template *ngFor="let el of pagedResponse.list; index as index; first as first; last as last; even as even; odd as odd" [ngTemplateOutlet]="tplBody?.templateRef"
+        [ngTemplateOutletContext]="{$implicit: el, el: el, index: index, first: first, last: last, even: even, odd: odd}"></ng-template>
+    </tbody>
+    <ng-template #noData>
+      <tbody>
+        <tr *ngIf="columnNumber > 0">
+          <td [colSpan]="columnNumber">{{ 'APP.NO_DATA_FOUND' | translate }}</td>
+        </tr>
+      </tbody>
+    </ng-template>
+  </table>
+</div>
+<nav aria-label="Navigazione">
+  <div class="col-12 row">
+    <div class="col-12 col-sm-4 col-md-6">{{ paginationFooter }}</div>
+    <div class="col-12 col-sm-8 col-md-6">
+      <ngb-pagination class="d-flex justify-content-end" [collectionSize]="pagedResponse.totalElements" [(page)]="page" [pageSize]="limit" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="goToPage($event)">
+        <ng-template ngbPaginationFirst>{{ 'PAGINATION.FIRST' | translate }}</ng-template>
+        <ng-template ngbPaginationLast>{{ 'PAGINATION.LAST' | translate }}</ng-template>
+        <ng-template ngbPaginationPrevious>{{ 'PAGINATION.PREV' | translate }}</ng-template>
+        <ng-template ngbPaginationNext>{{ 'PAGINATION.NEXT' | translate }}</ng-template>
+      </ngb-pagination>
+    </div>
+  </div>
+</nav>

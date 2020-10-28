@@ -1,0 +1,12 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="card" [class.d-none]="hidden" *ngFor="let com of comunicazioni$ | async">
+  <div class="card-body">
+    <h6 class="card-title">Comunicazione di servizio</h6>
+    <div class="card-text">
+      <div class="bg-grigio p-1" [innerHTML]="com.testo | cpassUnsafeHtml"></div>
+    </div>
+  </div>
+</div>

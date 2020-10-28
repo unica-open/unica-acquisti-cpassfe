@@ -1,0 +1,23 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<!-- <p>ricerca-ordine works!</p> -->
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/', 'ord']">{{ 'SIDEBAR.ORDINI.TITLE' | translate }}</a></li>
+        <li class="breadcrumb-item active">{{ 'SIDEBAR.ORDINI.ORDER.SEARCH' | translate }}</li>
+    </ol>
+</nav>
+<ngb-accordion #accordionRicerca id="accordion-ricerca" [activeIds]="activeIds">
+    <ngb-panel title="{{accordionTitle}}" id="panelRicerca">
+        <ng-template ngbPanelContent>
+            <cpass-form-ricerca-ordine [formPristine]="formPristine" [formRicercaOrdine]="formRicercaOrdine"
+                (datiRicerca)="onCercaOrdine($event)" (resetForm)="onResetForm()"></cpass-form-ricerca-ordine>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>
+<br>
+<cpass-risultati-ricerca-ordine *ngIf="ricercaEffettuata" [pagedResponse]="pagedResponse" [currentPaginationData]="currentPaginationData"
+    (changePaginationData)="onChangePaginationData($event)"></cpass-risultati-ricerca-ordine>

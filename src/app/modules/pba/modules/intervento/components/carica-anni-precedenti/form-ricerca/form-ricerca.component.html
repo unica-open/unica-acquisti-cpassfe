@@ -1,0 +1,119 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formRicerca" *ngIf="showForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="form-group col-12 col-sm-6 col-md-4">
+      <ng-select class="form-control" [items]="elencoProgrammiSorgente" [virtualScroll]="true" bindLabel="anno" formControlName="programmaSorgente" id="programmaSorgenteInput">
+        <!-- [compareWith]="compareById" (change)="onChange()" -->
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}">{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="programmaSorgenteInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.SOURCE' | translate }}</label>
+      <!-- <div *ngIf="f.programma.touched && f.programma?.errors" class="text-danger">
+        <div *ngIf="f.programma.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div> -->
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4">
+      <ng-select class="form-control" [items]="elencoProgrammiDestinazione" [virtualScroll]="true" bindLabel="anno" formControlName="programmaDestinazione" id="programmaDestinazioneInput">
+        <!-- [compareWith]="compareById" (change)="onChange()" -->
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span title="{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}">{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="programmaDestinazioneInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.DESTINATION' | translate }}</label>
+      <!-- <div *ngIf="f.programma.touched && f.programma?.errors" class="text-danger">
+        <div *ngIf="f.programma.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div> -->
+    </div>
+    <div class="form-group col-12 col-md-4">
+      <button type="button" class="btn btn-info ml-auto sm-full-width" [disabled]="!formRicerca.get('programmaSorgente').valid || !formRicerca.get('programmaDestinazione').valid" (click)="onCerca()">{{ 'APP.SEARCH' | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-12 col-sm-4 col-lg-3 col-xl-2 radio-inline">
+      <label>
+        <input type="radio" value="COPIA_MANTENENDO_CUI" formControlName="interventoCopiaTipo" (change)="onInterventoCopiaTipo()">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.WITH_CUI.LONG' | translate }}
+      </label>
+    </div>
+    <div class="form-group col-12 col-sm-4 col-lg-3 radio-inline">
+      <label>
+        <input type="radio" value="COPIA_CON_CUI_RIATTRIBUITO" formControlName="interventoCopiaTipo" (change)="onInterventoCopiaTipo()">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.WITHOUT_CUI' | translate }}
+      </label>
+    </div>
+    <div class="form-group col-12 col-sm-4 col-lg-3 col-xl-2 radio-inline">
+      <label>
+        <input type="radio" value="ACQ_NON_RIPROPOSTO" formControlName="interventoCopiaTipo" (change)="onInterventoCopiaTipo()">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.NOT_REPEATED' | translate }}
+      </label>
+    </div>
+  </div>
+  <hr class="d-sm-none">
+  <div class="row">
+    <div class="form-group col-12 col-sm-4 col-lg-3 col-xl-2 radio-inline">
+      <label>
+        <input type="radio" value="IMPORTI_TRASLATI" formControlName="importiCopiaTipo">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.TRANSLATE_AMOUNTS' | translate }}
+      </label>
+    </div>
+    <div class="form-group col-12 col-sm-4 col-lg-3 radio-inline">
+      <label>
+        <input type="radio" value="IMPORTI_MANTENUTI" formControlName="importiCopiaTipo">
+        {{ 'PBA.INTERVENTION.FIELD.COPY.KEEP_AMOUNTS' | translate }}
+      </label>
+    </div>
+    <!-- <div class="form-group col-sm-4">
+      <button type="submit" class="btn btn-info ml-auto" [disabled]="!btAvviaEnable">{{ 'APP.START' | translate }}</button>
+    </div> -->
+  </div>
+  <div class="row">
+    <div class="col">
+      <cpass-back-button></cpass-back-button>
+      <button type="reset" class="btn btn-outline-secondary btn-sm" (click)="onReset()">{{ 'APP.RESET' | translate }}</button>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-info ml-auto" [disabled]="!btAvviaEnable">{{ 'APP.START' | translate }}</button>
+    </div>
+  </div>
+</form>
+<ng-template #modalRiepilogoInterventi let-modal>
+
+  <!-- <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'PBA.INTERVENTION.OPERATION.CANCEL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <cpass-riepilogo-interventi *ngIf="acquistoNonRiproposto" [pagedResponse]="pagedResponseSelect" [modal]="modal" (modelResponse)="onExecute($event)"></cpass-riepilogo-interventi>
+</ng-template>
+<!--
+<ng-template #modalApprova let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-approva-title">{{ 'PBA.INTERVENTION.OPERATION.APPROVE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'PBA.INTERVENTION.OPERATION.APPROVE.TEXT' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+ -->

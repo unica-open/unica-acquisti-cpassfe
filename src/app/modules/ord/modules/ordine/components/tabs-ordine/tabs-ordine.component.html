@@ -1,0 +1,233 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<!-- <p>tabs-ordine works!</p> -->
+
+<nav>
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/', 'ord']">{{ 'SIDEBAR.ORDINI.TITLE' | translate }}</a></li>
+      <li class="breadcrumb-item active">{{ title | translate }}</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col">
+    <!-- controlDisabled=true , siamo in modifica i pulsanti azione sono abilitati -->
+    <button type="button" class="btn btn-outline-info" [disabled]="!btnInserisciEnable" [routerLink]="['/ord', 'ordine']">{{ 'APP.INSERT' | translate }}</button>
+    <button id="btnModifica" type="button" class="btn btn-outline-info" [disabled]="!btModificaEnable" (click)="onClickModifica()" >{{ 'APP.MODIFY' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btAnnullaEnable" (click)="onAnnullaOrdine()">{{ 'APP.CANCEL' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btPrintEnable" (click)="onClickPrint('default')">{{ 'APP.PRINT' | translate }}</button>
+  </div>
+  <div class="col text-right">
+    <button type="button" class="btn btn-outline-info" [disabled]="!btCheckEnable" (click)="onClickControlla()" >{{ 'APP.CHECK' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btConfirmEnable" (click)="onClickConferma()" >{{ 'APP.CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btAuthorizeEnable" (click)="onClickAutorizza()" >{{ 'APP.AUTHORIZE' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btSendNsoEnable" (click)="onClickInvioNSO()" >{{ 'APP.SEND_NSO' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btCloseEnable" (click)="onClickChiudi()" >{{ 'APP.CLOSE' | translate }}</button>
+  </div>
+</div>
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons"></div>
+<ngb-tabset #ts="ngbTabset">
+
+<ngb-tab id="tabTestataOrdine" *ngIf="testataOrdine" [disabled]="disableTabOrdine">
+  <ng-template ngbTabTitle>
+    <span [ngClass]="{'text-success tabValido': !disableTabOrdine}">{{ 'ORD.ORDER.FIELD.TAB_NAME' | translate }}</span>
+  </ng-template>
+  <ng-template ngbTabContent>
+
+    <cpass-form-ordine
+      [ngbTabset]="ts"
+      [initialTestataOrdine]="initialTestataOrdine"
+      [testataOrdine]="testataOrdine"
+      [controlDisabled]="controlDisabled"
+      [settore]="settore"
+      (newTestataOrdine)="onNewTestataOrdine($event)"
+      (formTestataOrdineValid)="onFormTestataOrdineValid($event)"
+      (formTestataOrdineReset)="onFormTestataOrdineReset()"
+      (onBackClicked)="onBackClicked($event)"></cpass-form-ordine>
+
+  </ng-template>
+</ngb-tab>
+ <ngb-tab id="tabFinanziariAssociati"  *ngIf="testataOrdine" [disabled]="disableFinanzAssoc">
+   <ng-template ngbTabTitle>
+     <span [ngClass]="{'text-success tabValido': !disableFinanzAssoc }">{{'ORD.FINANZ.TAB_NAME' | translate }}</span>
+   </ng-template>
+  <ng-template ngbTabContent>
+
+    <cpass-form-finanziari-associati
+      [ngbTabset]="ts"
+      [initialTestataOrdine]="initialTestataOrdine"
+      [testataOrdine]="testataOrdine"
+      (newTestataOrdine)="onNewTestataOrdine($event)"
+      [controlDisabled]="controlDisabled"
+      (onBackClicked)="onBackClicked($event)">
+    </cpass-form-finanziari-associati>
+
+  </ng-template>
+</ngb-tab>
+
+<ngb-tab id="tabDettaglio"  *ngIf="testataOrdine" [disabled]="disableDettaglio">
+  <ng-template ngbTabTitle>
+    <span [ngClass]="{'text-success tabValido': !disableDettaglio }">{{'ORD.DETAIL.TAB_NAME' | translate }}</span>
+  </ng-template>
+  <ng-template ngbTabContent>
+
+    <cpass-dettaglio-ordine
+      [testataOrdine]="testataOrdine"
+      [newDestinatario]="this.newDestinatario"
+      (onBackClicked)="onBackClicked($event)">
+    </cpass-dettaglio-ordine>
+
+  </ng-template>
+</ngb-tab>
+
+<ngb-tab *ngIf="testataOrdine" id="tabRiepilogoImpegni" [disabled]="disableRiepilogo" >
+  <ng-template ngbTabTitle>
+    <span [ngClass]="{'text-success tabValido': !disableRiepilogo }">{{'ORD.RIEPILOGOIMPEGNI.TAB_NAME' | translate }}</span>
+  </ng-template>
+  <ng-template ngbTabContent>
+
+    <cpass-riepilogo-impegni
+      [testataOrdine]="testataOrdine"
+      (onBackClicked)="onBackClicked($event)">
+    </cpass-riepilogo-impegni>
+
+  </ng-template>
+</ngb-tab>
+
+
+</ngb-tabset>
+
+
+<ng-template #modalConfermaOrdine let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0062' | translate}}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+<ng-template #modalAutorizzaOrdine let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0063' | translate}}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+<ng-template #modalChiudiOrdine let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-chiudi-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0066' | translate}}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+<ng-template #modalInvioNsoOrdine let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-chiudi-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0066' | translate}}</ngb-alert> -->
+  <ngb-alert [type]="'danger'" [dismissible]="false">Invia a NSO</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+<ng-template #modalWarningTolleranza let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0073' | translate}}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+<ng-template #modalConfirmElimina let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ messageConfirmElimina }}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="onModalEliminaClose(modal)">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+<ng-template #modalConfirmAnnulla let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ messageConfirmAnnulla }}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="onModalAnnullaClose(modal)">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>
+
+
+<ng-template #modalConfirmAnnullaAndBypass let-modal>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-alert [type]="'danger'" [dismissible]="false">{{ messageConfirmAnnullaAndBypass }}</ngb-alert>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="onModalAnnullaAndBypassClose(modal)">{{ 'APP.YES' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+</div>
+</ng-template>

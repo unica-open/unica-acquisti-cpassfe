@@ -1,0 +1,429 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+
+ <form [formGroup]="formRigaOrdine">
+  <div class="row">
+    <h5 class="col-sm-2">Consegna parziale</h5>
+    <div class="col-sm-1">
+      <div class="checkbox">
+        <label class="radio-label" for="cons_yes">
+          <input type="radio" class="d-none" id="cons_yes" (click)="toggleConsegnaParziale(true)" [checked]="checkConsegnaParziale" [disabled]="controlDisabled"/>
+          <span class="label"></span>Si
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <div class="checkbox">
+        <label class="radio-label" for="cons_no">
+          <input type="radio" class="d-none" id="cons_no" (click)="toggleConsegnaParziale(false)" [checked]="!checkConsegnaParziale" [disabled]="controlDisabled"/>
+          <span class="label"></span>No
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-2 offset-sm-4">
+      <input type="text" class="form-control" id="progressivo_riga" cpassHasValueClass formControlName="progressivo">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="progressivo_riga">{{ 'ORD.DETAIL.FIELD.PROGRESSIVE' | translate }}</label>
+    </div>
+    <div class="col-sm-2" formGroupName="statoElOrdine" >
+      <input type="text" class="form-control" id="statoElOrdine" cpassHasValueClass formControlName="descrizione">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="statoElOrdine">{{ 'ORD.DETAIL.FIELD.STATE' | translate }}</label>
+    </div>
+  </div>
+
+
+  <div formGroupName='ods'>
+
+    <div class="row" formGroupName='cpv'>
+      <h5 class="col-sm-1 form-group">CPV</h5>
+      <div class="col-sm-2 form-group">
+        <input type="text" class="form-control" id="cpv_codice" formControlName='codice' cpassHasValueClass cpassIsInvalidClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="cpv_codice">Codice</label>
+      </div>
+      <div class="col-sm-7 form-group">
+        <input type="text" class="form-control" id="cpv_descrizione" formControlName='descrizione' cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="cpv_descrizione">Descrizione</label>
+      </div>
+      <div class="form-group col-sm-2 text-left">
+        <button type="button" class="btn btn-info ml-auto" (click)="searchCpv()" [disabled]="disableCpvSearch()">{{ 'APP.SEARCH' | translate }}</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <h5 class="col-sm-1 form-group">ODS</h5>
+      <div class="col-sm-2 form-group">
+        <input type="text" class="form-control" id="ods_codice" formControlName="codice" cpassHasValueClass cpassIsInvalidClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="cpv_codice">Codice</label>
+      </div>
+      <div class="col-sm-7 form-group">
+        <input type="text" class="form-control" id="ods_descrizione" formControlName="descrizione" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="cpv_descrizione">Descrizione</label>
+      </div>
+      <div class="form-group col-sm-2 text-left">
+        <button type="button" class="btn btn-info ml-auto" (click)="searchOds()" [disabled]="disableOdsSearch()">{{ 'APP.SEARCH' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName='listinoFornitore'>
+    <div class="row" >
+      <h5 class="col-sm-1 form-group"></h5>
+      <div class="col-sm-2 form-group">
+        <input type="text" class="form-control" id="listino_fornitore_codiceOds" formControlName="codiceOds" cpassHasValueClass cpassIsInvalidClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="listino_fornitore_codiceOds">{{ 'ORD.LISTINO_FORNITORI.CODICE' | translate }}</label>
+      </div>
+      <div class="col-sm-7 form-group">
+        <input type="text" class="form-control" id="listino_fornitore_descrizione" formControlName="descrizione" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="listino_fornitore_descrizione">{{ 'ORD.LISTINO_FORNITORI.DESCRIZIONE' | translate }}</label>
+      </div>
+      <div class="form-group col-sm-2 text-left">
+        <button type="button" class="btn btn-info ml-auto" (click)="searchListinoFornitore()" [disabled]="disableListinoFornitoreSearch()">{{ 'APP.SEARCH_LISTINO_FORNITORE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <ng-select class="form-control" [items]="elencoUnitaMisura" [virtualScroll]="true" formControlName="unitaMisura"
+      [searchFn]="searchDecodifica" id="selectUnitaMisura" cpassIsInvalidClass>
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span
+              title="{{ item.descrizione }}">{{ item.descrizione }}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="selectUnitaMisura" class="float-label">{{ 'ORD.DETAIL.RIGA.FIELD.UNITA_MISURA' | translate }}</label>
+    </div>
+
+    <div class="form-group col-sm-4">
+      <ng-select class="form-control" [items]="elencoAliquoteIva" [virtualScroll]="true" formControlName="aliquoteIva" (change)="importiCalcolatiGeneric()"
+      [searchFn]="searchDecodifica" id="selectAliquotaIva" cpassIsInvalidClass>
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span
+              title="{{ item.descrizione }}">{{ item.descrizione }}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="selectAliquotaIva" class="float-label">{{ 'ORD.DETAIL.RIGA.FIELD.ALIQ_IVA' | translate }}</label>
+    </div>
+
+    <div class="col-sm-2 form-group">
+      <input type="text" class="form-control" id="prezzoUnitario" formControlName="prezzoUnitario" cpassHasValueClass cpassIsInvalidClass (change)="importiCalcolatiGeneric()"
+        >
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="prezzoUnitario">{{ 'ORD.DETAIL.RIGA.FIELD.PREZZO_UNITARIO' | translate }}</label>
+    </div>
+
+    <div class="col-sm-2 form-group">
+      <input type="text" class="form-control" id="quantita" formControlName="quantita" cpassHasValueClass cpassIsInvalidClass (change)="importiCalcolatiGeneric()"
+        >
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="quantita">{{ 'ORD.DETAIL.RIGA.FIELD.QTA' | translate }}</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-2 form-group">
+      <input type="text" class="form-control" id="percentualeSconto" formControlName="percentualeSconto" cpassHasValueClass (change)="importiCalcolatiGeneric()">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="percentualeSconto">{{ 'ORD.DETAIL.RIGA.FIELD.PERCENT_SCO_1' | translate }}</label>
+    </div>
+
+    <div class="col-sm-4 form-group">
+      <input type="text" class="form-control" id="importoSconto" formControlName="importoSconto" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="importoSconto">{{ 'ORD.DETAIL.RIGA.FIELD.AMMONT_SCO_1' | translate }}</label>
+    </div>
+
+    <div class="col-sm-2 form-group">
+      <input type="text" class="form-control" id="percentualeSconto2" formControlName="percentualeSconto2" cpassHasValueClass (change)="importiCalcolatiGeneric()">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="percentualeSconto2">{{ 'ORD.DETAIL.RIGA.FIELD.PERCENT_SCO_2' | translate }}</label>
+    </div>
+
+    <div class="col-sm-4 form-group">
+      <input type="text" class="form-control" id="importoSconto2" formControlName="importoSconto2" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="importoSconto2">{{ 'ORD.DETAIL.RIGA.FIELD.AMMONT_SCO_2' | translate }}</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 form-group">
+      <input type="text" class="form-control" id="importoNetto" formControlName="importoNetto" cpassHasValueClass cpassIsInvalidClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="importoNetto">{{ 'ORD.DETAIL.RIGA.FIELD.NETTO' | translate }}</label>
+    </div>
+
+    <div class="col-sm-4 form-group">
+      <input type="text" class="form-control" id="importoIva" formControlName="importoIva" cpassHasValueClass cpassIsInvalidClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="importoIva">{{ 'ORD.DETAIL.RIGA.FIELD.IVA' | translate }}</label>
+    </div>
+
+    <div class="col-sm-4 form-group">
+      <input type="text" class="form-control" id="importoTotale" formControlName="importoTotale" cpassHasValueClass cpassIsInvalidClass [disabled]="true">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="importoTotale">{{ 'ORD.DETAIL.RIGA.FIELD.TOT' | translate }}</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 form-group">
+      <textarea class="form-control" rows="2" id="note" formControlName="note" placeholder="Note" cpassHasValueClass></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" class="btn btn-danger ml-auto" [disabled]="disableDeleteBtn()" (click)="showConfirmDeleteModal()">{{ 'APP.DELETE' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" class="btn btn-info ml-auto" [disabled]="disableEditBtn()" (click)="editModeWrapper()">{{ 'APP.MODIFY' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left left-btns">
+      <button type="button" (click)="onClickReset()" class="btn btn-info ml-auto" [disabled]="controlDisabled">{{ 'APP.CLEAN' | translate }}</button>
+    </div>
+    <div class="form-group offset-md-5 col-sm-1 text-right">
+      <button type="button" class="btn btn-info ml-auto" (click)="addNewRiga()" [disabled]="disableNuovaRigaBtn()">{{ 'APP.NEW_LINE' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-right">
+      <button type="button" class="btn btn-info ml-auto" (click)="addImpegno()" [disabled]="disableNuovoImpegnoBtn()">{{ 'APP.NEW_COMMITMENT' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-right" >
+      <button type="button" class="btn btn-info ml-auto" (click)="onClickSave()" [disabled]="controlDisabled || !formRigaOrdine.valid">{{ 'APP.SAVE' | translate }}</button>
+    </div>
+  </div>
+</form>
+
+<div class="col-sm-12 text-left">
+  <ngb-accordion id="imp_accordion" class="custom-accordion" *ngIf="rigaOrdine.impegniOrdine && rigaOrdine.impegniOrdine.length > 0" [activeIds]="activePanels">
+    <ngb-panel id="panel_impegni_0" title="{{ 'ORD.DETAIL.COMMITMENTS' | translate }}" type="primary">
+      <ng-template ngbPanelContent>
+        <cpass-form-impegno
+          [testataOrdine]="testataOrdine"
+          [rigaOrdine]="rigaOrdine"
+        >
+        </cpass-form-impegno>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
+
+
+<ng-template #modalCpv let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-cpv-title">{{ 'PBA.INTERVENTION.FIELD.CPV.SHORT' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TEXT' | translate}}
+    </ngb-alert>
+
+    <form [formGroup]="formModalCpv" *ngIf="modalElencoCpv">
+
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+        <tr>
+          <td style="width: 5%;">&nbsp;</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.CPV.CAT' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.CPV.CLASS' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.CPV.CODE' | translate }}</td>
+          <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.CPV.DESC' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.CPV.DIVISION' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.CPV.GROUP' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.CPV.TYPE' | translate }}</td>
+        </tr>
+        <tr *ngFor="let modalCpv of modalElencoCpv;">
+          <td class="border-0" >
+            <input type="radio" value="{{ modalCpv.id }}" formControlName="modalCpvId">
+          </td>
+          <td class="border-0" >{{ modalCpv.categoria }}</td>
+          <td class="border-0" >{{ modalCpv.classe }}</td>
+          <td class="border-0" >{{ modalCpv.codice }}</td>
+          <td class="border-0" >{{ modalCpv.descrizione }}</td>
+          <td class="border-0" >{{ modalCpv.divisione }}</td>
+          <td class="border-0" >{{ modalCpv.gruppo }}</td>
+          <td class="border-0" >{{ modalCpv.tipologia }} </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modalCpvClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalOds let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-ods-title">{{ 'ORD.ORDER.OPERATION.FIND_ODS.TITLE' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TEXT' | translate}}
+    </ngb-alert>
+
+    <form [formGroup]="formModalOds" *ngIf="modalElencoOds">
+
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+        <tr>
+          <td style="width: 10%;">&nbsp;</td>
+          <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.ODS.CODE' | translate }}</td>
+          <td style="width: 60%;">{{ 'ORD.ORDER.FIELD.ODS.DESC' | translate }}</td>
+        </tr>
+        <tr *ngFor="let modalOds of modalElencoOds;">
+          <td class="border-0" >
+            <input type="radio" value="{{ modalOds.id }}" formControlName="modalOdsId">
+          </td>
+          <td class="border-0" >{{ modalOds.codice }}</td>
+          <td class="border-0" >{{ modalOds.descrizione }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modalOdsClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalConfirmSave let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-confirm-title"> {{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0017' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmSave(modal)">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalConfirmDelete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD-ORD-A-0038' }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0038' | translate }}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmDelete(modal)">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+
+
+
+<ng-template #modalListinoFornitore let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-listinoFornitore-title"> {{ 'ORD.LISTINO_FORNITORI.TITLE' | translate }} &nbsp;&nbsp;{{odsSelezionato.codice}} - {{odsSelezionato.descrizione}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formModalListinoFornitore" *ngIf="modalElencoListinoFornitore">
+      <ngb-alert [type]="'info'" style="font-weight:bold;" [dismissible]="false">{{ 'ORD.LISTINO_FORNITORI.SELEZIONA_NEW' | translate }}</ngb-alert>
+
+      <div class="row" >
+        <div class="col-sm-1 form-group">
+          <input type="radio" value="-1" (change)="modalAbilitaListinoFornitoreClose(modal)" formControlName="modalListinoFornitoreId">
+        </div>
+
+        <div class="col-sm-4 form-group">
+          <input type="text" class="form-control" id="listino_fornitore_codiceOds" (keyup)="modalAbilitaListinoFornitoreClose(modal)" formControlName="modalListinoFornitoreCodiceOsdNew" cpassHasValueClass cpassIsInvalidClass>
+          <span class="form-highlight"></span>
+          <span class="form-bar"></span>
+          <label class="float-label" for="listino_fornitore_codiceOds">{{ 'ORD.LISTINO_FORNITORI.CODICE' | translate }}</label>
+        </div>
+
+        <div class="col-sm-7 form-group">
+          <input type="text" class="form-control" id="listino_fornitore_descrizione_new" (keyup)="modalAbilitaListinoFornitoreClose(modal)" formControlName="modalListinoFornitoreDescrizioneNew" cpassHasValueClass>
+          <span class="form-highlight"></span>
+          <span class="form-bar"></span>
+          <label class="float-label" for="listino_fornitore_descrizione_new">{{ 'ORD.LISTINO_FORNITORI.DESCRIZIONE' | translate }}</label>
+        </div>
+      </div>
+      <br>
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+        <tr style="font-weight:bold" >
+          <td style="width: 10%;">Seleziona&nbsp;</td>
+          <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.ODS.CODE' | translate }}</td>
+          <td style="width: 60%;">{{ 'ORD.ORDER.FIELD.ODS.DESC' | translate }}</td>
+        </tr>
+        <tr *ngFor="let modalListinoFornitore of modalElencoListinoFornitore;">
+          <td class="border-0" >
+            <input type="radio" value="{{ modalListinoFornitore.id }}" (change)="modalAbilitaListinoFornitoreClose(modal)" formControlName="modalListinoFornitoreId">
+          </td>
+          <td class="border-0" >{{ modalListinoFornitore.codiceOds }}</td>
+          <td class="border-0" >{{ modalListinoFornitore.descrizione }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" [disabled]="controlConfirmDisabled"  (click)="modalListinoFornitoreClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark"                                (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>

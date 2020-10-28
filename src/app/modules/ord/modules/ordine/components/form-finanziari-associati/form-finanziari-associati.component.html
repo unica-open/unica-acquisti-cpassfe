@@ -1,0 +1,137 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+
+  <form [formGroup]="formFinanziariAssociati" (ngSubmit)="onSubmitRicerca()" *ngIf="testataOrdine">
+
+    <div class="row">
+      <div class="form-group col-sm-12">
+        {{ 'ORD.FINANZ.FIELD.DESCR_FUNZ' | translate }}
+      </div>
+      
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="numeroCapitolo" formControlName="numeroCapitolo" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label"
+               for="numeroCapitolo">{{ 'ORD.FINANZ.FIELD.NUM.CAP' | translate }}</label>
+        <div *ngIf="formErrors.numeroCapitolo" class="text-danger">
+          <div>{{ formErrors.numeroCapitolo }}</div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="numeroArticolo" formControlName="numeroArticolo" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label"
+               for="numeroArticolo">{{ 'ORD.FINANZ.FIELD.NUM.ART' | translate }}</label>
+        <div *ngIf="formErrors.numeroArticolo" class="text-danger">
+          <div>{{ formErrors.numeroArticolo }}</div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="annoImpegno" formControlName="annoImpegno" cpassHasValueClass cpassDigitOnly maxlength="4">
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label"
+               for="annoImpegno">{{ 'ORD.FINANZ.FIELD.ANNO.IMP' | translate }}</label>
+        <div *ngIf="formErrors.annoImpegno" class="text-danger">
+          <div>{{ formErrors.annoImpegno }}</div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="numeroImpegno" formControlName="numeroImpegno" cpassHasValueClass cpassDigitOnly>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label"
+               for="numeroImpegno">{{ 'ORD.FINANZ.FIELD.NUM.IMP' | translate }}</label>
+        <div *ngIf="formErrors.numeroImpegno" class="text-danger">
+          <div>{{ formErrors.numeroImpegno }}</div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="numeroSubImpegno" formControlName="numeroSubImpegno" cpassHasValueClass cpassDigitOnly>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label"
+               for="numeroSubImpegno">{{ 'ORD.FINANZ.FIELD.NUM.SUBIMP' | translate }}</label>
+        <div *ngIf="formErrors.numeroSubImpegno" class="text-danger">
+          <div>{{ formErrors.numeroSubImpegno }}</div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-2 text-right">
+        <button type="submit" class="btn btn-info ml-auto"
+          [disabled]="this.isControlDisabled" >{{ 'APP.SEARCH' | translate }}</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="form-group col-sm-12">
+      
+      <form [formGroup]="form" *ngIf="impegnoItemList && impegnoItemList.length > 0">
+
+        <table class="table table-striped table-impegni">
+
+          <thead>
+            <tr>
+              <th>{{ 'ORD.FINANZ.FIELD.SELECT' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.CHAPTER' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.SECTOR' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.COMMITMENT_YEAR' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.COMMITMENT_NUMBER' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.SUB_COMMITMENT_YEAR' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.SUB_COMMITMENT_NUMBER' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.AVAILABLE' | translate }}</th>
+              <th>{{ 'ORD.FINANZ.FIELD.CHART_OD_ACCOUNTS' | translate }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr formArrayName="orders"
+            *ngFor="let order of fControls.orders.controls; let i = index" >
+              <td>
+                <input type="checkbox" [formControl]="order" />
+              </td>
+              <td>{{impegnoItemList[i].capitolo}}</td>
+              <td>{{impegnoItemList[i].settore}}</td>
+              <td>{{impegnoItemList[i].annoImpegno}}</td>
+              <td>{{impegnoItemList[i].numeroImpegno}}</td>
+              <td>{{impegnoItemList[i].annoSubimpegno}}</td>
+              <td>{{impegnoItemList[i].numeroSubimpegno}}</td>
+              <td>
+                {{ impegnoItemList[i].disponibile | currency:'EUR':'symbol':'1.2-2':'it' }}
+              </td>
+              <td>{{impegnoItemList[i].pianoDeiConti}}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        
+        </table>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="form-group col-sm-12 text-left">
+      <button class="btn btn-info ml-auto" (click)="onClickReset()" [disabled]="this.isControlDisabled" >{{ 'APP.CLEAN' | translate }}</button>
+      <button class="btn btn-info ml-auto" (click)="onSubmitElimina()" [disabled]="this.isControlDisabled" >{{ 'APP.DELETE-SELECTION' | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <!-- <cpass-back-button></cpass-back-button> -->
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,271 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container my-3">
+  <h5>{{ 'PBA.INTERVENTION.FIELD.RESOURCE_LIST' | translate }}</h5>
+  <form [formGroup]="formImporti">
+    <div class="table table-hover table-sm">
+      <div class="row no-gutters text-secondary font-weight-bold border-bottom">
+        <div class="col-6 align-self-center px-0 pb-2">{{ 'PBA.INTERVENTION.FIELD.RESOURCE_TYPE' | translate }}</div>
+        <div class="col-6 px-0 no-gutters row">
+          <div class="col-12 px-0 col-lg-3 pb-2 border-bottom">{{ 'PBA.INTERVENTION.FIELD.YEAR.FIRST' | translate }}
+          </div>
+          <div class="col-12 px-0 col-lg-3 pb-2 border-bottom">{{ 'PBA.INTERVENTION.FIELD.YEAR.SECOND' | translate }}
+          </div>
+          <div class="col-12 px-0 col-lg-3 pb-2 border-bottom">{{ 'PBA.INTERVENTION.FIELD.YEAR.FOLLOWING' | translate }}
+          </div>
+          <div class="col-12 px-0 col-lg-3 pb-2 border-bottom">{{ 'APP.TOTAL' | translate }}</div>
+        </div>
+      </div>
+
+      <div class="row no-gutters px-0 col-12" formArrayName="righeImporti">
+        <div class="row px-0 col-12 border-bottom" *ngFor="let riga of righeImporti.controls; let indexRiga = index;"
+          [formGroupName]="indexRiga">
+          <div class="col-6 align-self-center mr-3 pb-1" formGroupName="risorsa">
+            <input type="hidden" class="form-control" formControlName="descrizione">
+            <input type="hidden" class="form-control" formControlName="tagTrasmissione">
+            {{ asFormGroup(riga.get('risorsa')).controls['descrizione'].value }}
+          </div>
+          <div class="col-6 pb-1 row">
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="importoAnnoPrimo"
+                (focusout)="aggiornaTotaleRiga(indexRiga)" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}"
+                [ngClass]="{'is-invalid': !riga.get('importoAnnoPrimo').valid}" cpassIsInvalidClass>
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="importoAnnoSecondo"
+                (focusout)="aggiornaTotaleRiga(indexRiga)"
+                [ngClass]="{'is-invalid': !riga.get('importoAnnoSecondo').valid}" cpassIsInvalidClass currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="importoAnniSuccessivi"
+                (focusout)="aggiornaTotaleRiga(indexRiga)"
+                [ngClass]="{'is-invalid': !riga.get('importoAnniSuccessivi').valid}" cpassIsInvalidClass currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="totaleRiga" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+
+        <div class="row no-gutters px-0 col-12 border-bottom" *ngIf="!formImporti.valid" class="text-danger">
+          <div class="col-6 offset-6">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+        </div>
+      </div>
+
+      <div class="row no-gutters px-0 col-12">
+
+        <!-- totali -->
+        <div class="row px-0 col-12 border-bottom">
+          <div class="col-6 align-self-center mr-3 pb-1">
+            {{ 'PBA.INTERVENTION.FIELD.TOTALS' | translate }}
+          </div>
+          <div class="col-6 pb-1 row">
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="totaleAnnoPrimo"
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="totaleAnnoSecondo"
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="totaleAnniSuccessivi"
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="totale" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+
+        <!-- spese -->
+        <div class="row px-0 col-12 border-bottom">
+          <div class="col-6 align-self-center mr-3 pb-1">
+            {{ 'PBA.INTERVENTION.FIELD.EXPENSES_ALREADY_INCURRED' | translate }}
+          </div>
+          <div class="col-6 pb-1 row">
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              &nbsp;
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              &nbsp;
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              &nbsp;
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="speseGiaSostenute"
+                (focusout)="aggiornaTotali()" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+
+        <!-- totale generale -->
+        <div class="row px-0 col-12 border-bottom">
+          <div class="col-6 align-self-center mr-3 pb-1">
+            {{ 'PBA.INTERVENTION.FIELD.TOTAL_GRAND' | translate }}
+          </div>
+          <div class="col-6 pb-1 row">
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              &nbsp;
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              &nbsp;
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              &nbsp;
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="totaleGenerale"
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+
+        <!-- iva -->
+        <div class="row px-0 col-12 border-bottom">
+          <div class="col-6 align-self-center mr-3 pb-1">
+            {{ 'PBA.INTERVENTION.FIELD.TOTALS_VAT' | translate }}
+          </div>
+          <div class="col-6 pb-1 row">
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="ivaAnnoPrimo"
+                (focusout)="aggiornaTotali()" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+              <div *ngIf="formErrors.ivaAnnoPrimo" class="text-danger">
+                <div>{{ formErrors.ivaAnnoPrimo }}</div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="ivaAnnoSecondo"
+                (focusout)="aggiornaTotali()" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+              <div *ngIf="formErrors.ivaAnnoSecondo" class="text-danger">
+                <div>{{ formErrors.ivaAnnoSecondo }}</div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="ivaAnniSuccessivi"
+                (focusout)="aggiornaTotali()" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+              <div *ngIf="formErrors.ivaAnniSuccessivi" class="text-danger">
+                <div>{{ formErrors.ivaAnniSuccessivi }}</div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="ivaTotale" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+
+        <!-- netto -->
+        <div class="row px-0 col-12 border-bottom">
+          <div class="col-6 align-self-center mr-3 pb-1">
+            {{ 'PBA.INTERVENTION.FIELD.TOTALS_NET' | translate }}
+          </div>
+          <div class="col-6 pb-1 row">
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="nettoAnnoPrimo" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="nettoAnnoSecondo" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="nettoAnniSuccessivi" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+            <div class="col-12 col-lg-3 px-0 border-bottom">
+              <input type="text" class="form-control text-right" formControlName="nettoTotale" currencyMask
+                [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row no-gutters font-weight-bold col-12">
+        <!-- <div class="row px-0 col-12 border-bottom">
+          <div class="px-0 col-6 mr-3 d-lg-none text-right align-self-center">
+            {{ 'APP.TOTAL' | translate }}
+          </div>
+          <div class="col-6 offset-lg-6 pb-1 px-0 row">
+            <div class="d-none d-lg-block col-lg-9 text-right align-self-center">{{ 'APP.TOTAL' | translate }}</div>
+            <div class="col-lg-3 px-0">
+              <input type="text" class="form-control text-right font-weight-bold" formControlName="totaleRigheImporti"
+              currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            </div>
+          </div>
+        </div>
+        -->
+
+        <div class="row px-0 col-12 border-bottom">
+          <div class="px-0 col-6 mr-3 d-lg-none text-right align-self-center">
+            {{ 'PBA.INTERVENTION.FIELD.SPECIFY' | translate }}
+          </div>
+          <div class="col-6 offset-lg-6 pb-1 px-0 row">
+            <div class="d-none d-lg-block col-lg-6 text-right align-self-center">
+              {{ 'PBA.INTERVENTION.FIELD.SPECIFY' | translate }}</div>
+            <div class="col-lg-6 px-0">
+              <input type="text" class="form-control text-left" formControlName="specificareAltro">
+              <div *ngIf="formErrors.specificareAltro" class="text-danger">
+                <div>{{ formErrors.specificareAltro }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <table class="table table-hover table-sm table-responsive table-fixed">
+      <thead>
+        <tr class="text-secondary">
+          <th scope="col" class="w-100 border-top-0">{{ 'PBA.INTERVENTION.FIELD.RESOURCE_PRIVATE_CAPITAL' | translate }}
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let risorsaItem of risorseCapitalePrivato;">
+          <td class="border-0 w-100">
+            <input type="radio" value="{{ risorsaItem.id }}" formControlName="risorsaIdCapitalePrivato">
+            <!-- disabled [ngClass]="{'is-invalid': !f.risorsaIdCapitalePrivato.valid}" cpassIsInvalidClass -->
+            {{ risorsaItem.descrizione }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </form>
+</div>
+
+<div class="container mb-3">
+  <div class="row mt-3">
+    <div class="col">
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        (click)="ngbTabset.select('tabAltriDati')">{{ 'APP.BACK' | translate }}</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm" [disabled]="controlDisabled"
+        (click)="onReset()">{{ 'APP.RESET' | translate }}</button>
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-primary ml-auto" cpassPreventDoubleClick (debounceClick)="onClickSalva()"
+        [disabled]="saveBtnDisabled || bErrors">{{ 'APP.SAVE' | translate }}</button>
+    </div>
+    <div class="col-auto" *ngIf="!intervento.id">
+      <button type="button" class="btn btn-primary ml-auto" [disabled]="!this.formImporti.valid || !(this.f.totale.value > 0)" cpassPreventDoubleClick
+        (debounceClick)="onClickSalvaEInserisci()">{{ 'APP.SAVE_INSERT' | translate }}</button>
+    </div>
+  </div>
+</div>

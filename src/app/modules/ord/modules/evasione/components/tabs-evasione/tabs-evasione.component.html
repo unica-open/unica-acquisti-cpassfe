@@ -1,0 +1,138 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/', 'ord']">{{ 'SIDEBAR.ORDINI.EVASION.TITLE' | translate }}</a></li>
+        <li class="breadcrumb-item active">{{ title | translate }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col">
+      <button id="btnModifica" #btnModifica type="button" class="btn btn-outline-info" (click)="onClickModifica()" >{{ 'APP.MODIFY' | translate }}</button>
+      <button id="btnAnnulla" #btnAnnulla type="button" class="btn btn-outline-info" (click)="onAnnullaTestataEvasione()">{{ 'APP.CANCEL' | translate }}</button>
+    </div>
+    <div class="col text-right">
+      <button id="btnAutorizza" #btnAutorizza type="button" class="btn btn-outline-info" (click)="onClickAutorizza()" >{{ 'APP.AUTHORIZE' | translate }}</button>
+      <button type="button" class="btn btn-outline-info" [disabled]="btSendContDisabled" (click)="onClickSendCont()" >{{ 'APP.SEND_TO_CONT' | translate }}</button>
+    </div>
+</div>
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons"></div>
+<ngb-tabset #ts="ngbTabset">
+
+  <ngb-tab id="tabTestataEvasione" *ngIf="testataEvasione" [disabled]="disableTabEvasione">
+    <ng-template ngbTabTitle>
+      <span [ngClass]="{'text-success tabValido': !disableTabEvasione}">{{ 'ORD.EVASIONE.TAB_NAME' | translate }}</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+
+      <cpass-form-evasione
+        [testataEvasione]="testataEvasione"
+        [listaUffici]="listaUffici"
+        [listaOrdiniAssociati]="listaOrdiniAssociati"
+        (clickBackEmitter)="onBackClicked($event)">
+      </cpass-form-evasione>
+
+    </ng-template>
+  </ngb-tab>
+  
+  <ngb-tab id="tabDettaglio"  *ngIf="testataEvasione" [disabled]="disableDettaglio" >
+    <ng-template ngbTabTitle>
+      <span [ngClass]="{'text-success tabValido': !disableDettaglio }">{{'ORD.EVASIONE.DETAIL.TAB_NAME' | translate }}</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+
+     <cpass-dettaglio-evasione
+      [testataEvasione]="testataEvasione"
+      [listaCausaliSospensione]="listaCausaliSospensione"
+      (refreshEvasioneEmitter)="refreshTestataEvasione()"
+      (clickBackEmitter)="onBackClicked($event)">
+    </cpass-dettaglio-evasione>
+
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab *ngIf="testataEvasione" id="tabRiepilogo" [disabled]="disableRiepilogo" >
+    <ng-template ngbTabTitle>
+      <span [ngClass]="{'text-success tabValido': !disableRiepilogo }">{{'ORD.EVASIONE.RIEPILOGO.TAB_NAME' | translate }}</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+
+      <cpass-form-riepilogo-fattura
+        [testataEvasione]="testataEvasione"
+        [listaOrdiniAssociati]="listaOrdiniAssociati"
+        (clickBackEmitter)="onBackClicked($event)"
+      ></cpass-form-riepilogo-fattura>
+
+    </ng-template>
+  </ngb-tab>
+
+</ngb-tabset>
+
+<ng-template #modalAnnullaEvasione let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ msgAnnullaEvasione}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalAutorizzaEvasione let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0107' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalWarning let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ msgWarning | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalSendContEvasione let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0109' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>

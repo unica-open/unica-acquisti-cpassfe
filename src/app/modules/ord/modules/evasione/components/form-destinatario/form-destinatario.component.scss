@@ -1,0 +1,15 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+.right-btns {
+    margin-left: 2px;
+  }
+  
+  #riga_accordion ::ng-deep .card .card-header {
+    background-color: #03a9f4 !important;
+    padding: 0;
+  }
+  #riga_accordion ::ng-deep .card .card-header .btn-link {
+    color: white;
+  }

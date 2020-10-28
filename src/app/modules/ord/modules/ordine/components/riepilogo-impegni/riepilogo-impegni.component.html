@@ -1,0 +1,112 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<br>
+<ng-template [ngIf]="load">
+  <div>
+  <div class="row">
+    <div class="form-group col-sm-2 text-left">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6 class="bold" >{{ 'ORD.RIEPILOGOIMP.FIELD.TOTALEORDINIIVA' | translate }}</h6>
+    </div>
+    <div class="form-group col-sm-2 text-right">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6>{{riepilogoImpegni.totaleOrdineConIVA | number : '1.2-2' : locale}}</h6>
+    </div>
+    <div class="form-group col-sm-8 ">
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-2 text-left">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6  >{{ 'ORD.RIEPILOGOIMP.FIELD.TOTALEORDININOIVA' | translate }}</h6>
+    </div>
+    <div class="form-group col-sm-2 text-right">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6  >{{riepilogoImpegni.totaleOrdineNoIVA | number : '1.2-2' : locale}}</h6>
+    </div>
+    <div class="form-group col-sm-8 ">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-2 text-left">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6>{{ 'ORD.RIEPILOGOIMP.FIELD.TOTALEIMPEGNATO' | translate }}</h6>
+    </div>
+    <div class="form-group col-sm-2 text-right">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6  >{{riepilogoImpegni.totaleImpegnato | number : '1.2-2' : locale}}</h6>
+    </div>
+
+    <div *ngIf="!riepilogoImpegni.totaliCoerenti" class="form-group col-sm-8 text-danger ">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <h6 class="text-danger" >{{ 'ERROR.TOTALI.IMPORTI.IMPEGNO.TESTATA.NONCOERENTE ' | translate }}</h6>
+    </div>
+    <div *ngIf="riepilogoImpegni.totaliCoerenti" class="form-group col-sm-7">
+      &nbsp;
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-12 text-center">
+      <table class="table table-bordered table-striped table-hover table-sortable" id="infoTable">
+        <thead>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.ANNOES' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.CAPITOLO' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.ARTICOLO' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.ANNO_IMP' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.NUMERO_IMP' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.ANNO_SUB' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.NUMERO_SUB' | translate }}</th>
+          <th >{{ 'ORD.RIEPILOGOIMP.COL.IMPORTO' | translate }}</th>
+
+        </thead>
+          <tbody *ngIf="numRighe > 0;">
+            <tr *ngFor="let el of riepilogoImpegni.impegniOrdine" >
+              <td>{{el.impegnoAnnoEsercizio}}</td>
+              <td>{{el.numeroCapitolo}}</td>
+              <td>{{el.numeroArticolo}}</td>
+              <td>{{el.impegnoAnno}}</td>
+              <td>{{el.impegnoNumero}}</td>
+              <td>{{el.subimpegnoAnno}}</td>
+              <td>{{el.subimpegnoNumero}}</td>
+
+              <td *ngIf="el.subimpegnoImporto==null || el.subimpegnoImporto==0" >{{el.importoImpegno | number : '1.2-2' : locale}}</td>
+
+              <td *ngIf="el.subimpegnoImporto!=null && el.subimpegnoImporto>0">  {{el.subimpegnoImporto | number : '1.2-2' : locale}}</td>
+
+            </tr>
+          </tbody>
+          <tbody>
+            <tr *ngIf="numRighe == 0;">
+              <td [colSpan]="8">{{'APP.NO_DATA_FOUND' | translate}}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+</div>
+</ng-template>
+
+<div class="row">
+  <div class="col">
+    <!-- <cpass-back-button></cpass-back-button> -->
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+  </div>
+</div>
+
+
+<!--
+<p>{{ riepilogoImpegni | json}}</p>
+-->

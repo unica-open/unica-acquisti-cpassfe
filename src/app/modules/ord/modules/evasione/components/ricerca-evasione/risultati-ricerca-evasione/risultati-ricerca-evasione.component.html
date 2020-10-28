@@ -1,0 +1,49 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">{{ 'APP.SEARCH_RESULT' | translate }}</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col">
+    <button type="button" class="btn btn-outline-info"  (click)="onClickNuovaEvasione()">{{ 'APP.INSERT' | translate }}</button>
+  </div>
+  <!--<div class="col-auto">
+    <button type="button" class="btn btn-outline-info" [disabled]="!selectedEvasione">{{ 'APP.EXAMINE' | translate }}</button>
+  </div>-->
+</div>
+<div class="mt-5 scrollbar-table scrollbar-primary">
+  <cpass-paginated-table [pagedResponse]="pagedResponse" (changePaginationData)="onChangePaginationData($event)" #pagedTable [columnNumber]="10" [limit]="currentPaginationData.limit">
+    <ng-template cpassPaginationHead>
+      <tr>
+        <!--<th scope="col">Sel.</th>-->
+        <th cpassSortable="annoEvasione" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.YEAR.LONG' | translate }}</th>
+        <th cpassSortable="numeroEvasione" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.NUMBER.LONG' | translate }}</th>
+        <th cpassSortable="dataInserimento" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.DATE_EMISSION' | translate }}</th>
+        <th cpassSortable="fornitore" (sort)="pagedTable.onSort($event)">{{'ORD.EVASIONE.SEARCH.FIELD.SUPPLIER.TITLE' | translate}}</th>
+        <!-- <th cpassSortable="provvedimento" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.PROVISION.TITLE.SHORT' | translate}}</th> -->
+        <th cpassSortable="descrizione" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.DESCRIPTION' | translate }}</th>
+        <th cpassSortable="stato" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.STATE.SHORT' | translate }}</th>
+        <th cpassSortable="tipoEvasione" (sort)="pagedTable.onSort($event)">{{ 'ORD.EVASIONE.SEARCH.FIELD.EVASION_TYPE.SHORT' | translate }}</th>
+        <th cpassSortable="enteCompetente" (sort)="pagedTable.onSort($event)">{{'ORD.EVASIONE.SEARCH.FIELD.SECTOR.ISSUER.TITLE' | translate}}</th>
+      </tr>
+    </ng-template>
+    <ng-template cpassPaginationBody let-el>
+      <tr class="clickable" (click)="consultaEvasione(el.id)">
+        <!--<td><input type="radio" name="ordine" (click)="onEvasioneSelect(el)" [checked]="selectedEvasione?.id === el.id"></td>-->
+        <td>{{ el.evasioneAnno}}</td>
+        <td>{{ el.evasioneNumero}}</td>
+        <td>{{ el.dataInserimento | date: 'dd/MM/yyyy'}} </td>
+        <td>{{ el.fornitore?.codice +' - '+ el.fornitore?.ragioneSociale}}</td>
+        <!-- <td>{{ el.provvedimento?.anno +' - '+ el.provvedimento?.numero}}</td> -->
+        <td><span class="link-like">{{ el.descrizione}}</span></td>
+        <td>{{ el.stato?.descrizione }}</td>
+        <td>{{ el.tipoEvasione?.tipoEvasioneDescrizione }}</td>
+        <td>{{ el.settore?.codice +' - '+ el.settore?.descrizione  }}</td>
+      </tr>
+    </ng-template>
+  </cpass-paginated-table>
+</div>

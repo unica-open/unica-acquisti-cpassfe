@@ -1,0 +1,87 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/', 'pba']">{{ 'SIDEBAR.PBA.TITLE' | translate }}</a></li>
+        <li class="breadcrumb-item active">{{ title | translate }}</li>
+    </ol>
+</nav>
+
+<form [formGroup]="formRicerca" (ngSubmit)="onSubmitTrasmetti()">
+    <div class="row">
+        <div class="form-group col-12 col-sm-6">
+
+            <ng-select class="form-control" [items]="elencoProgrammi" [virtualScroll]="true" bindLabel="anno"
+                formControlName="programma" id="programmaInput">
+                <!-- [compareWith]="compareById" -->
+                <ng-template ng-label-tmp let-item="item">
+                    <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione +' - '+ item.stato.descrizione}}</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                    <span
+                        title="{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione  +' - '+ item.stato.descrizione}}">{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione  +' - '+ item.stato.descrizione}}</span>
+                </ng-template>
+            </ng-select>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="programmaInput" class="float-label">{{ 'PBA.PROGRAM.FIELD.PROGRAMMA' | translate }}</label>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-8 radio-inline">
+            {{ 'PBA.PROGRAM.FIELD.TRANSMISSION.SENDING_METHOD' | translate }}
+        </div>
+        <div class="form-group col-8 radio-inline">
+            <label>
+                <input type="radio" value="1" formControlName="modalitaInvio" > <!-- checked="checked" -->
+                {{ 'PBA.PROGRAM.FIELD.TRANSMISSION.CONTROL' | translate }}
+            </label>
+        </div>
+        <div class="form-group col-8 radio-inline">
+            <label>
+                <input type="radio" value="2" formControlName="modalitaInvio">
+                {{ 'PBA.PROGRAM.FIELD.TRANSMISSION.PUBLICATION' | translate }}
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+          <cpass-back-button></cpass-back-button>
+        </div>
+        <div class="col-auto">
+            <!--
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="submit()">TEST submit</button>
+                -->
+            <button type="submit" class="btn btn-primary ml-auto">
+                {{ 'APP.SEND_MIT' | translate }}
+            </button>
+        </div>
+    </div>
+</form>
+
+<ng-template #modalApprova let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-approva-title">{{ 'APP.SEND_MIT' | translate }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ngb-alert [type]="'info'" [dismissible]="false">{{ 'MESSAGES.PBA-PGR-A-0046' | translate }}</ngb-alert>
+      <!--  {{ 'PBA.PROGRAM.OPERATION.APPROVE.TEXT' | translate}} -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+    </div>
+  </ng-template>
+
+<!--
+    <p>trasmissione-programmi works!</p>
+-->

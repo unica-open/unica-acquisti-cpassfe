@@ -1,0 +1,38 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="row bg-grigio">
+  <div class="col-6 mt-1">
+    <div class="card bg-light">
+      <div class="card-body">
+        <div class="card-header">
+          <h5>{{ 'SIDEBAR.ORDINI.ORDER.TITLE' | translate}}</h5>
+        </div>
+        <div class="card-text">
+          <cpass-ricerca-puntuale-ordine></cpass-ricerca-puntuale-ordine>
+          <hr>
+          <p><a [routerLink]="['/ord', 'ordine', 'ricerca']" class="btn btn-secondary w-100">{{ 'SIDEBAR.ORDINI.ORDER.SEARCH' | translate }}</a></p>
+          <p><a [routerLink]="['/ord', 'ordine']" *ngIf="hasPermesso('INS_ORDINE')" class="btn w-100 btn-secondary ">{{ 'SIDEBAR.ORDINI.ORDER.INSERT' | translate }}</a></p>
+          <!-- <p><a href="" class="btn w-100 btn-secondary">{{ 'SIDEBAR.ORDINI.ORDER.PRINT_EXCEL' | translate }}</a></p> -->
+          <!-- <p><a href="" class="btn w-100 btn-secondary">{{ 'SIDEBAR.ORDINI.ORDER.LINK_NSO' | translate }}</a></p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 mt-1">
+    <div class="card bg-light">
+      <div class="card-body">
+        <div class="card-header">
+          <h5>{{ 'SIDEBAR.ORDINI.EVASION.TITLE' | translate }}</h5>
+        </div>
+        <div class="card-text">
+          <cpass-ricerca-puntuale-evasione></cpass-ricerca-puntuale-evasione>
+        <hr>
+        <p><button type="button" class="btn w-100 btn-secondary " [routerLink]="['/ord', 'evasione', 'ricerca']">{{ 'SIDEBAR.ORDINI.EVASION.SEARCH' | translate }}</button>
+        <p><button type="button" class="btn w-100 btn-secondary " *ngIf="hasPermesso('INS_EVASIONE')" (click)="onClickNuovaEvasione()">{{ 'SIDEBAR.ORDINI.EVASION.INSERT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

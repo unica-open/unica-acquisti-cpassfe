@@ -1,0 +1,31 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form (submit)="onSubmit()" [formGroup]="formSearchOrdine">
+    <div class="row">
+        <div class="form-group col-12 col-xl-9">
+            <input type="text" class="form-control" id="annoOrdine" formControlName="annoOrdine" cpassHasValueClass
+                cpassDigitOnly maxlength="4">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="annoInput">{{ 'ORD.ORDER.FIELD.PROVISION.YEAR' | translate }}</label>
+        </div>
+        <div class="form-group col-12 col-xl-3 icon-container">
+            <i clickable (click)="formSearchOrdine.reset()" class="clean-fields-icon fas fa-backspace fa-2x" cpassTooltip="APP.CLEAN_SEARCH_FIELDS"></i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-12 col-xl-9">
+            <input type="text" class="form-control" id="numeroOrdine" formControlName="numeroOrdine" cpassHasValueClass
+                cpassDigitOnly>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="numeroOrdine">{{ 'ORD.ORDER.FIELD.PROVISION.NUMBER' | translate }}</label>
+        </div>
+        <div class="form-group col-12 col-xl-3">
+            <button type="submit" class="btn btn-raised btn-default col"
+                [disabled]="!checkSearchField()">{{ 'APP.SEARCH' | translate }}</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,504 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="showForm">
+      <div class="row">
+          <div class="col"></div>
+          <div class="col-auto">
+              <button type="submit" class="btn btn-primary ml-auto btn-lg" [disabled]="!form.valid">{{ 'ORD.EVASIONE.SEARCH.OPERATION.FIND_EVASION' | translate }}</button>
+          </div>
+      </div>
+      <div class="row">
+          <h6 class="form-group col-sm-2">{{ 'ORD.EVASIONE.SEARCH.FIELD.EVASION.FROM' | translate }}</h6>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="evasioneAnnoDaInput" cpassHasValueClass formControlName="evasioneAnnoDa" cpassDigitOnly
+              (change)="onChangeEvasioneAnnoDa()" maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="evasioneAnnoDaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.YEAR.SHORT' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="evasioneNumeroDaInput" cpassHasValueClass formControlName="evasioneNumeroDa" cpassDigitOnly
+              (change)="onChangeEvasioneNumeroDa()">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="evasioneNumeroDaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.NUMBER.SHORT' | translate }}</label>
+          </div>
+          <h6 class="form-group col-sm-2">{{ 'ORD.EVASIONE.SEARCH.FIELD.EVASION.TO' | translate }}</h6>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="evasioneAnnoAInput" cpassHasValueClass formControlName="evasioneAnnoA" cpassDigitOnly maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="evasioneAnnoAInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.YEAR.SHORT' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="evasioneNumeroAInput" cpassHasValueClass formControlName="evasioneNumeroA" cpassDigitOnly>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="evasioneNumeroAInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.NUMBER.SHORT' | translate }}</label>
+          </div>
+      </div>
+      <div class="row">
+          <h6 class="form-group col-sm-2">Da</h6>
+          <div class="form-group col-sm-2">
+              <div class="input-group">
+                  <input type="text" class="form-control" id="evasioneDataInserimentoDaInput" formControlName="evasioneDataInserimentoDa"
+                      cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                      #d_daDataInserimentoEvasione="ngbDatepicker"  (dateSelect)="triggerUiUpdate()">
+                  <div class="input-group-append">
+                      <i class="far fa-calendar-alt" (click)="d_daDataInserimentoEvasione.toggle()"></i>
+                  </div>
+                  <span class="form-highlight"></span>
+                  <span class="form-bar"></span>
+                  <label class="float-label"
+                      for="evasioneDataInserimentoDaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.DATE_EMISSION' | translate }}</label>
+              </div>
+          </div>
+          <h6 class="form-group col-sm-2">A </h6>
+          <div class="form-group col-sm-2">
+              <div class="input-group">
+                  <input type="text" class="form-control" id="evasioneDataInserimentoAInput" formControlName="evasioneDataInserimentoA"
+                      cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                      #aDataInserimentoEvasione="ngbDatepicker"  (dateSelect)="triggerUiUpdate()">
+                  <div class="input-group-append">
+                      <i class="far fa-calendar-alt" (click)="aDataInserimentoEvasione.toggle()"></i>
+                  </div>
+                  <span class="form-highlight"></span>
+                  <span class="form-bar"></span>
+                  <label class="float-label"
+                      for="evasioneDataInserimentoAInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.DATE_EMISSION' | translate }}</label>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <h6 class="form-group col-sm-2">{{ 'ORD.EVASIONE.SEARCH.FIELD.ORDER.FROM' | translate }}</h6>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="ordineAnnoDaInput" cpassHasValueClass formControlName="ordineAnnoDa" cpassDigitOnly
+              (change)="onChangeOrdineAnnoDa()" maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="ordineAnnoDaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.YEAR.SHORT' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="ordineNumeroDaInput" cpassHasValueClass formControlName="ordineNumeroDa" cpassDigitOnly
+              (change)="onChangeOrdineNumeroDa()">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="ordineNumeroDaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.NUMBER.SHORT' | translate }}</label>
+          </div>
+          <h6 class="form-group col-sm-2">{{ 'ORD.EVASIONE.SEARCH.FIELD.ORDER.TO' | translate }}</h6>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="ordineAnnoAInput" cpassHasValueClass formControlName="ordineAnnoA" cpassDigitOnly maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="ordineAnnoAInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.YEAR.SHORT' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="ordineNumeroAInput" cpassHasValueClass formControlName="ordineNumeroA" cpassDigitOnly>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="ordineNumeroAInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.NUMBER.SHORT' | translate }}</label>
+          </div>
+      </div>
+      <div class="row">
+          <h6 class="form-group col-sm-2">Da</h6>
+          <div class="form-group col-sm-2">
+              <div class="input-group">
+                  <input type="text" class="form-control" id="dataInserimentoDaInput" formControlName="ordineDataInserimentoDa"
+                      cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                      #d_daDataInserimentoOrdine="ngbDatepicker"  (dateSelect)="triggerUiUpdate()">
+                  <div class="input-group-append">
+                      <i class="far fa-calendar-alt" (click)="d_daDataInserimentoOrdine.toggle()"></i>
+                  </div>
+                  <span class="form-highlight"></span>
+                  <span class="form-bar"></span>
+                  <label class="float-label"
+                      for="dataInserimentoDaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.DATE_EMISSION' | translate }}</label>
+              </div>
+          </div>
+          <h6 class="form-group col-sm-2">A </h6>
+          <div class="form-group col-sm-2">
+              <div class="input-group">
+                  <input type="text" class="form-control" id="dataInserimentoAInput" formControlName="ordineDataInserimentoA"
+                      cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                      #aDataInserimentoOrdine="ngbDatepicker"  (dateSelect)="triggerUiUpdate()">
+                  <div class="input-group-append">
+                      <i class="far fa-calendar-alt" (click)="aDataInserimentoOrdine.toggle()"></i>
+                  </div>
+                  <span class="form-highlight"></span>
+                  <span class="form-bar"></span>
+                  <label class="float-label"
+                      for="dataInserimentoAInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.DATE_EMISSION' | translate }}</label>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="form-group col-sm-4">
+              <ng-select class="form-control" [items]="elencoTipoEvasione" [virtualScroll]="true"
+                  [searchFn]="searchTipoEvasione" formControlName="tipoEvasione" cpassIsInvalidClass>
+                  <ng-template ng-label-tmp let-item="item">
+                      <span>{{ item.tipoEvasioneCodice + '-' + item.tipoEvasioneDescrizione }}</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                      <span title="{{ item.tipoEvasioneCodice + '-' + item.tipoEvasioneDescrizione }}">
+                          {{ item.tipoEvasioneCodice + '-' + item.tipoEvasioneDescrizione }}
+                      </span>
+                  </ng-template>
+              </ng-select>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label for="tipoOrdineDescrizione"
+                  class="float-label">{{ 'ORD.EVASIONE.SEARCH.FIELD.EVASION_TYPE.LONG' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-4">
+              <ng-select class="form-control" [items]="elencoStato" [virtualScroll]="true"
+                  [searchFn]="searchStato" formControlName="stato" cpassIsInvalidClass>
+                  <ng-template ng-label-tmp let-item="item">
+                      <span>{{ item.codice }}</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                      <span title="{{ item.codice  }}">
+                          {{ item.codice  }}
+                      </span>
+                  </ng-template>
+              </ng-select>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label for="tipoOrdineDescrizione"
+                  class="float-label">{{ 'ORD.EVASIONE.SEARCH.FIELD.STATE.LONG' | translate }}</label>
+          </div>
+      </div>
+      <div class="row" formGroupName="settoreCompetente">
+          <h6 class="form-group col-sm-2">{{'ORD.EVASIONE.SEARCH.FIELD.SECTOR.ISSUER.TITLE' | translate}}</h6>
+          <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass cpassIsInvalidClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codice">{{ 'ORD.EVASIONE.SEARCH.FIELD.SECTOR.CODE' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-6">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.SEARCH.FIELD.SECTOR.DESC' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2 text-right">
+            <button type="button" class="btn btn-info ml-auto" (click)="onClickFindSettore(f.settoreCompetente)">{{ 'APP.SEARCH' | translate }}</button>
+          </div>
+        </div>
+      <div class="row" formGroupName="settoreDestinatario">
+          <!--ORD.ORDER.FIELD.SECTOR.RECIPIENT.TITLE Destinatario -->
+          <h6 class="form-group col-sm-2">{{'ORD.EVASIONE.SEARCH.FIELD.SECTOR.RECIPIENT.TITLE' | translate}}</h6>
+          <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass cpassIsInvalidClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codice">{{ 'ORD.EVASIONE.SEARCH.FIELD.SECTOR.CODE' | translate }}</label>
+            <!-- <div *ngIf="formDestinatario.touched && !formDestinatario.valid && !f.settore.codice?.valid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div> -->
+          </div>
+          <div class="form-group col-sm-6">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.SEARCH.FIELD.SECTOR.DESC' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2 text-right">
+            <button type="button" class="btn btn-info ml-auto" (click)="onClickFindSettore(f.settoreDestinatario)">{{ 'APP.SEARCH' | translate }}</button>
+          </div>
+      </div>
+      <hr>
+      <h5>{{'ORD.EVASIONE.SEARCH.FIELD.SUPPLIER.TITLE' | translate}}</h5>
+      <div class="row" formGroupName="fornitore">
+          <div class="form-group col-sm-4">
+              <input type="text" class="form-control" id="codiceInput" cpassHasValueClass formControlName="codice" (change)="searchFornitoreWrapper()">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="codiceInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.SUPPLIER.CODE' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-4">
+              <input type="text" class="form-control" id="codiceFiscaleInput" cpassHasValueClass formControlName="codiceFiscale" >
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="codiceFiscaleInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.SUPPLIER.CF' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-4">
+              <input type="text" class="form-control" id="partitaIvaInput" cpassHasValueClass formControlName="partitaIva" >
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="partitaIvaInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.SUPPLIER.VAT_NUMBER' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-10">
+              <input type="text" class="form-control" id="ragioneSocialeInput" cpassHasValueClass formControlName="ragioneSociale" >
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="ragioneSocialeInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.SUPPLIER.BUSINESS_NAME' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2 text-right">
+              <button type="button" class="btn btn-info ml-auto" (click)="onClickFindFornitore()">{{ 'APP.SEARCH' | translate }}</button>
+          </div>
+
+      </div>
+      <hr>
+      <h5>{{ 'ORD.EVASIONE.SEARCH.FIELD.PROVISION.TITLE.LONG' | translate}}</h5>
+      <div class="row" formGroupName="provvedimento">
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="annoInput" formControlName="anno" (keydown)="onKeydownProvvedimento()" (change)="onChangeProvvedimento()"
+                  cpassHasValueClass cpassIsInvalidClass cpassDigitOnly maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="annoInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.PROVISION.YEAR' | translate }}</label>
+              <!-- <div *ngIf="f.provvedimento.touched && f.provvedimento.controls.anno?.errors" class="text-danger">
+                  <div *ngIf="!f.provvedimento.controls.anno?.valid && f.provvedimento.controls.anno?.dirty">
+                      {{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+              </div>  -->
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="numeroInput" formControlName="numero" (keydown)="onKeydownProvvedimento()" (change)="onChangeProvvedimento()"
+                 cpassHasValueClass cpassIsInvalidClass >
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="numeroInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.PROVISION.NUMBER' | translate }}</label>
+              <!-- <div *ngIf="f.provvedimento.touched && f.provvedimento.controls.numero?.errors" class="text-danger">
+                  <div *ngIf="!f.provvedimento.controls.numero?.valid && f.provvedimento.controls.numero?.dirty">
+                      {{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+              </div> -->
+          </div>
+
+          <div class="form-group col-sm-3">
+              <input type="text" class="form-control" id="settoreInput" formControlName="settore" cpassHasValueClass>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="settoreInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.PROVISION.SECTOR' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-3">
+              <input type="text" class="form-control" id="descrizioneInput" formControlName="descrizione" cpassHasValueClass>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="descrizioneInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.PROVISION.DESCRIPTION' | translate }}</label>
+          </div>
+
+          <div class="form-group col-sm-2 text-right" >
+              <button type="button" class="btn btn-info ml-auto" (click)="onClickFindProvvedimento()">{{ 'APP.SEARCH' | translate }}</button>
+          </div>
+      </div>
+      <hr>
+      <h5>{{ 'ORD.EVASIONE.SEARCH.FIELD.FINANZ.TITLE' | translate }}</h5>
+      <div class="row">
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="annoEsercizioInput" formControlName="annoEsercizio"
+                  cpassHasValueClass cpassIsInvalidClass cpassDigitOnly maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="annoEsercizioInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.FINANZ.ANNO.ESERCIZIO' | translate }}</label>
+              <!-- <div *ngIf="f.provvedimento.touched && f.provvedimento.controls.anno?.errors" class="text-danger">
+                  <div *ngIf="!f.provvedimento.controls.anno?.valid && f.provvedimento.controls.anno?.dirty">
+                      {{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+              </div>  -->
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="impegnoAnnoInput" formControlName="impegnoAnno"
+                 cpassHasValueClass cpassIsInvalidClass cpassDigitOnly maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="numeroInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.FINANZ.ANNO.IMP' | translate }}</label>
+          </div>
+
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="impegnoNumeroInput" formControlName="impegnoNumero" cpassHasValueClass cpassIsInvalidClass cpassDigitOnly>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="impegnoNumeroInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.FINANZ.NUM.IMP' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="subImpegnoAnnoInput" formControlName="subImpegnoAnno" cpassHasValueClass cpassDigitOnly maxlength="4">
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="subImpegnoAnnoInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.FINANZ.ANNO.SUBIMP' | translate }}</label>
+          </div>
+          <div class="form-group col-sm-2">
+              <input type="text" class="form-control" id="subImpegnoNumeroInput" formControlName="subImpegnoNumero" cpassHasValueClass cpassDigitOnly>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="subImpegnoNumeroInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.FINANZ.NUM.SUBIMP' | translate }}</label>
+          </div>
+
+          <div class="form-group col-sm-2 text-right" >
+              <button type="button" class="btn btn-info ml-auto" (click)="onClickFindImpegno()" [disabled]="disableSearchImpegno()">{{ 'APP.SEARCH' | translate }}</button>
+          </div>
+      </div>
+      <hr>
+      <h5>{{ 'ORD.EVASIONE.SEARCH.FIELD.ODS.TITLE' | translate }}</h5>
+      <div class="row"  formGroupName="ods">
+          <div class="form-group col-sm-5">
+              <input type="text" class="form-control" id="codiceOdsInput" formControlName="codice"
+              cpassHasValueClass>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="codiceOdsInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.ODS.CODICE' | translate }}</label><!--Codice ODS-->
+          </div>
+          <div class="form-group col-sm-5">
+              <input type="text" class="form-control" id="descrizioneOdsInput" formControlName="descrizione"
+              cpassHasValueClass>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="descrizioneOdsInput">{{ 'ORD.EVASIONE.SEARCH.FIELD.ODS.DESCRIZIONE' | translate }}</label><!--Descrizione ODS-->
+          </div>
+          <div class="form-group col-sm-2 text-right" >
+              <button type="button" class="btn btn-info ml-auto" (click)="onCLickFindOds()">{{ 'APP.SEARCH' | translate }}</button>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col">
+              <cpass-back-button></cpass-back-button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickReset()">{{ 'APP.REMOVE_FILTERS' | translate }}</button>
+          </div>
+          <div class="col-auto">
+              <button type="submit" class="btn btn-primary ml-auto btn-lg" [disabled]="!form.valid">{{ 'ORD.EVASIONE.SEARCH.OPERATION.FIND_EVASION' | translate }}</button>
+          </div>
+      </div>
+  </form>
+</div>
+
+  <ng-template #modalSettori let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-settore-title">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TEXT' | translate}}
+        </ngb-alert>
+
+        <form [formGroup]="formModalSettori" *ngIf="modalElencoSettori">
+
+          <table class="table table-hover table-sm table-responsive">
+            <tbody>
+            <tr>
+              <td style="width: 5%;">&nbsp;</td>
+              <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CODE' | translate }}</td>
+              <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.DESC' | translate }}</td>
+              <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.ADDRESS' | translate }}</td>
+              <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CIVICO' | translate }}</td>
+              <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.LOCATION' | translate }}</td>
+              <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.PROV' | translate }}</td>
+              <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CAP' | translate }}</td>
+              <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.PHONE' | translate }}</td>
+              <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SECTOR.ENTE' | translate }}</td>
+            </tr>
+            <tr *ngFor="let modalSettore of modalElencoSettori;">
+              <td class="border-0" >
+                <input type="radio" value="{{ modalSettore.id }}" formControlName="modalSettoreId">
+              </td>
+              <td class="border-0" >{{ modalSettore.codice }}</td>
+              <td class="border-0" >{{ modalSettore.descrizione }}</td>
+              <td class="border-0" >{{ modalSettore.indirizzo }}</td>
+              <td class="border-0" >{{ modalSettore.numCivico }}</td>
+              <td class="border-0" >{{ modalSettore.localita }}</td>
+              <td class="border-0" >{{ modalSettore.provincia }}</td>
+              <td class="border-0" >{{ modalSettore.cap }} </td>
+              <td class="border-0" >{{ modalSettore.telefono }}</td>
+              <td class="border-0" >{{ modalSettore.ente.denominazione }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modalSettoriClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+      </div>
+    </ng-template>
+
+  <ng-template #modalFornitori let-modal>
+      <div class="modal-header">
+          <h4 class="modal-title" id="modal-approva-title">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TITLE' | translate }}
+          </h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TEXT' | translate}}
+          </ngb-alert>
+
+          <form [formGroup]="formModalFornitori" *ngIf="modalElencoFornitori">
+
+          <table class="table table-hover table-sm table-responsive">
+              <tbody>
+                  <tr>
+                      <td style="width: 5%;">&nbsp;</td>
+                      <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.CODE' | translate }}</td>
+                      <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.BUSINESS_NAME' | translate }}</td>
+                      <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.CF' | translate }}</td>
+                      <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.VAT_NUMBER' | translate }}</td>
+                      <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.ADDRESS' | translate }}</td>
+                      <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.RESORT' | translate }}</td>
+                      <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.POSTAL_CODE' | translate }}</td>
+                      <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.PROVINCE' | translate }}</td>
+                  </tr>
+                  <tr *ngFor="let modalFornitore of modalElencoFornitori;">
+                      <td class="border-0" >
+                          <input type="radio" value="{{ modalFornitore.id }}" formControlName="modalFornitoreId">
+                      </td>
+                      <td class="border-0" >{{ modalFornitore.codice }}</td>
+                      <td class="border-0" >{{ modalFornitore.ragioneSociale }}</td>
+                      <td class="border-0" >{{ modalFornitore.codiceFiscale }}</td>
+                      <td class="border-0" >{{ modalFornitore.partitaIva }}</td>
+                      <td class="border-0" >{{ modalFornitore.indirizzo }} {{ modalFornitore.numeroCivico }}</td>
+                      <td class="border-0" >{{ modalFornitore.comune }} </td>
+                      <td class="border-0" >{{ modalFornitore.cap }} </td>
+                      <td class="border-0" >{{ modalFornitore.provincia }}</td>
+                  </tr>
+              </tbody>
+          </table>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modalFornitoriClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+          <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+      </div>
+  </ng-template>
+  <ng-template #modalOds let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-ods-title">{{ 'ORD.ORDER.OPERATION.FIND_ODS.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TEXT' | translate}}
+        </ngb-alert>
+
+        <form [formGroup]="formModalOds" *ngIf="modalElencoOds">
+
+          <table class="table table-hover table-sm table-responsive">
+            <tbody>
+            <tr>
+              <td style="width: 10%;">&nbsp;</td>
+              <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.ODS.CODE' | translate }}</td>
+              <td style="width: 60%;">{{ 'ORD.ORDER.FIELD.ODS.DESC' | translate }}</td>
+            </tr>
+            <tr *ngFor="let modalOds of modalElencoOds;">
+              <td class="border-0" >
+                <input type="radio" value="{{ modalOds.id }}" formControlName="modalOdsId">
+              </td>
+              <td class="border-0" >{{ modalOds.codice }}</td>
+              <td class="border-0" >{{ modalOds.descrizione }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modalOdsClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+      </div>
+    </ng-template>

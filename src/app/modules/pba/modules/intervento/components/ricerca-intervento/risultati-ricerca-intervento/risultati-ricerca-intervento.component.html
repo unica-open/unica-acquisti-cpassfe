@@ -1,0 +1,113 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">{{ 'APP.SEARCH_RESULT' | translate }}</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col">
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermesso('INS_INTERVENTO')" [routerLink]="['/pba', 'intervento']">{{ 'APP.INSERT' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [routerLink]="['/pba', 'intervento', selectedInterventi[0]?.cui, selectedInterventi[0]?.programma?.id]" [queryParams]="{controlDisabled: true}" [disabled]="!selectedInterventi || selectedInterventi?.length !== 1">{{ 'APP.EXAMINE' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermessiUtente('MOD_INTERVENTO','MOD_INTERVENTO_ALL')" [routerLink]="['/pba', 'intervento', selectedInterventi[0]?.cui, selectedInterventi[0]?.programma?.id]" [disabled]="!btModificaEnable || selectedInterventi?.length !== 1">{{ 'APP.MODIFY' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermessiUtente('ANN_INTERVENTO_BOZZA', 'ANN_INTERVENTO_APPROV','ANN_INTERVENTO_VISTO','ANN_INTERVENTO_BOZZA_ALL', 'ANN_INTERVENTO_APPROV_ALL','ANN_INTERVENTO_VISTO_ALL')" (click)="onAnnullaInterventi()" [disabled]="!btAnnullaEnable">{{ 'APP.CANCEL' | translate }}</button>
+    <div cpassDisabledTt="{{ 'PBA.INTERVENTION.OPERATION.TRANSFER.TOOLTIP' |translate }}" >
+      <button type="button" class="btn btn-outline-info" *ngIf="hasPermessoUtente('VOLTURA_INTERVENTO_ALL')" (click)="onVolturaInterventi()" [disabled]="!btVolturaEnable">{{ 'PBA.INTERVENTION.OPERATION.TRANSFER.SIMPLE' | translate }}</button></div>
+    <div cpassDisabledTt="{{ 'PBA.INTERVENTION.OPERATION.TRANSFERHIMSELF.TOOLTIP' |translate }}" >
+      <button type="button" class="btn btn-outline-info" *ngIf="hasPermessoUtente('PRENDI_IN_CARICO_INTERVENTO')" (click)="onPrendiInCaricoInterventi()" [disabled]="!btPrendiInCaricoEnable">{{ 'PBA.INTERVENTION.OPERATION.TRANSFERHIMSELF.SIMPLE' | translate }}</button></div>
+
+  </div>
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermessiUtente('VISTA_INTERVENTO','VISTA_INTERVENTO_ALL')" (click)="onVistaInterventi()" [disabled]="!btVistaEnable">{{ 'PBA.INTERVENTION.OPERATION.VISTA.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermessiUtente('RIFIUTA_INTERVENTO_ALL','RIFIUTA_INTERVENTO_SU_GERARCHIA')" (click)="onRifiutaInterventi()" [disabled]="!btRifiutaEnable">{{ 'PBA.INTERVENTION.OPERATION.REJECT.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermessiUtente('VALIDA_INTERVENTO_ALL','VALIDA_INTERVENTO_SU_GERARCHIA')" (click)="onApprovaInterventi()" [disabled]="!btApprovaEnable">{{ 'PBA.INTERVENTION.OPERATION.APPROVE.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" *ngIf="hasPermessiUtente('VISTA_INTERVENTO_ALL','VISTA_INTERVENTO') && hasPermessiUtente('VALIDA_INTERVENTO_ALL','VALIDA_INTERVENTO_SU_GERARCHIA')" (click)="onVistaEValidaInterventi()" [disabled]="!btVistaEValidaEnable">{{ 'PBA.INTERVENTION.OPERATION.VISTAEVALIDA.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-info ml-auto" *ngIf="hasPermesso('STAMPA_INTERVENTO')" (click)="onStampaInterventi('xlsx')"  [disabled]="!btStampaEnable" >{{ 'APP.PRINT' | translate }}</button>
+  </div>
+</div>
+<div class="mt-5 scrollbar-table scrollbar-primary">
+  <cpass-paginated-table [tableSortable]="false" [pagedResponse]="pagedResponse" (changePaginationData)="onChangePaginationData($event)" #pagedTable [columnNumber]="12" [limit]="currentPaginationData.limit">
+    <ng-template cpassPaginationHead>
+      <tr>
+        <th scope="col">Sel.</th>
+        <th cpassSortable="annoProgramma">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.TYPE' | translate }}</th>
+        <th cpassSortable="annoAvvio" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.START_YEAR' | translate }}</th>
+        <th cpassSortable="stato" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.STATE.SHORT' | translate }}</th>
+        <th cpassSortable="priorita" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.PRIORITY' | translate }}</th>
+        <th cpassSortable="cui" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.CUI.SHORT' | translate }}</th>
+        <th cpassSortable="settore" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.SECTOR' | translate }}</th>
+        <th cpassSortable="cup" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.CUP' | translate }}</th>
+        <th cpassSortable="struttura" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.STRUCTURE.TITLE' | translate }}</th>
+        <th cpassSortable="rup" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.RUP.SHORT' | translate }}</th>
+        <th cpassSortable="descrizione" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.DESCRIPTION' | translate }}</th>
+        <th cpassSortable="cpv" (sort)="pagedTable.onSort($event)">{{ 'PBA.INTERVENTION.FIELD.CPV.SHORT' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template cpassPaginationBody let-el>
+      <tr>
+        <td>
+          <!--<input type="radio" name="intervento" (click)="onInterventoSelect(el)" [checked]="selectedIntervento?.id === el.id">-->
+          <input type="checkbox" id="selectIntervento"(click)="toggleSelectedIntervento(el)">
+        </td>
+        <td *ngIf="el.programma?.stato.codice === 'CANCELLATO'" [ngStyle]="{'color': 'red'}">{{ el.programma?.anno + ' / '+(+el.programma?.anno+1)+' vers. '+ el.programma?.versione +' ('+el.programma?.stato.codice+')'}}</td>
+        <td *ngIf="el.programma?.stato.codice !== 'CANCELLATO'">{{ el.programma?.anno + ' / '+(+el.programma?.anno+1)+' vers. '+ el.programma?.versione}}</td>
+        <td>{{ el.annoAvvio }}</td>
+        <td>{{ el.stato?.descrizione }}</td>
+        <td>{{ el.priorita?.descrizione }}</td>
+        <td><button type="button" class="link-like" [routerLink]="['/pba', 'intervento', el?.cui, el?.programma?.id]" [queryParams]="{controlDisabled: true}">{{ el.cui }}</button></td>
+        <td>{{ el.settoreInterventi?.descrizione }}</td>
+        <td>{{ el.cup }}</td>
+        <td>{{ el.settore?.codice }}</td>
+        <td>{{ el.utenteRup?.cognome +' '+el.utenteRup?.nome}}</td>
+        <td>{{ el.descrizioneAcquisto }}</td>
+        <td>{{ el.cpv?.codice }} - {{ el.cpv?.descrizione }}</td>
+      </tr>
+    </ng-template>
+  </cpass-paginated-table>
+</div>
+
+
+<ng-template #modalAnnulla let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ 'PBA.INTERVENTION.OPERATION.CANCEL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'PBA.INTERVENTION.OPERATION.CANCEL.TEXT' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalVoltura let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-voltura-title">{{ 'PBA.INTERVENTION.OPERATION.TRANSFER.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="formModalVoltura">
+    <div class="modal-body">
+      <ngb-alert [type]="'info'" [dismissible]="false">{{ 'PBA.INTERVENTION.OPERATION.TRANSFER.TEXT' | translate}}</ngb-alert>
+        <ng-select class="form-control" [items]="elencoRup" [virtualScroll]="true" bindLabel="codiceFiscale" formControlName="utenteRup" cpassIsInvalidClass>
+          <ng-template ng-label-tmp let-item="item">
+            <span>{{ item.cognome + ' ' + item.nome }}</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+            <span title="{{ item.cognome + ' ' + item.nome }}">{{ item.cognome + ' ' + item.nome }}</span >
+          </ng-template>
+        </ng-select>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.UNDO' | translate }}</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()" [disabled]="!this.formModalVoltura.valid">{{ 'APP.CONFIRM' | translate }}</button>
+    </div>
+  </form>
+</ng-template>

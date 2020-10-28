@@ -1,0 +1,45 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="row bg-grigio">
+  <div class="col-12 col-md-6 mt-1">
+    <div class="card bg-light">
+      <div class="card-body">
+        <div class="card-header">
+          <h5>{{ 'SIDEBAR.PBA.INTERVENTION.TITLE' | translate}}</h5>
+        </div>
+        <div class="card-text">
+          <cpass-ricerca-puntuale-intervento></cpass-ricerca-puntuale-intervento>
+          <hr>
+          <p><a [routerLink]="['/pba', 'intervento', 'ricerca']" class="btn btn-secondary w-100">{{ 'SIDEBAR.PBA.INTERVENTION.SEARCH' | translate }}</a></p >
+          <p *ngIf="hasPermesso('INS_INTERVENTO')"><a [routerLink]="['/pba', 'intervento']" class="btn w-100 btn-secondary ">{{ 'SIDEBAR.PBA.INTERVENTION.INSERT' | translate }}</a></p>
+          <p *ngIf="hasPermesso('STAMPA_INTERVENTO')"><a [routerLink]="['/pba', 'intervento', 'prospetti']" class="btn w-100 btn-secondary">{{ 'SIDEBAR.PBA.INTERVENTION.PRINT_EXCEL' | translate }}</a></p>
+          <p *ngIf="hasPermesso('CARICA_INTERVENTI_ANNI_PREC')"><a [routerLink]="['/pba', 'intervento', 'caricaAnniPrecedenti']" class="btn w-100 btn-secondary">{{ 'SIDEBAR.PBA.INTERVENTION.INSERT_PREVIOUS_YEAR' | translate }}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-6 mt-1">
+    <div class="card bg-light">
+      <div class="card-body">
+        <div class="card-header">
+          <h5>{{ 'SIDEBAR.PBA.PROGRAM.TITLE' | translate }}</h5>
+        </div>
+        <cpass-ricerca-puntuale-programma></cpass-ricerca-puntuale-programma>
+        <hr>
+        <div class="card-text">
+          <p *ngIf="hasPermesso('INS_PROGRAMMA')"><a [routerLink]="['/pba','programma']" class="btn btn-secondary w-100" disabled>{{ 'SIDEBAR.PBA.PROGRAM.INSERT' | translate }}</a></p>
+        </div>
+
+        <div class="card-text">
+          <p *ngIf="hasPermesso('ALIMENTAZIONE_DA_FONTE_ESTERNA')"><a [routerLink]="['/pba/programma/alimentazione-da-fonte-esterna']" class="btn btn-secondary w-100" disabled>{{ 'SIDEBAR.PBA.PROGRAM.UPLOAD' | translate }}</a></p>
+        </div>
+        <div class="card-text">
+          <p *ngIf="hasPermesso('TRASMETTI_PROGRAMMA')"><a [routerLink]="['/pba/programma/trasmissione-programmi']" class="btn btn-secondary w-100" disabled>{{ 'SIDEBAR.PBA.PROGRAM.SEND_MIT' | translate }}</a></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,256 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/', 'pba']">{{ 'SIDEBAR.PBA.TITLE' | translate }}</a></li>
+    <li class="breadcrumb-item active">{{ title | translate }}</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col">
+    <button type="button" class="btn btn-outline-info" [disabled]="!controlDisabled" [routerLink]="['/pba','programma']"
+      *ngIf="hasPermessi('INS_PROGRAMMA')">{{ 'APP.INSERT' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btModificaEnable" (click)="onClickModifica()"
+      *ngIf="hasPermessi('MOD_PROGRAMMA')">{{ 'APP.MODIFY' | translate }}</button>
+    <button type="button" class="btn btn-outline-info" [disabled]="!btAnnullaEnable" (click)="onClickAnnulla()"
+      *ngIf="hasPermessi('ANN_PROGRAMMA_BOZZA', 'ANN_PROGRAMMA_APPROV')">{{ 'APP.CANCEL' | translate }}</button>
+  </div>
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-success ml-auto" [disabled]="!btConfermaEnable"
+      (click)="onClickConferma()" >{{ 'PBA.PROGRAM.OPERATION.CONFIRM.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-success ml-auto" [disabled]="!btRiportaInBozzaEnable"
+      (click)="onClickRiportaInBozza()" >{{ 'PBA.PROGRAM.OPERATION.BACK_TO_DRAFT.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-success ml-auto" [disabled]="!btCopiaEnable"
+      (click)="onClickCopia()" >{{ 'PBA.PROGRAM.OPERATION.COPY.SIMPLE' | translate }}</button>
+    <button type="button" class="btn btn-outline-success ml-auto" [disabled]="!btElaborazioniEnable"
+      (click)="onClickElaborazioni()" >{{ 'PBA.PROGRAM.OPERATION.ELABORATION.SIMPLE' | translate }}</button>
+  </div>
+</div>
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons"></div>
+<ngb-tabset #ts="ngbTabset">
+  <ngb-tab id="tabDatiGenerali">
+    <ng-template ngbTabTitle>
+      <span>{{ 'PBA.INTERVENTION.FIELD.GENERAL_DATA' | translate }}</span>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <form [formGroup]="formProgramma">
+        <div class="row">
+          <div class="form-group col-12 col-sm-3 col-lg-2">
+            <input type="text" class="form-control" id="primaAnnualita" formControlName="anno" cpassHasValueClass cpassIsInvalidClass cpassDigitOnly maxlength="4" (change)="onChangeAnno()" >
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="primaAnnualita">{{ 'PBA.PROGRAM.FIELD.FIRST_YEAR' | translate }}</label>
+            <div *ngIf="f.anno.touched && f.anno.errors" class="text-danger">
+              <div *ngIf="f.anno.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+              <div *ngIf="f.anno.errors.primaAnnualitaValidate">{{ 'ERROR.FIELD.YEAR.EXACT_RANGE' | translate:{min: this.annoCorrente, max: this.annoCorrente + 1} }}</div>
+            </div>
+          </div>
+          <div class="form-group col-12 col-sm-3 col-lg-2">
+            <input type="text" class="form-control" id="versione" formControlName="versione" cpassHasValueClass >
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="versione">{{ 'PBA.PROGRAM.FIELD.VERSION' | translate }}</label>
+          </div>
+
+          <div class="form-group col-12 col-sm-6 col-lg-4" formGroupName="utenteReferente">
+            <input type="text" class="form-control has-value" id="referenteProgramma"
+                 disabled
+                 value="{{ formProgramma.get('utenteReferente.cognome').value + ' ' + formProgramma.get('utenteReferente.nome').value}}"
+                 >
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="referenteProgramma">{{ 'PBA.PROGRAM.FIELD.REFERENT' | translate }}</label>
+          </div>
+          <div class="form-group col-12 col-lg-4" formGroupName="stato">
+            <input type="text" class="form-control" id="stato" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="stato">{{ 'PBA.PROGRAM.FIELD.STATE.LONG' | translate }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-12">
+            <textarea class="form-control" rows="2" id="descrizione" formControlName="descrizione" cpassHasValueClass cpassIsInvalidClass
+            (keypress)="onKeyPressDescrizione()"
+            ></textarea>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'PBA.PROGRAM.FIELD.DESCRIPTION' | translate }}</label>
+            <div *ngIf="f.descrizione.touched && f.descrizione.errors" class="text-danger">
+              <div *ngIf="f.descrizione.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-12">Determina di pubblicazione</div>
+        </div>
+        <div class="row">
+          <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+            <input type="text" class="form-control" id="numeroProvvedimento" formControlName="numeroProvvedimento" cpassHasValueClass cpassDigitOnly>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="numeroProvvedimento">{{ 'PBA.PROGRAM.FIELD.MEASURE_NUMBER' | translate }}</label>
+            <div *ngIf="f.numeroProvvedimento.touched && f.numeroProvvedimento.errors" class="text-danger">
+              <div *ngIf="!f.numeroProvvedimento.valid && f.numeroProvvedimento.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+            </div>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-md-4 col-lg-2">
+            <div class="input-group">
+              <input type="text" class="form-control" id="dataProvvedimento" formControlName="dataProvvedimento" cpassHasValueClass
+              maxlength="10" cpassIsInvalidClass ngbDatepicker #d="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+              <div class="input-group-append">
+                  <i class="far fa-calendar-alt" (click)="d.toggle()"></i>
+              </div>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="dataProvvedimento">{{ 'PBA.PROGRAM.FIELD.MEASURE_DATE' | translate }}</label>
+            </div>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-md-4 col-lg-2">
+            <div class="input-group">
+              <input type="text" class="form-control" id="dataPubblicazione" formControlName="dataPubblicazione" cpassHasValueClass
+              maxlength="10" cpassIsInvalidClass ngbDatepicker #d2="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+              <div class="input-group-append">
+                <i class="far fa-calendar-alt" (click)="d2.toggle()"></i>
+              </div>
+              <span class="form-highlight"></span>
+              <span class="form-bar"></span>
+              <label class="float-label" for="dataPubblicazione">{{ 'PBA.PROGRAM.FIELD.PUBBLICATION_DATE' | translate }}</label>
+            </div>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-md-12 col-lg-5">
+            <input type="text" class="form-control" id="url" formControlName="url" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="url">{{ 'PBA.PROGRAM.FIELD.URL' | translate }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-12">
+            <textarea class="form-control" rows="2" id="descrizioneProvvedimento" formControlName="descrizioneProvvedimento" cpassHasValueClass cpassIsInvalidClass></textarea>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizioneProvvedimento">{{ 'PBA.PROGRAM.FIELD.MEASURE_DESCRIPTION' | translate }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickReset()" [disabled]="controlDisabled">{{ 'APP.RESET' | translate }}</button>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary ml-auto" [disabled]="!btSaveEnable" (click)="onClickSave()">{{ 'APP.SAVE' | translate }}</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+
+<ng-template #modalConferma let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-conferma-title">{{ 'PBA.PROGRAM.OPERATION.CONFIRM.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'MESSAGES.PBA-PRG-A-0031' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()" >{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalRiportaInBozza let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-riportaInBozza-title">{{ 'PBA.PROGRAM.OPERATION.BACK_TO_DRAFT.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'MESSAGES.PBA-PRG-A-0067' | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()" >{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalWarning let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-annulla-title">{{ modalTitle | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ modalMsgWarning | translate}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalElaborazioni let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-elaborazioni-title">{{ 'PBA.PROGRAM.OPERATION.ELABORATION.TITLE' | translate }}
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <ngb-alert [type]="'info'" [dismissible]="false">{{ 'PBA.PROGRAM.OPERATION.ELABORATION.DESC' | translate }}
+      </ngb-alert>
+      
+      <table id="nascondiscroll" class="table table-hover table-sm w-100" >
+          <tbody>
+              <tr>
+                  <td style="width: 20%;">{{ 'PBA.PROGRAM.FIELD.ELABORATION.STATE' | translate }}</td>
+                  <td style="width: 20%;">{{ 'PBA.PROGRAM.FIELD.ELABORATION.DATE' | translate }}</td>
+                  <td style="width: 10%;">{{ 'PBA.PROGRAM.FIELD.ELABORATION.RESULT' | translate }}</td>
+                  <td style="width: 10%;">{{ 'PBA.PROGRAM.FIELD.ELABORATION.ID_EXT' | translate }}</td>
+                  <td style="width: 30%;">{{ 'PBA.PROGRAM.FIELD.ELABORATION.PARAMS' | translate }}</td>
+              </tr>
+              
+              <ng-container *ngFor="let elaborazione of modalElencoElaborazioni;">
+                <tr>
+                  <td >{{ elaborazione.stato }}</td>
+                  <td >{{ elaborazione.data | date: 'dd/MM/yyyy' }}</td>
+                  <td >{{ elaborazione.esito }}</td>
+                  <td >{{ elaborazione.idEsterno }}</td>
+                  <td >
+                    <ng-container *ngFor="let param of elaborazione.listaParametri;">
+                      {{ param.chiave }} - {{ (param.valore == '1' ? 'Controllo':'Pubblicazione') }}
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="border-0 text-wrap">
+                    <div class="text-wrap">
+                      <ng-container *ngFor="let msg of elaborazione.listaMessaggi;">
+                        {{ msg.code }} - {{ msg.tipo }} - {{ msg.descrizione }}
+                      </ng-container>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+          </tbody>
+      </table>
+
+  </div>
+
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.CLOSE' | translate }}</button>
+  </div>
+</ng-template>
+

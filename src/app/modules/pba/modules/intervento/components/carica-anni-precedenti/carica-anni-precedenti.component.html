@@ -1,0 +1,13 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/', 'pba']">{{ 'SIDEBAR.PBA.TITLE' | translate }}</a></li>
+    <li class="breadcrumb-item active">{{ 'SIDEBAR.PBA.INTERVENTION.INSERT_PREVIOUS_YEAR' | translate }}</li>
+  </ol>
+</nav>
+<cpass-form-ricerca (datiRicerca)="onCercaIntervento($event)" [statoCombo]="(ricercaEffettuata && pagedResponse.totalElements !==0 ? 'disable':'enable')" [listInterventoSelect]="listInterventoSelect" [pagedResponseSelect]="pagedResponseSelect"></cpass-form-ricerca>
+<cpass-risultati-ricerca *ngIf="ricercaEffettuata" [pagedResponse]="pagedResponse" [currentPaginationData]="currentPaginationData" [listInterventoSelect]="listInterventoSelect" (interventoSelect)="onInterventoSelect($event)" (changePaginationData)="onChangePaginationData($event)"></cpass-risultati-ricerca>

@@ -1,0 +1,114 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+
+<header class="fixed-top" [class.header-hidden]="headerHidden">
+  <nav class="navbar navbar-expand navbar-dark-blue">
+    <div class="container-fluid">
+
+      <!-- Placeholder for future implementations-->
+      <!-- <button class="btn btn-link" (click)="doOpenSidebar()">
+        <i class="fas fa-bars  fa-2x"></i>
+      </button> -->
+
+      <a class="navbar-brand text-light" href="#" target="_blank">
+        <img src="assets/img/unica_header.png" class="d-inline-block align-top" alt="Unica">
+      </a>
+
+
+      <span class="navbar-text pl-1 ml-auto">
+
+
+        <span ngbDropdown class="menu-utente">
+          <a ngbDropdownToggle class="btn btn-link dropdown-toggle">
+            <span class="utente">{{ utente?.nome?.charAt(0) }}{{ utente?.cognome?.charAt(0) }}</span>
+          </a>
+
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button type="button" class="dropdown-item" ngbDropdownItem disabled>{{ utente?.nome }} {{ utente?.cognome }}</button>
+            <div class="dropdown-divider"></div>
+            <button type="button" class="dropdown-item" ngbDropdownItem disabled>{{ 'HEADER.ROLE' | translate }}: </button>
+            <ng-container *ngFor="let ruolo of this.ruoli">
+              <button type="button" class="dropdown-item" ngbDropdownItem disabled>
+                &nbsp;&nbsp;&nbsp;&nbsp; - {{ ruolo.descrizione }}
+              </button>
+            </ng-container>
+            <div class="dropdown-divider"></div>
+            <button type="button" class="dropdown-item" ngbDropdownItem (click)="logout()">{{ 'APP.EXIT' | translate }}</button>
+          </div>
+
+        </span>
+
+      </span>
+
+    </div>
+
+  </nav>
+
+
+<nav class="navbar navbar-expand navbar-dark">
+
+  <div class="container-fluid">
+
+    <div ngbDropdown  class="menu">
+      <a ngbDropdownToggle class="btn btn-link dropdown-toggle">
+        <i class="fas fa-th fa-2x"></i>
+        <!--span class="small">{{ 'HEADER.MENU' | translate }}</span-->
+      </a>
+
+      <div class="dropdown-menu" ngbDropdownMenu>
+
+        <a [routerLink]="['/home']" routerLinkActive="active" class="dropdown-item" [routerLinkActiveOptions]="{exact: true}">
+          <!--i class="fas fa-home"></i--> {{ 'SIDEBAR.HOME' | translate }}
+        </a>
+
+        <ng-container *ngFor="let content of sidebarContent">
+          <a [routerLink]="content.link" routerLinkActive="active" class="dropdown-item" [routerLinkActiveOptions]="{exact: true}" *ngIf="hasPermesso(content.permission)"
+          [queryParams]="content.queryParams ? content.queryParams : undefined">
+            <i *ngIf="content.icon" class="{{ content.icon }}"></i> 
+            {{ content.content | translate }}
+          </a>
+        </ng-container>
+      </div>
+
+    </div>
+
+
+
+
+
+
+    <h1>{{ 'APP.TITLE' | translate }}</h1>
+
+    <span class="pl-1 ml-auto">
+
+      <div>
+        <a class="btn btn-link" [href]="userManualUrl" target="_blank">
+          <i class="fas fa-2x fa-book-reader"></i>
+        </a>
+        <ng-container *ngFor="let language of languages; last as last">
+          <button type="button" class="btn btn-link" [class.selected]="language.langCode === lang.langCode" [disabled]="language.langCode === lang.langCode" (click)="onLanguageSelected(language)">
+            {{ language.text | translate }}
+          </button>
+          <!-- Forse bigogna dare un padding right a questo span, o un left al button... E invertire i CSS di selezione -->
+          <span *ngIf="!last">|</span>
+        </ng-container>
+      </div>
+
+
+    </span>
+
+</div>
+
+  </nav>
+
+</header>
+
+
+
+
+
+
+
+

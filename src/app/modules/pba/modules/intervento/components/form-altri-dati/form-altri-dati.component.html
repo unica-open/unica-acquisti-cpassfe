@@ -1,0 +1,259 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="container-fluid my-3">
+    <form [formGroup]="formAltriDati">
+        <div class="row">
+            <div class="form-group col-12">
+                <input type="text" class="form-control" id="noteInput" formControlName="note" cpassHasValueClass
+                    maxlength="200">
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="noteInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.NOTE' | translate }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
+                <input type="text" class="form-control" id="codiceInternoInput" formControlName="codiceInterno"
+                    cpassHasValueClass maxlength="50">
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="codiceInternoInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.INTERNAL_CODE' | translate }}</label>
+            </div>
+        </div>
+    </form>
+    <div class="fake-accordion">
+        {{ 'PBA.INTERVENTION.OTHER_DATA.SECTION.OTHER_CPVS' | translate }}
+    </div>
+    <div class="fake-accordion-section">
+        <form [formGroup]="formRicercaCpv">
+            <div class="row">
+                <div class="form-group col-sm-7">
+                    <input type="text" class="form-control" id="textRicercaCpvInput" formControlName="textRicercaCpv"
+                        cpassHasValueClass>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label"
+                        for="textRicercaCpvInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.CPV_FIND' | translate }}</label>
+                </div>
+                <div class="form-group col-sm-1 text-right">
+                    <button type="button" class="btn btn-info ml-auto" (click)="openModalCpvs()"
+                        [disabled]="isControlDisabled">{{ 'APP.SEARCH' | translate }}</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-4 offset-sm-8 text-right">
+                    <button class="btn btn-info ml-auto" (click)="onSubmitEliminaSelezionati()"
+                        [disabled]="this.isControlDisabled">{{ 'APP.DELETE-SELECTION' | translate }}</button>
+    
+                    <button class="btn btn-info ml-auto" (click)="onSubmitEliminaTutti()"
+                        [disabled]="this.isControlDisabled">{{ 'APP.DELETE-ALL' | translate }}</button>
+                </div>
+            </div>
+        </form>
+        <div class="row" *ngIf="listCpv && listCpv.length > 0">
+            <div class="form-group col-sm-12" *ngIf="formAltriDatiCpvs">
+                <form [formGroup]="formAltriDatiCpvs">
+                    <table class="table table-striped table-impegni">
+                        <thead>
+                            <tr>
+                                <th>{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.SELECT' | translate }}</th>
+                                <th>{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.CODE' | translate }}</th>
+                                <th>{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.DESCR' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr formArrayName="orders" *ngFor="let order of fControlsCpvs.orders.controls; let i = index">
+                                <td>
+                                    <input type="checkbox" [formControl]="order" />
+                                </td>
+                                <td>{{listCpv[i].codice}}</td>
+                                <td>{{listCpv[i].descrizione}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <ngb-accordion #accordionVerdi id="accordion-verdi">
+        <ngb-panel title="{{ 'PBA.INTERVENTION.OTHER_DATA.SECTION.GREEN' | translate}}">
+            <ng-template ngbPanelContent>
+                <form [formGroup]="formAltriDati">
+                    <div class="row section-question">
+                        <div class="col-md-3">
+                            <h5 class="section-question-label">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.QUESTION_LABEL' | translate}}</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <ng-select class="form-control" [items]="elencoOpzioniVerdiMatRic" [virtualScroll]="true" bindLabel="descrizione" [disabled]="controlDisabled"
+                                formControlName="tipoAcquistoVerdi" [compareWith]="compareById" (change)="verdiSelectChanged()"></ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="settoreInput" class="float-label">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.TYPE' | translate }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-12">
+                        <input type="text" class="form-control" id="textNormativaInput" formControlName="normativaRiferimento" maxlength="200" cpassHasValueClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="textNormativaInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.LAW' | translate }}</label>
+                    </div>
+                    <div class="form-group col-12">
+                        <textarea class="form-control" rows="2" id="textOggettoVerdiInput" formControlName="oggettoverdi" maxlength="500" cpassHasValueClass></textarea>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="textOggettoVerdiInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.OBJECT' | translate }}</label>
+                    </div>
+                    <div class="row no-row">
+                        <div class="form-group col-4">
+                            <input type="text" class="form-control" id="textRicercaCpvGreenInput" #textRicercaCpvGreenInput [disabled]="isControlDisabled || !isVerdiParziale()" cpassHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label"
+                                for="textRicercaCpvGreenInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.CPV_FIND' | translate }}</label>
+                        </div>
+                        <div class="form-group col-1 text-right">
+                            <button type="button" class="btn btn-info ml-auto" (click)="openModalCpvsOnForms('verdi')" cpassTooltip="APP.SEARCH"
+                                triggers="pointerenter:pointerout"
+                                [disabled]="isControlDisabled || !isVerdiParziale()">{{ 'APP.SEARCH' | translate }}</button>
+                        </div>
+                    </div>
+                    <div class="form-group col-12">
+                        <input type="text" class="form-control" id="textCPVVerdi" #textCPVVerdi disabled="true" cpassHasValueClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="textCPVVerdi">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.CPV' | translate }}</label>
+                    </div>
+                    <div class="row no-row">
+                        <div class="form-group col-3">
+                            <input type="text" class="form-control" id="textImportoNettoVerdi" formControlName="importoNettoIvaVerdi" cpassHasValueClass
+                             cpassIsInvalidClass currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="textImportoNettoVerdi">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.NET' | translate }}</label>
+                            <div *ngIf="fControlsAltriDati.importoNettoIvaVerdi.touched && fControlsAltriDati.importoNettoIvaVerdi?.errors" class="text-danger">
+                                <div *ngIf="fControlsAltriDati.importoNettoIvaVerdi?.errors">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-3">
+                            <input type="text" class="form-control" id="textIvaVerdi" formControlName="importoIvaVerdi" cpassHasValueClass
+                                cpassIsInvalidClass currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="textIvaVerdi">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.IVA' | translate }}</label>
+                            <div *ngIf="fControlsAltriDati.importoIvaVerdi.touched && fControlsAltriDati.importoIvaVerdi?.errors" class="text-danger">
+                                <div *ngIf="fControlsAltriDati.importoIvaVerdi?.errors">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-3">
+                            <input type="text" class="form-control" id="textTotaleVerdi" formControlName="importoTotVerdi" cpassHasValueClass
+                                cpassIsInvalidClass currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="textTotaleVerdi">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.GREEN.TOT' | translate }}</label>
+                            <div *ngIf="fControlsAltriDati.importoTotVerdi.touched && fControlsAltriDati.importoTotVerdi?.errors" class="text-danger">
+                                <div *ngIf="fControlsAltriDati.importoTotVerdi?.errors">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+    <br>
+    <ngb-accordion #accordionRiciclati id="accordion-riciclati">
+        <ngb-panel title="{{ 'PBA.INTERVENTION.OTHER_DATA.SECTION.RECYCLED' | translate}}">
+            <ng-template ngbPanelContent>
+                <form [formGroup]="formAltriDati">
+                    <div class="row section-question">
+                        <div class="col-md-3">
+                            <h5 class="section-question-label">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.QUESTION_LABEL' | translate}}</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <ng-select class="form-control" [items]="elencoOpzioniVerdiMatRic" [virtualScroll]="true" bindLabel="descrizione" [disabled]="controlDisabled"
+                                formControlName="tipoAcquistoMatRic" [compareWith]="compareById" (change)="matRicSelectChanged()"></ng-select>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label for="settoreInput" class="float-label">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.TYPE' | translate }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-12">
+                        <input type="text" class="form-control" id="textOggettoMatRicInput" formControlName="oggettoMatRic" cpassHasValueClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="textOggettoMatRicInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.OBJECT' | translate }}</label>
+                    </div>
+                    <div class="row no-row">
+                        <div class="form-group col-4">
+                            <input type="text" class="form-control" id="textRicercaCpvMatRicInput" #textRicercaCpvMatRicInput [disabled]="isControlDisabled || !isMatRicParziale()" cpassHasValueClass>
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label"
+                                for="textRicercaCpvMatRicInput">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.CPV_FIND' | translate }}</label>
+                        </div>
+                        <div class="form-group col-1 text-right">
+                            <button type="button" class="btn btn-info ml-auto" (click)="openModalCpvsOnForms('matRic')"
+                                [disabled]="isControlDisabled">{{ 'APP.SEARCH' | translate }}</button>
+                        </div>
+                    </div>
+                    <div class="form-group col-12">
+                        <input type="text" class="form-control" id="textCPVMatRic" #textCPVMatRic disabled="true" cpassHasValueClass>
+                        <span class="form-highlight"></span>
+                        <span class="form-bar"></span>
+                        <label class="float-label" for="textCPVMatRic">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.CPV' | translate }}</label>
+                    </div>
+                    <div class="row no-row">
+                        <div class="form-group col-3">
+                            <input type="text" class="form-control" id="textImportoNettoMatRic" formControlName="importoNettoIvaMatRic" cpassHasValueClass
+                                cpassIsInvalidClass currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="textImportoNettoMatRic">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.NET' | translate }}</label>
+                            <div *ngIf="fControlsAltriDati.importoNettoIvaMatRic.touched && fControlsAltriDati.importoNettoIvaMatRic?.errors" class="text-danger">
+                                <div *ngIf="fControlsAltriDati.importoNettoIvaMatRic?.errors">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-3">
+                            <input type="text" class="form-control" id="textIvaMatRic" formControlName="importoIvaMatRic" cpassHasValueClass
+                                cpassIsInvalidClass currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="textIvaMatRic">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.IVA' | translate }}</label>
+                            <div *ngIf="fControlsAltriDati.importoIvaMatRic.touched && fControlsAltriDati.importoIvaMatRic?.errors" class="text-danger">
+                                <div *ngIf="fControlsAltriDati.importoIvaMatRic?.errors">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-3">
+                            <input type="text" class="form-control" id="textTotMatRic" formControlName="importoTotMatRic" cpassHasValueClass
+                                cpassIsInvalidClass currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+                            <span class="form-highlight"></span>
+                            <span class="form-bar"></span>
+                            <label class="float-label" for="textTotMatRic">{{ 'PBA.INTERVENTION.OTHER_DATA.FIELD.MAT_RIC.TOT' | translate }}</label>
+                            <div *ngIf="fControlsAltriDati.importoTotMatRic.touched && fControlsAltriDati.importoTotMatRic?.errors" class="text-danger">
+                                <div *ngIf="fControlsAltriDati.importoTotMatRic?.errors">{{ 'ERROR.FIELD.CURRENCY' | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+    <br>
+    <div class="row">
+        <div class="col">
+            <!-- <cpass-back-button></cpass-back-button> -->
+            <button type="button" class="btn btn-outline-secondary btn-sm"
+                (click)="ngbTabset.select('tabDatiGenerali')">{{ 'APP.BACK' | translate }}</button>
+            <button class="btn btn-outline-secondary btn-sm" (click)="onClickReset()"
+                [disabled]="this.isControlDisabled">{{ 'APP.RESET' | translate }}</button>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-info ml-auto" (click)="onClickProceed()"
+                [disabled]="!formAltriDati.valid || controlDisabled">{{ 'APP.PROCEED' | translate }}</button>
+        </div>
+    </div>
+</div>

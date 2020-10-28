@@ -1,0 +1,38 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="row">
+    <div class="form-group col-sm-6 text-left">
+    </div>
+    <div class="form-group col-sm-6 text-right">
+      <button class="btn btn-info ml-auto" (click)="togglePanels()">{{ getTooglePanelsLabel() | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 text-left">
+      <ngb-accordion id="dest_accordion" *ngFor="let destinatario of testataEvasione?.destinatarioEvasiones; let i = index" [activeIds]="activePanels">
+        <ngb-panel id="panel_dest_{{0 + i}}"
+                   title="{{getTitleByIndex(i)}}" type="primary">
+          <ng-template ngbPanelContent>
+            <cpass-form-destinatario
+              [testataEvasione]="testataEvasione"
+              [destinatario]="destinatario"
+              [listaCausaliSospensione]="listaCausaliSospensione"
+              (saveDestinatarioEmitter)="onSaveDestinatario($event, i)"
+              (onDeleteDestinatario)="onDeleteDestinatario($event)"
+              (importiChangedEmitter)="importiChanged()"
+              (backClickedEmitter)="clickBackEmitter"></cpass-form-destinatario>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-info ml-auto" (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+    </div>
+  </div>

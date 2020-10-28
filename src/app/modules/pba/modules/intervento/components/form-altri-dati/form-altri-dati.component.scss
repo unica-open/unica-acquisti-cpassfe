@@ -1,0 +1,49 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+.fake-accordion {
+    padding: 10px 14px;
+    color: white;
+    background-color: #03a9f4 ;
+    margin: 30px 0 0 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.fake-accordion-section {
+    border: 1px solid #03a9f4;
+    margin: 0;
+    padding: 2%;
+}
+
+#accordion-verdi ::ng-deep .card .card-header {
+    background-color: #03a9f4 !important;
+    padding: 5px;
+}
+#accordion-verdi ::ng-deep .card .card-header .btn-link {
+    color: white;
+    text-transform: unset;
+    font-size: 16px;
+}
+
+#accordion-riciclati ::ng-deep .card .card-header {
+    background-color: #03a9f4 !important;
+    padding: 5px;
+}
+#accordion-riciclati ::ng-deep .card .card-header .btn-link {
+    color: white;
+    text-transform: unset;
+    font-size: 16px;
+}
+
+.section-question-label {
+    color: #03a9f4;
+}
+
+.section-question {
+    margin: 1% 0 0 1%;
+}
+
+.no-row {
+    padding-left: 1%;
+}

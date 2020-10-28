@@ -1,0 +1,59 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-approva-title">
+    {{ 'SIDEBAR.ORDINI.EVASION.INSERT' | translate }}
+  </h4>
+  <button type="button" class="close" aria-label="Close"  (click)="activeModal.dismiss('CLOSE')">
+      <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TEXT' | translate}}
+  </ngb-alert> -->
+
+  <form [formGroup]="formRicercaOrdini">
+    <div class="row">
+      <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 radio-inline">
+        <label>
+          <input type="radio" value="SINGOLO" formControlName="tipoRicerca" (click)="onSingleSelected()">
+          {{ 'ORD.EVASIONE.FIELD.FIND_ORDER.ONE' | translate }}
+        </label>
+      </div>
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="ordineAnnoInput" cpassHasValueClass formControlName="ordineAnno" cpassDigitOnly maxlength="4">
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="ordineAnnoInput">{{ 'ORD.ORDER.FIELD.YEAR.LONG' | translate }}</label>
+        <div *ngIf="formErrors.ordineAnno" class="text-danger">
+          <div>{{ formErrors.ordineAnno }}</div>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-2">
+        <input type="text" class="form-control" id="ordineNumeroInput" cpassHasValueClass formControlName="ordineNumero" cpassDigitOnly>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="ordineNumeroInput">{{ 'ORD.ORDER.FIELD.NUMBER.LONG' | translate }}</label>
+        <div *ngIf="formErrors.ordineNumero" class="text-danger">
+          <div>{{ formErrors.ordineNumero }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 radio-inline">
+        <label>
+          <input type="radio" value="MULTI" formControlName="tipoRicerca" (click)="onMultiSelected()">
+          {{ 'ORD.EVASIONE.FIELD.FIND_ORDER.MORE' | translate }}
+        </label>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modalSceltaRicercaOrdiniClose()" [disabled]="!checkEvasionField()">{{ 'APP.PROCEED' | translate }}</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('CLOSE')">{{ 'APP.BACK' | translate }}</button>
+</div>

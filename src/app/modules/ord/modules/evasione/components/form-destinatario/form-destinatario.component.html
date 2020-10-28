@@ -1,0 +1,210 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formDestinatario">
+    <div class="row" formGroupName="destinatarioOrdine">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.DESTINATARIO.ORD_DATA' | translate}}</h5>
+        <div class="form-group col-sm-2" formGroupName="testataOrdine">
+            <input type="text" class="form-control" id="anno" formControlName="anno" cpassHasValueClass maxlength="4">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="anno">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.ORD_YEAR' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2" formGroupName="testataOrdine">
+            <input type="text" class="form-control" id="numero" formControlName="numero" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="numero">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.ORD_NUMBER' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2" formGroupName="statoElOrdine">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.ORD_STATUS' | translate }}</label>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.DESTINATARIO.NAME' | translate}}</h5>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="progressivo" formControlName="progressivo" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="progressivo">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.PROGRESSIVO' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-4" formGroupName="statoElOrdine">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.STATUS' | translate }}</label>
+        </div>
+    </div>
+    <div class="row" formGroupName="settore">
+        <div class="form-group col-sm-2 offset-3">
+            <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codice">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.SETTORE_CODICE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-6">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.SETTORE_DESC' | translate }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-5">
+            <input type="text" class="form-control" id="indirizzo" formControlName="indirizzo" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="indirizzo">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.ADDRESS' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-1">
+            <input type="text" class="form-control" id="numCivico" formControlName="numCivico" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="numCivico">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.CIVIC' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="localita" formControlName="localita" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="localita">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.LOCATION' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-1">
+            <input type="text" class="form-control" id="cap" formControlName="cap" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="cap">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.CAP' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-1">
+            <input type="text" class="form-control" id="provincia" formControlName="provincia" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="provincia">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.PROV' | translate }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-5">
+            <input type="text" class="form-control" id="contatto" formControlName="contatto" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="contatto">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.CONTACT' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3">
+            <input type="text" class="form-control" id="email" formControlName="email" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="email">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.EMAIL' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="telefono" formControlName="telefono" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="telefono">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.PHONE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2 text-right">
+            <button type="button" class="btn btn-info ml-auto" (click)="changeAddress()" [disabled]="searchAddressDisabled">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.FIELD.BTN_CHANGE_ADDRESS' | translate }}</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-1 text-left">
+            <button type="button" class="btn btn-danger ml-auto" [disabled]="deleteBtnDisabled" (click)="showConfirmDeleteModal()">{{ 'APP.DELETE' | translate }}</button>
+          </div>
+          <div class="form-group col-sm-1 text-left">
+            <button type="button" class="btn btn-info ml-auto" [disabled]="editBtnDisabled" (click)="onClickEdit()">{{ 'APP.MODIFY' | translate }}</button>
+          </div>
+          <div class="form-group col-sm-1 text-left">
+            <button type="button" class="btn btn-info ml-auto" [disabled]="resetBtnDisabled" (click)="onClickClean()">{{ 'APP.CLEAN' | translate }}</button>
+          </div>
+          <div class="form-group col-sm-1 offset-8 text-right" >
+            <button type="button" class="btn btn-info ml-auto" [disabled]="saveBtnDisabled" (click)="onClickSave()">{{ 'APP.SAVE' | translate }}</button>
+          </div>
+    </div>
+</form>
+
+<div class="col-md-12" style="padding: 0;" *ngIf="righeEvasione && righeEvasione.length > 0">
+    <ngb-accordion id="riga_accordion" class="custom-accordion" *ngFor="let riga of righeEvasione; let i = index" [activeIds]="rigaOpenId">
+        <ngb-panel id="panel_riga_{{ 0 + i }}" title="{{riga?.oggettiSpesa ? riga.oggettiSpesa.codice + '-' + riga.oggettiSpesa.descrizione : 'Nuova riga'}}" type="primary">
+            <ng-template ngbPanelContent>
+                <cpass-form-riga-evasione
+                    [testataEvasione]="testataEvasione"
+                    [testataOrdine]="destinatario?.destinatarioOrdine.testataOrdine"
+                    [destinatario]="destinatarioFromForm"
+                    [rigaEvasione]="riga"
+                    [listaCausaliSospensione]="listaCausaliSospensione"
+                    (onSaveRiga)="onSaveRiga($event, i)"
+                    (onDeleteRiga)="onDeleteRiga($event)"
+                    (addRiga)="nuovaRiga()">
+                </cpass-form-riga-evasione>
+            </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
+
+<ng-template #modalSettoreIndirizzo let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-indirizzo-title">{{ 'ORD.ORDER.OPERATION.CHANGE_ADDRESS.TITLE' | translate }}
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.CHANGE_ADDRESS.TEXT' | translate}}</ngb-alert>
+  
+      <form [formGroup]="formModalIndirizzi" *ngIf="modalElencoIndirizzi">
+        <table class="table table-hover table-sm table-responsive">
+          <tbody>
+          <tr>
+            <td style="width: 5%;">&nbsp;</td>
+            <td style="width: 25%;">{{ 'ORD.ORDER.FIELD.SECTOR.ADDRESS' | translate }}</td>
+            <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CIVICO' | translate }}</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.LOCATION' | translate }}</td>
+            <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CAP' | translate }}</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.PROV' | translate }}</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CONTACT' | translate }}</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.EMAIL' | translate }}</td>
+            <td style="width: 25%;">{{ 'ORD.ORDER.FIELD.SECTOR.PHONE' | translate }}</td>
+          </tr>
+          <tr *ngFor="let modalIndirizzo of modalElencoIndirizzi;">
+            <td class="border-0" >
+              <input type="radio" value="{{ modalIndirizzo.id }}" formControlName="modalIndirizzoId">
+            </td>
+            <td class="border-0" >{{ modalIndirizzo.indirizzo }}</td>
+            <td class="border-0" >{{ modalIndirizzo.numCivico }}</td>
+            <td class="border-0" >{{ modalIndirizzo.localita }}</td>
+            <td class="border-0" >{{ modalIndirizzo.cap }} </td>
+            <td class="border-0" >{{ modalIndirizzo.provincia }}</td>
+            <td class="border-0" >{{ modalIndirizzo.contatto }}</td>
+            <td class="border-0" >{{ modalIndirizzo.email }}</td>
+            <td class="border-0" >{{ modalIndirizzo.telefono }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modalIndirizziClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalConfirmDelete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD.EVASIONE.DETAIL.DESTINATARIO.NAME' | translate }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0039' | translate }}</ngb-alert>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmDelete(modal)">{{ 'APP.YES' | translate }}</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+    </div>
+  </ng-template>

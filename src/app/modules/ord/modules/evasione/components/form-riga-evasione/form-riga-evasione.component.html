@@ -1,0 +1,172 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formOrdineAssociato">
+    <div class="row">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.RIGA.ORD_DATA' | translate}}</h5>
+        <div class="form-group col-sm-2" formGroupName="testataOrdine">
+            <input type="text" class="form-control" id="anno" formControlName="anno" cpassHasValueClass maxlength="4">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="anno">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.ORD_YEAR' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2" formGroupName="testataOrdine">
+            <input type="text" class="form-control" id="numero" formControlName="numero" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="numero">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.ORD_NUMBER' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2" formGroupName="statoElOrdine">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.ORD_STATUS' | translate }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.RIGA.TOTALS' | translate}}</h5>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="totaleOrdinato" formControlName="totaleOrdinato" cpassHasValueClass
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleOrdinato">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.TOT_ORD' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="totaleEvasione" formControlName="totaleEvasione" cpassHasValueClass
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleEvasione">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.TOT_EVASIONE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="totaleEvaso" formControlName="totaleEvaso" cpassHasValueClass
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleEvaso">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.TOT_EVASO' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="totaleDaEvadere" formControlName="totaleDaEvadere" cpassHasValueClass
+                currencyMask [options]="{thousands: '.', decimal: ',' , precision:'2', prefix : '€ '}">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="totaleDaEvadere">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.TOT_DA_EVADERE' | translate }}</label>
+        </div>
+    </div>
+    <hr>
+</form>
+<form [formGroup]="formRigaEvasione">
+    <div class="row">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.RIGA.NAME' | translate}}</h5>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="progressivo" formControlName="progressivo" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="progressivo">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.PROGRESSIVO' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-3" formGroupName="statoElOrdine">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.STATUS' | translate }}</label>
+        </div>
+    </div>
+    <div formGroupName="oggettiSpesa">
+        <div class="row" formGroupName="cpv">
+            <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.RIGA.CPV' | translate}}</h5>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codice">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.CPV_CODE' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-5">
+                <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.CPV_DESC' | translate }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.RIGA.ODS' | translate}}</h5>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codice">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.ODS_CODE' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-5">
+                <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.ODS_DESC' | translate }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="row" formGroupName="listinoFornitore">
+        <h5 class="form-group col-sm-3">{{'ORD.EVASIONE.DETAIL.RIGA.LISTINO' | translate}}</h5>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" id="codiceOds" formControlName="codiceOds" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codiceOds">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.LISTINO_CODE' | translate }}</label>
+        </div>
+        <div class="form-group col-sm-5">
+            <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="descrizione">{{ 'ORD.EVASIONE.DETAIL.RIGA.FIELD.LISTINO_DESC' | translate }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-1 text-left">
+            <button type="button" class="btn btn-danger ml-auto" [disabled]="deleteBtnDisabled" (click)="showConfirmDeleteModal()">{{ 'APP.DELETE' | translate }}</button>
+          </div>
+          <!-- <div class="form-group col-sm-1 text-left">
+            <button type="button" class="btn btn-info ml-auto" [disabled]="editBtnDisabled" (click)="onClickEdit()">{{ 'APP.MODIFY' | translate }}</button>
+          </div> -->
+          <!-- <div class="form-group col-sm-1 text-left">
+            <button type="button" class="btn btn-info ml-auto" [disabled]="resetBtnDisabled" (click)="onClickClean()">{{ 'APP.CLEAN' | translate }}</button>
+          </div> -->
+          <div class="form-group col-sm-2 offset-6 text-right" >
+            <button type="button" class="btn btn-info ml-auto" [disabled]="newCommitmentBtnDisabled" (click)="onClickNewCommitment()">{{ 'APP.NEW_COMMITMENT' | translate }}</button>
+          </div>
+          <div class="form-group col-sm-1 text-right" >
+            <button type="button" class="btn btn-info ml-auto" [disabled]="saveBtnDisabled">{{ 'APP.SAVE' | translate }}</button>
+          </div>
+    </div>
+</form>
+
+<div class="col-md-12" style="padding: 0;">
+    <ngb-accordion id="imp_accordion" class="custom-accordion" *ngIf="impegni && impegni.length > 0" [activeIds]="activePanels">
+        <ngb-panel id="panel_impegni_0" title="{{'ORD.EVASIONE.DETAIL.COMMITMENT.NAME' | translate}}" type="primary">
+            <ng-template ngbPanelContent>
+                <cpass-form-impegni-evasione
+                    [impegnoList]="impegni"
+                    [rigaEvasione]="rigaEvasione"
+                    [testataEvasione]="testataEvasione"
+                    [listaCausaliSospensione]="listaCausaliSospensione"
+                    (onDeleteImpegni)="onDeleteImpegni()"
+                ></cpass-form-impegni-evasione>
+            </ng-template>
+    </ngb-panel>
+    </ngb-accordion>
+</div>
+
+<ng-template #modalConfirmDelete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD.EVASIONE.DETAIL.RIGA.NAME' | translate }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0038' | translate }}</ngb-alert>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmDelete(modal)">{{ 'APP.YES' | translate }}</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+    </div>
+  </ng-template>

@@ -1,0 +1,536 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<!-- <p>form-ordine works!</p> -->
+
+<div class="container-fluid my-3">
+
+    <form [formGroup]="formTestataOrdine" *ngIf="testataOrdine">
+
+        <h5>{{ 'ORD.ORDER.SECTION.STRCUCTURE_ISSUING' | translate }}</h5>
+        <div class="row">
+
+            <!-- <ng-container formGroupName="settore"> -->
+            <div class="form-group col-sm-3" formGroupName="settore">
+                <input type="text" class="form-control" id="codiceInput" formControlName="codice" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceInput">{{ 'ORD.ORDER.FIELD.SECTOR.CODE' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-5" formGroupName="settore">
+                <input type="text" class="form-control" id="descrizioneInput" formControlName="descrizione"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="descrizioneInput">{{ 'ORD.ORDER.FIELD.SECTOR.DESC' | translate }}</label>
+            </div>
+            <!-- </ng-container> -->
+
+            <div class="form-group col-sm-4">
+                <ng-select class="form-control" [items]="elencoUfficio" [virtualScroll]="true"
+                    [searchFn]="searchUfficio" formControlName="ufficio" cpassIsInvalidClass>
+                    <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.codice + '-' + item.descrizione }}</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span
+                            title="{{ item.codice + '-' + item.descrizione }}">{{ item.codice + '-' + item.descrizione }}</span>
+                    </ng-template>
+                </ng-select>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label for="ufficioDescrizione" class="float-label">{{ 'ORD.ORDER.FIELD.OFFICE' | translate }}</label>
+                <div *ngIf="f.ufficio.touched && f.ufficio.errors" class="text-danger">
+                    <div *ngIf="f.ufficio.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+        <h5>{{ 'ORD.ORDER.SECTION.ORDER' | translate }}</h5>
+        <div class="row">
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="annoInput" formControlName="anno" cpassHasValueClass
+                    cpassDigitOnly maxlength="4">
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="annoInput">{{ 'ORD.ORDER.FIELD.YEAR.SHORT' | translate }}</label>
+                <div *ngIf="f.anno.touched && f.anno.errors" class="text-danger">
+                    <div *ngIf="!f.anno.valid && f.anno.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="numeroInput" formControlName="numero" cpassHasValueClass
+                    cpassDigitOnly>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="numeroInput">{{ 'ORD.ORDER.FIELD.NUMBER.SHORT' | translate }}</label>
+                <div *ngIf="f.numero.touched && f.numero.errors" class="text-danger">
+                    <div *ngIf="!f.numero.valid && f.numero.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+                </div>
+            </div>
+            <div class="form-group col-sm-4" >
+                <input type="text" class="form-control has-value" id="codiceFiscaleInput" 
+                disabled value="{{ formTestataOrdine.get('utenteCompilatore.cognome').value + ' ' + formTestataOrdine.get('utenteCompilatore.nome').value}}">
+
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceFiscaleInput">{{ 'ORD.ORDER.FIELD.AUTHORIZING' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-4" formGroupName="stato">
+                <input type="text" class="form-control" id="statoInput" formControlName="descrizione"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="statoInput">{{ 'ORD.ORDER.FIELD.STATE.LONG' | translate }}</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dataEmissioneInput" formControlName="dataEmissione"
+                        cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                        #d_dataEmissione="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_dataEmissione.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label"
+                        for="dataEmissioneInput">{{ 'ORD.ORDER.FIELD.DATE_EMISSION' | translate }}</label>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dataConfermaInput" formControlName="dataConferma"
+                        cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker
+                        #d_dataConferma="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_dataConferma.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label"
+                        for="dataConfermaInput">{{ 'ORD.ORDER.FIELD.DATE_CONFIRM' | translate }}</label>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dataAutorizzazioneInput"
+                        formControlName="dataAutorizzazione" cpassHasValueClass maxlength="10" cpassIsInvalidClass
+                        ngbDatepicker #d_dataAutorizzazione="ngbDatepicker" (dateSelect)="triggerUiUpdate()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_dataAutorizzazione.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label"
+                        for="dataAutorizzazioneInput">{{ 'ORD.ORDER.FIELD.DATE_AUTHORIZATION' | translate }}</label>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dataScadenzaInput" formControlName="dataScadenza"
+                        cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker (change)="onChangeDataScadenza()"
+                        #d_dataScadenza="ngbDatepicker" (dateSelect)="onChangeDataScadenza()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_dataScadenza.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="dataScadenzaInput">{{ 'ORD.ORDER.FIELD.DATE_DEADLINE' | translate }}</label>
+                    <div *ngIf="formErrors.dataScadenza" class="text-danger">
+                        <div>{{ formErrors.dataScadenza }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <input type="text" class="form-control" id="statoInvioNsoInput" formControlName="statoInvioNso"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="statoInvioNsoInput">{{ 'ORD.ORDER.FIELD.STATE_SEND_NSO' | translate }}</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <input type="text" class="form-control" id="descrizioneInput" formControlName="descrizione" cpassHasValueClass cpassIsInvalidClass>
+                <!-- <textarea class="form-control" id="descrizioneInput" formControlName="descrizione" cpassHasValueClass cpassIsInvalidClass></textarea> -->
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="descrizioneInput">{{ 'ORD.ORDER.FIELD.DESCRIPTION.LONG' | translate }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <textarea rows="2" class="form-control" id="noteInput" formControlName="note" cpassHasValueClass cpassIsInvalidClass></textarea>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="noteInput">{{ 'ORD.ORDER.FIELD.NOTE' | translate }}</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <ng-select class="form-control" [items]="elencoTipoOrdine" [virtualScroll]="true"
+                    [searchFn]="searchTipoOrdine" formControlName="tipoOrdine" cpassIsInvalidClass>
+                    <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.tipologiaDocumentoCodice + '-' + item.tipologiaDocumentoDescrizione }}</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{ item.tipologiaDocumentoCodice + '-' + item.tipologiaDocumentoDescrizione }}">
+                            {{ item.tipologiaDocumentoCodice + '-' + item.tipologiaDocumentoDescrizione }}
+                        </span>
+                    </ng-template>
+                </ng-select>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label for="tipoOrdineDescrizione"
+                    class="float-label">{{ 'ORD.ORDER.FIELD.ORDER_TYPE' | translate }}</label>
+                <div *ngIf="f.tipoOrdine.touched && f.tipoOrdine.errors" class="text-danger">
+                    <div *ngIf="f.tipoOrdine.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <input type="text" class="form-control" id="lottoAnnoInput" formControlName="lottoAnno" (change)="onChangeLotto()"
+                    cpassHasValueClass cpassDigitOnly maxlength="4">
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="lottoAnnoInput">{{ 'ORD.ORDER.FIELD.LOT.YEAR' | translate }}</label>
+                <div *ngIf="f.lottoAnno.touched && f.lottoAnno.errors" class="text-danger">
+                    <div *ngIf="!f.lottoAnno.valid && f.lottoAnno.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+                </div>
+                <div *ngIf="formErrors.lottoAnno" class="text-danger">
+                    <div>{{ formErrors.lottoAnno }}</div>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <input type="text" class="form-control" id="lottoNumeroInput" formControlName="lottoNumero" (change)="onChangeLotto()"
+                    cpassHasValueClass cpassDigitOnly>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="lottoNumeroInput">{{ 'ORD.ORDER.FIELD.LOT.NUMBER' | translate }}</label>
+                <div *ngIf="f.lottoNumero.touched && f.lottoNumero.errors" class="text-danger">
+                    <div *ngIf="!f.lottoNumero.valid && f.lottoNumero.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+                </div>
+                <div *ngIf="formErrors.lottoNumero" class="text-danger">
+                    <div>{{ formErrors.lottoNumero }}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+        <h5>{{ 'ORD.ORDER.SECTION.SUPPLIER' | translate }}</h5>
+        <div class="row">
+            <div class="form-group col-sm-4" formGroupName="fornitore">
+                <input type="hidden" class="form-control" id="idInput" formControlName="id">
+                <input type="text" class="form-control" id="codiceInput" formControlName="codice" 
+                    cpassHasValueClass cpassIsInvalidClass (keydown)="onKeydownCodiceFornitore()" (change)="onChangeCodiceFornitore()"  [disabled]="fornitoreCodiceSelected" [readonly]="fornitoreCodiceSelected" >
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.CODE' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-3" formGroupName="fornitore">
+                <input type="text" class="form-control" id="codiceFiscaleInput" formControlName="codiceFiscale" 
+                    cpassHasValueClass [disabled]="fornitoreSelected" [readonly]="fornitoreSelected" >
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="codiceFiscaleInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.CF' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-3" formGroupName="fornitore">
+                <input type="text" class="form-control" id="partitaIvaInput" formControlName="partitaIva" 
+                    cpassHasValueClass [disabled]="fornitoreSelected" [readonly]="fornitoreSelected" >
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="partitaIvaInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.VAT_NUMBER' | translate }}</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-10" formGroupName="fornitore">
+                <input type="text" class="form-control" id="ragioneSocialeInput" formControlName="ragioneSociale"
+                cpassHasValueClass [disabled]="fornitoreSelected" [readonly]="fornitoreSelected">
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="ragioneSocialeInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.BUSINESS_NAME' | translate }}</label>
+            </div>
+
+            <div class="form-group col-sm-2 text-right" formGroupName="fornitore">
+                <button type="button" class="btn btn-info ml-auto" [disabled]="fornitoreCodiceSelected"
+                    (click)="onClickFindFornitore()">{{ 'APP.SEARCH' | translate }}</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-4" formGroupName="fornitore">
+                <input type="text" class="form-control" id="indirizzoInput" formControlName="indirizzo"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="indirizzoInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.ADDRESS' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-3" formGroupName="fornitore">
+                <input type="text" class="form-control" id="comuneInput" formControlName="comune" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="comuneInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.RESORT' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-2" formGroupName="fornitore">
+                <input type="text" class="form-control" id="capInput" formControlName="cap" cpassHasValueClass
+                    cpassDigitOnly>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="capInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.POSTAL_CODE' | translate }}</label>
+
+            </div>
+            <div class="form-group col-sm-3" formGroupName="fornitore">
+                <input type="text" class="form-control" id="provinciaInput" formControlName="provincia"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="provinciaInput">{{ 'ORD.ORDER.FIELD.SUPPLIER.PROVINCE' | translate }}</label>
+            </div>
+        </div>
+
+        <hr>
+        <h5>{{ 'ORD.ORDER.SECTION.PROVISION' | translate }}</h5>
+        <div class="row">
+            <div class="form-group col-sm-2" formGroupName="provvedimento">
+                <input type="text" class="form-control" id="annoInput" formControlName="anno"
+                    (keydown)="onKeydownProvvedimento()" (change)="onChangeProvvedimento()" [disabled]="provvedimentoRicercaSelected" [readonly]="provvedimentoRicercaSelected"
+                    cpassHasValueClass cpassIsInvalidClass cpassDigitOnly maxlength="4">
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="annoInput">{{ 'ORD.ORDER.FIELD.PROVISION.YEAR' | translate }}</label>
+                <div *ngIf="f.provvedimento.touched && f.provvedimento.controls.anno?.errors" class="text-danger">
+                    <div *ngIf="!f.provvedimento.controls.anno?.valid && f.provvedimento.controls.anno?.dirty">
+                        {{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+                </div> 
+            </div>
+            <div class="form-group col-sm-2" formGroupName="provvedimento">
+                <input type="text" class="form-control" id="numeroInput" formControlName="numero" 
+                    (keydown)="onKeydownProvvedimento()" (change)="onChangeProvvedimento()" [disabled]="provvedimentoRicercaSelected" [readonly]="provvedimentoRicercaSelected"
+                    cpassHasValueClass cpassIsInvalidClass cpassDigitOnly>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="numeroInput">{{ 'ORD.ORDER.FIELD.PROVISION.NUMBER' | translate }}</label>
+                <div *ngIf="f.provvedimento.touched && f.provvedimento.controls.numero?.errors" class="text-danger">
+                    <div *ngIf="!f.provvedimento.controls.numero?.valid && f.provvedimento.controls.numero?.dirty">
+                        {{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-3" formGroupName="provvedimento">
+                <input type="text" class="form-control" id="settoreInput" formControlName="settore" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="settoreInput">{{ 'ORD.ORDER.FIELD.PROVISION.SECTOR' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-3" formGroupName="provvedimento">
+                <input type="text" class="form-control" id="descrizioneInput" formControlName="descrizione" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="descrizioneInput">{{ 'ORD.ORDER.FIELD.PROVISION.DESCRIPTION' | translate }}</label>
+            </div>
+
+            <div class="form-group col-sm-2 text-right" >
+                <button type="button" class="btn btn-info ml-auto" [disabled]="provvedimentoRicercaSelected"
+                    (click)="onClickFindProvvedimento()">{{ 'APP.SEARCH' | translate }}</button>
+            </div>
+        </div>
+
+        <hr>
+        <h5>{{ 'ORD.ORDER.SECTION.PROCEDURE' | translate }}</h5>
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <input type="text" class="form-control" id="numeroProceduraInput" formControlName="numeroProcedura" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label" for="numeroProceduraInput">{{ 'ORD.ORDER.FIELD.PROCEDURE_NUMBER' | translate }}</label>
+            </div>
+            
+            <div class="form-group col-sm-5">
+                <ng-select class="form-control" [items]="elencoTipoProcedura" [virtualScroll]="true"
+                    [searchFn]="searchTipoProcedura" formControlName="tipoProcedura" cpassIsInvalidClass>
+                    <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item?.codice + '-' + item?.descrizione }}</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span
+                            title="{{ item.codice + '-' + item.descrizione }}">{{ item.codice + '-' + item.descrizione }}</span>
+                    </ng-template>
+                </ng-select>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label for="tipoProceduraDescrizione"
+                    class="float-label">{{ 'ORD.ORDER.FIELD.PROCEDURE_TYPE' | translate }}</label>
+                <div *ngIf="f.tipoProcedura.touched && f.tipoProcedura.errors" class="text-danger">
+                    <div *ngIf="f.tipoProcedura.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+        <h5>{{ 'ORD.ORDER.SECTION.DELIVERY' | translate }}</h5>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <input type="text" class="form-control" id="consegnaRiferimentoInput"
+                    formControlName="consegnaRiferimento" cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="consegnaRiferimentoInput">{{ 'ORD.ORDER.FIELD.DELIVERY.REFERENCE' | translate }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <input type="text" class="form-control" id="consegnaIndirizzoInput" formControlName="consegnaIndirizzo"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="consegnaIndirizzoInput">{{ 'ORD.ORDER.FIELD.DELIVERY.ADDRESS' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="text" class="form-control" id="consegnaLocalitaInput" formControlName="consegnaLocalita"
+                    cpassHasValueClass>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="consegnaLocalitaInput">{{ 'ORD.ORDER.FIELD.DELIVERY.RESORT' | translate }}</label>
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" id="consegnaCapInput" formControlName="consegnaCap"
+                    cpassHasValueClass cpassDigitOnly>
+                <span class="form-highlight"></span>
+                <span class="form-bar"></span>
+                <label class="float-label"
+                    for="consegnaCapInput">{{ 'ORD.ORDER.FIELD.DELIVERY.POSTAL_CODE' | translate }}</label>
+                <div *ngIf="f.consegnaCap.touched && f.consegnaCap.errors" class="text-danger">
+                    <div *ngIf="!f.consegnaCap.valid && f.consegnaCap.dirty">{{ 'ERROR.FIELD.NUMERIC' | translate }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="consegnaDataDaInput" formControlName="consegnaDataDa"
+                        cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker (change)="onChangeDateConsegna()"
+                        #d_consegnaDataDa="ngbDatepicker" (dateSelect)="onChangeDateConsegna()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_consegnaDataDa.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="consegnaDataDaInput">{{ 'ORD.ORDER.FIELD.DELIVERY.DATE_FROM' | translate }}</label>
+                    <div *ngIf="formErrors.consegnaDataDa" class="text-danger">
+                        <div>{{ formErrors.consegnaDataDa }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="consegnaDataAInput" formControlName="consegnaDataA"
+                        cpassHasValueClass maxlength="10" cpassIsInvalidClass ngbDatepicker (change)="onChangeDateConsegna()"
+                        #d_consegnaDataA="ngbDatepicker" (dateSelect)="onChangeDateConsegna()">
+                    <div class="input-group-append">
+                        <i class="far fa-calendar-alt" (click)="d_consegnaDataA.toggle()"></i>
+                    </div>
+                    <span class="form-highlight"></span>
+                    <span class="form-bar"></span>
+                    <label class="float-label" for="consegnaDataAInput">{{ 'ORD.ORDER.FIELD.DELIVERY.DATE_TO' | translate }}</label>
+                    <div *ngIf="formErrors.consegnaDataA" class="text-danger">
+                        <div>{{ formErrors.consegnaDataA }}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <!-- <cpass-back-button></cpass-back-button> -->
+                <button type="button" class="btn btn-outline-secondary btn-sm"
+                    (click)="onClickBack()">{{ 'APP.BACK' | translate }}</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickReset()"
+                    [disabled]="controlDisabled">{{ 'APP.CLEAN' | translate }}</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary ml-auto" [disabled]="disableSaveBtn()" (click)="onSave(false)">{{ 'APP.SAVE' | translate }}</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-info ml-auto" [disabled]="!formTestataOrdine.valid || formError || controlDisabled || testataOrdine.id" (click)="addDestinatario()">{{ 'ORD.DETAIL.NUOVO_DESTINATARIO' | translate }}</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+
+<ng-template #modalFornitori let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-approva-title">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TITLE' | translate }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SUPPLIER.TEXT' | translate}}
+        </ngb-alert>
+        
+        <form [formGroup]="formModalFornitori" *ngIf="modalElencoFornitori">
+
+        <table class="table table-hover table-sm table-responsive">
+            <tbody>
+                <tr>
+                    <td style="width: 5%;">&nbsp;</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.CODE' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.BUSINESS_NAME' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.CF' | translate }}</td>
+                    <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.VAT_NUMBER' | translate }}</td>
+                    <!-- <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.ADDRESS' | translate }}</td>
+                    <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.POSTAL_CODE' | translate }}</td>
+                    <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.RESORT' | translate }}</td>
+                    <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SUPPLIER.PROVINCE' | translate }}</td> -->
+                </tr>
+                <tr *ngFor="let modalFornitore of modalElencoFornitori;">
+                    <td class="border-0" >
+                        <input type="radio" value="{{ modalFornitore.codice }}" formControlName="modalFornitoreId">
+                    </td>
+                    <td class="border-0" >{{ modalFornitore.codice }}</td>
+                    <td class="border-0" >{{ modalFornitore.ragioneSociale }}</td>
+                    <td class="border-0" >{{ modalFornitore.codiceFiscale }}</td>
+                    <td class="border-0" >{{ modalFornitore.partitaIva }}</td>
+                    <!-- <td class="border-0" >{{ modalFornitore.indirizzo }} {{ modalFornitore.numeroCivico }}</td>
+                    <td class="border-0" >{{ modalFornitore.cap }} </td>
+                    <td class="border-0" >{{ modalFornitore.comune }} </td>
+                    <td class="border-0" >{{ modalFornitore.provincia }}</td> -->
+                </tr>
+            </tbody>
+        </table>
+
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modalFornitoriClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+    </div>
+</ng-template>

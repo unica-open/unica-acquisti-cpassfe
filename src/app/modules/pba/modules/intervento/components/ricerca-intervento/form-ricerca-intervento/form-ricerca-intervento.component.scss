@@ -1,0 +1,39 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+.badge {
+    position: absolute;
+    background-color: red;
+    padding: 3px 5px;
+    border-radius: 80px;
+    border: 2px solid white;
+    top: -8px;
+    left: 95pt;
+    box-shadow: 0 0 2pt 0 black;
+}
+
+.table-ordinamento {
+    width: 100%;
+    overflow: hidden;
+}
+
+.arrow {
+    height: 10pt;
+    margin-right: 3pt;
+    font-size: larger;
+}
+
+.highlight-a {
+    color: #03a9f4;
+}
+
+.radio-section {
+    font-size: small;
+    line-height: 10pt;
+    padding-top: 3pt;
+}
+
+.ord-radio {
+    margin-top: 10pt;
+}

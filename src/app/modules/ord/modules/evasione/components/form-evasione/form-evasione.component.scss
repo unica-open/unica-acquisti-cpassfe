@@ -1,0 +1,45 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+.fake-accordion {
+    padding: 10px 14px;
+    color: white;
+    background-color: #03a9f4 ;
+    margin: 30px 0 0 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.fake-accordion-section {
+    border: 1px solid #03a9f4;
+    margin: 0;
+}
+
+.scroll-section {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.lista-esiti-section {
+    background-color: white;
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.btn-simple {
+    border: unset;
+    background-color: unset;
+    color: #03a9f4;
+}
+
+.btn-simple:focus {
+    border: unset;
+    outline: unset;
+}
+
+.btn-simple:hover {
+    border-radius: 10px;
+    background-color: #03a9f4;
+    color: white;
+}

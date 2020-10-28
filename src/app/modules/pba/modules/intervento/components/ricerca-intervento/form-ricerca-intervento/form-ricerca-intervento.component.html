@@ -1,0 +1,241 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formRicerca" (ngSubmit)="onSubmit()" *ngIf="showForm">
+  <div class="row">
+    <div class="form-group col-12 col-md-4">
+      <ng-select class="form-control" [items]="elencoProgrammi" [virtualScroll]="true" bindLabel="anno"
+        formControlName="programma" id="programmaInput" [compareWith]="compareById" (change)="onChange()">
+        <ng-template ng-label-tmp let-item="item">
+          <span>{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+          <span
+            title="{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}">{{ item.anno + '-' + (+item.anno + 1) + ' vers. ' + item.versione + ' - ' + item?.stato?.descrizione }}</span>
+        </ng-template>
+      </ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="programmaInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.PROGRAM.TYPE' | translate }}</label>
+      <!-- <div *ngIf="f.programma.touched && f.programma?.errors" class="text-danger">
+        <div *ngIf="f.programma.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+      </div> -->
+    </div>
+
+    <div class="form-group col-12 col-sm-6 col-md-4">
+      <input type="text" class="form-control" id="cupInput" formControlName="cup" cpassHasValueClass cpassTooltip="PBA.INTERVENTION.FIELD.CUP">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="cupInput">{{ 'PBA.INTERVENTION.FIELD.CUP' | translate }}</label>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-4">
+      <ng-select class="form-control" [items]="elencoSettori" [virtualScroll]="true" bindLabel="descrizione"
+        formControlName="settoreInterventi" cpassIsInvalidClass (change)="computeElencoCpv()"
+        [compareWith]="compareById"></ng-select>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="settoreInput" class="float-label">{{ 'PBA.INTERVENTION.FIELD.SECTOR' | translate }}</label>
+    </div>
+  </div>
+  <div class="row" formGroupName="settore">
+    <h6 class="form-group col-md-1 col-sm-2">{{ 'PBA.INTERVENTION.FIELD.STRUCTURE.TITLE' | translate}}</h6>
+    <input type="hidden" class="form-control has-value" formControlName="id" cpassIsInvalidClass>
+    <div class="form-group col-md-1 col-sm-2">
+      <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass
+        cpassIsInvalidClass (change)="checkValue()">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="codice">{{ 'PBA.INTERVENTION.FIELD.STRUCTURE.CODE' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-6">
+      <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass
+      (change)="checkValue()">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="descrizione">{{ 'PBA.INTERVENTION.FIELD.STRUCTURE.DESC' | translate }}</label>
+    </div>
+    <div class="form-group col-md-1 col-sm-6 text-right">
+      <button type="button" class="btn btn-info ml-auto"
+        (click)="onClickFindSettore()">{{ 'PBA.INTERVENTION.FIELD.STRUCTURE.TITLE' | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-12 col-sm-6" formGroupName="cpv">
+      <input type="text" class="form-control has-value" id="cpvTree" formControlName="id" cpassIsInvalidClass
+        value="{{ formRicerca.get('cpv.codice').value ? formRicerca.get('cpv.codice').value + ' - ' + formRicerca.get('cpv.descrizione').value : ''}}">
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label for="cpvTree" class="float-label">{{ 'PBA.INTERVENTION.FIELD.CPV.SHORT' | translate }}</label>
+    </div>
+    <div class="form-group col-12 col-sm-6 col-md-1">
+      <button type="button" class="btn btn-info ml-auto"
+        (click)="openModalCpvs()">{{ 'PBA.INTERVENTION.FIELD.CPV.SHORT' | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-8 col-md-6" formGroupName="utenteRup">
+      <input type="text" class="form-control" id="responsabileInput" formControlName="cognome" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="responsabileInput">{{ 'PBA.INTERVENTION.FIELD.RUP.SEARCH' | translate }}</label>
+    </div>
+    <div class="form-group col-6 col-sm-6 offset-md-2 col-md-1">
+      <button type="button" class="btn btn-info ml-auto" id="btn-ordinamento" [disabled]="!modalElencoColonne || modalElencoColonne.length < 1"
+        (click)="openModalOrdinamento()">
+        <div class="badge" *ngIf="selectedColonnePerOrdinamento?.length > 0">{{selectedColonnePerOrdinamento?.length}}</div>
+        {{ 'PBA.INTERVENTION.FIELD.ORDINAMENTO.TITLE' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-12">
+      <textarea class="form-control" rows="2" id="descrizioneInput" formControlName="descrizioneAcquisto"
+        cpassHasValueClass cpassIsInvalidClass></textarea>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="descrizioneInput">{{ 'PBA.INTERVENTION.FIELD.DESCRIPTION' | translate }}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <cpass-back-button></cpass-back-button>
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        (click)="onReset()">{{ 'APP.REMOVE_FILTERS' | translate }}</button>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-info ml-auto"
+        [disabled]="!formRicerca.valid">{{ 'APP.SEARCH_INTERVENTION' | translate }}</button>
+    </div>
+  </div>
+</form>
+
+<ng-template #modalSettori let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-settore-title">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TITLE' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TEXT' | translate}}
+    </ngb-alert>
+
+    <form [formGroup]="formModalSettori" *ngIf="modalElencoSettori">
+
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+          <tr>
+            <td style="width: 5%;">&nbsp;</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CODE' | translate }}</td>
+            <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.DESC' | translate }}</td>
+            <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.ADDRESS' | translate }}</td>
+            <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CIVICO' | translate }}</td>
+            <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.LOCATION' | translate }}</td>
+            <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.PROV' | translate }}</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CAP' | translate }}</td>
+            <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.PHONE' | translate }}</td>
+            <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SECTOR.ENTE' | translate }}</td>
+          </tr>
+          <tr *ngFor="let modalSettore of modalElencoSettori;">
+            <td class="border-0">
+              <input type="radio" value="{{ modalSettore.id }}" formControlName="modalSettoreId">
+            </td>
+            <td class="border-0">{{ modalSettore.codice }}</td>
+            <td class="border-0">{{ modalSettore.descrizione }}</td>
+            <td class="border-0">{{ modalSettore.indirizzo }}</td>
+            <td class="border-0">{{ modalSettore.numCivico }}</td>
+            <td class="border-0">{{ modalSettore.localita }}</td>
+            <td class="border-0">{{ modalSettore.provincia }}</td>
+            <td class="border-0">{{ modalSettore.cap }} </td>
+            <td class="border-0">{{ modalSettore.telefono }}</td>
+            <td class="border-0">{{ modalSettore.ente.denominazione }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modalSettoriClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalOrdinamento let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-settore-title">{{ 'PBA.INTERVENTION.FIELD.ORDINAMENTO.TITLE' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-hover table-sm table-responsive table-ordinamento"  *ngIf="modalElencoColonne">
+      <thead>
+        <th>
+          &nbsp;
+        </th>
+        <th>
+          {{ 'PBA.INTERVENTION.FIELD.ORDINAMENTO.PROGRESSIVO' | translate }}
+        </th>
+        <th>
+          {{ 'PBA.INTERVENTION.FIELD.ORDINAMENTO.COLONNA' | translate }}
+        </th>
+        <th>
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let el of modalElencoColonne; let i = index">
+          <td style="width: 5%;">
+            <input type="checkbox" #elCheck (click)="toggleElementToOrdinamento(elCheck.checked, el.chiaveColonna)" [checked]="el.ordinamento && el.ordinamento > 0"/>
+          </td>
+          <td style="width: 5%;">
+            {{el.ordinamento ? el.ordinamento : '-'}}
+          </td>
+          <td style="width: 20%;">
+            {{ el.chiaveColonna | translate }}
+          </td>
+          <td style="width: 15%;">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <input type="radio" class="ord-radio" [disabled]="!isChiaveSelected(el.chiaveColonna)" [checked]="el.ascendente === true" (click)="setOrientamentoARiga(true, el.chiaveColonna)"/>&nbsp;
+                  <div>
+                    <span class="arrow">&darr;</span>
+                  </div>
+                  <div class="radio-section">
+                    <span class="highlight-a">A</span><br>
+                    <span>Z</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <input type="radio" class="ord-radio" [disabled]="!isChiaveSelected(el.chiaveColonna)" [checked]="el.ascendente === false" (click)="setOrientamentoARiga(false, el.chiaveColonna)"/>&nbsp;
+                  <div>
+                    <span class="arrow">&darr;</span>
+                  </div>
+                  <div class="radio-section">
+                    <span>Z</span><br>
+                    <span class="highlight-a">A</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-footer" style="text-align: center;">
+    <button type="button" class="btn btn-outline-info"
+      (click)="modal.close()">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+      <button type="button" class="btn btn-outline-danger"
+      (click)="resetOrdinamento()">{{ 'APP.CLEAN' | translate }}</button>
+  </div>
+</ng-template>

@@ -1,0 +1,91 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">{{ 'SIDEBAR.HOME' | translate }}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/', 'pba']">{{ 'SIDEBAR.PBA.TITLE' | translate }}</a></li>
+        <li class="breadcrumb-item active">{{ title | translate }}</li>
+    </ol>
+</nav>
+
+<form [formGroup]="formProgramma" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="form-group col-12 col-sm-6 col-lg-4">
+            <input type="text" class="form-control" id="primaAnnualita" formControlName="anno"
+                cpassHasValueClass cpassIsInvalidClass maxlength="4">
+            <!-- (blur)="setDescrizione()" -->
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="primaAnnualita">{{ 'PBA.PROGRAM.FIELD.FIRST_YEAR' | translate }}</label>
+            <div *ngIf="f.anno.touched && f.anno.errors" class="text-danger">
+                <div *ngIf="f.anno.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                <div *ngIf="f.anno.errors.pattern">{{ 'ERROR.FIELD.YEAR.INVALID' | translate }}</div>
+                <div *ngIf="f.anno.errors.annoMalformed">{{ 'ERROR.FIELD.YEAR.INVALID' | translate }}</div>
+                <div *ngIf="f.anno.errors.annoFuturo">{{ 'ERROR.FIELD.YEAR.HIGHER_CURRENT' | translate }}</div>
+            </div>
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-lg-4">
+            <input type="text" class="form-control" id="versione" formControlName="versione"
+                cpassHasValueClass cpassIsInvalidClass>
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="versione">{{ 'PBA.PROGRAM.FIELD.VERSION' | translate }}</label>
+            <div *ngIf="f.versione.touched && f.versione.errors" class="text-danger">
+                <div *ngIf="f.versione.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                <div *ngIf="f.versione.errors.pattern">{{ 'ERROR.FIELD.NUMERIC' | translate }}</div>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6 col-lg-4">
+            <input type="text" class="form-control" id="codiceFiscaleReferente" formControlName="cfReferente"
+                cpassHasValueClass cpassIsInvalidClass maxlength="16">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label class="float-label" for="codiceFiscaleReferente">{{ 'PBA.PROGRAM.FIELD.CF_REFERENTE' | translate }}</label>
+            <div *ngIf="f.cfReferente.dirty && f.cfReferente.errors" class="text-danger">
+                <div *ngIf="f.cfReferente.errors.required">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+                <div *ngIf="f.cfReferente.errors.pattern">{{ 'ERROR.FIELD.FISCAL_CODE.INVALID' | translate }}</div>
+                <div *ngIf="f.cfReferente.errors.codiceFiscale">{{ f.cfReferente.errors.codiceFiscale }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-11 col-sm-6 mx-3">
+            <input type="file" class="custom-file-input" id="validatedInterventiFile" #validatedInterventiFile (change)="chooseFileInterventi($event)">
+            <label class="custom-file-label {{'PBA.PROGRAM.FIELD.BROWSE' | translate}}" for="validatedInterventiFile">{{fileInterventi ? fileInterventi.name : 'PBA.PROGRAM.FIELD.FILE_INTERVENTI' | translate}}</label>
+            <span *ngIf="validateFile('fileInterventi')" style="color: red">{{ 'ERROR.FIELD.FILE.EXT_INVALID' | translate }}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-11 col-sm-6 mx-3">
+            <input type="file" class="custom-file-input" id="validatedImportiFile" #validatedImportiFile (change)="chooseFileImporti($event)">
+            <label class="custom-file-label {{'PBA.PROGRAM.FIELD.BROWSE' | translate}}" for="validatedImportiFile">{{fileImporti ? fileImporti.name : 'PBA.PROGRAM.FIELD.FILE_IMPORTI' | translate}}</label>
+            <span *ngIf="validateFile('fileImporti')" style="color: red">{{ 'ERROR.FIELD.FILE.EXT_INVALID' | translate }}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+          <cpass-back-button></cpass-back-button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onClickReset()"
+                [disabled]="">{{ 'APP.RESET' | translate }}</button>
+        </div>
+        <div class="col-auto">
+            <!--
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="submit()">TEST submit</button>
+            -->
+            <button type="submit" class="btn btn-primary ml-auto"
+                [disabled]="!formProgramma.valid || fileInterventi == null || fileImporti == null || validateFile('fileInterventi') || validateFile('fileImporti')">
+                {{ 'APP.LOAD_DATA' | translate }}
+            </button>
+        </div>
+    </div>
+</form>
+
+<!--
+        <p>alimentazione-da-fonte-esterna works!</p>
+-->

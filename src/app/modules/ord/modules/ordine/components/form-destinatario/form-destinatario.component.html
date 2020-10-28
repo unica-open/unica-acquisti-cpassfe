@@ -1,0 +1,320 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<form [formGroup]="formDestinatario">
+  <div class="row">
+    <div class="form-group col-sm-2">
+      <input type="text" class="form-control" id="progressivo" formControlName="progressivo" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="progressivo">{{ 'ORD.DETAIL.FIELD.PROGRESSIVE' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-2" formGroupName="statoElOrdine">
+      <input type="text" class="form-control" id="statoElOrdine" formControlName="descrizione" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="sstatoElOrdine">{{ 'ORD.DETAIL.FIELD.STATE' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-2 offset-sm-4" formGroupName="statoNSO">
+      <input type="text" class="form-control" id="statoNSO" formControlName="descrizione" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="statoNSO">{{ 'ORD.DETAIL.FIELD.NSO_STATE' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-2">
+      <input type="text" class="form-control" id="dataInvioNSO" formControlName="dataInvioNSO" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="dataInvioNSO">{{ 'ORD.DETAIL.FIELD.NSO_DATE' | translate }}</label>
+    </div>
+  </div>
+  <div class="row" formGroupName="settore">
+    <h5 class="form-group col-sm-2">Struttura destinatario</h5>
+    <div class="form-group col-sm-2">
+      <input type="text" class="form-control" id="codice" formControlName="codice" cpassHasValueClass cpassIsInvalidClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="codice">{{ 'ORD.DETAIL.FIELD.COD_SECTOR' | translate }}</label>
+      <div *ngIf="formDestinatario.touched && !formDestinatario.valid && !f.settore.codice?.valid" class="text-danger">{{ 'ERROR.FIELD.REQUIRED' | translate }}</div>
+    </div>
+    <div class="form-group col-sm-6">
+      <input type="text" class="form-control" id="descrizione" formControlName="descrizione" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="descrizione">{{ 'ORD.DETAIL.FIELD.DESCRIPTION' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-2 text-left">
+      <button type="button" class="btn btn-info ml-auto" (click)="onClickFindSettore()" [disabled]="controlDisabled || f.settore.controls.id.value">{{ 'APP.SEARCH' | translate }}</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <input type="text" class="form-control" id="indirizzo" formControlName="indirizzo" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="indirizzo">{{ 'ORD.DETAIL.FIELD.ADDRESS' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-1">
+      <input type="text" class="form-control" id="numCivico" formControlName="numCivico" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="numCivico">{{ 'ORD.DETAIL.FIELD.N_CIVIC' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-3">
+      <input type="text" class="form-control" id="localita" formControlName="localita" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="localita">{{ 'ORD.DETAIL.FIELD.LOCATION' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-1">
+      <input type="text" class="form-control" id="cap" formControlName="cap" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="cap">{{ 'ORD.DETAIL.FIELD.CAP' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-1">
+      <input type="text" class="form-control" id="provincia" formControlName="provincia" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="provincia">{{ 'ORD.DETAIL.FIELD.PROV' | translate }}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <input type="text" class="form-control" id="contatto" formControlName="contatto" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="contatto">{{ 'ORD.DETAIL.FIELD.CONTACT' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-3">
+      <input type="text" class="form-control" id="email" formControlName="email" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="email">{{ 'ORD.DETAIL.FIELD.EMAIL' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-3">
+      <input type="text" class="form-control" id="telefono" formControlName="telefono" cpassHasValueClass>
+      <span class="form-highlight"></span>
+      <span class="form-bar"></span>
+      <label class="float-label" for="telefono">{{ 'ORD.DETAIL.FIELD.PHONE' | translate }}</label>
+    </div>
+    <div class="form-group col-sm-2 text-left">
+      <button type="button" class="btn btn-info ml-auto" (click)="changeAddress()" [disabled]="searchAddressDisabled">{{ 'ORD.DETAIL.FIELD.CHANGE_ADDRESS' | translate }}</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-1 text-left">
+      <button type="button" class="btn btn-danger ml-auto" [disabled]="disableDeleteBtn()" (click)="showConfirmDeleteModal()">{{ 'APP.DELETE' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left">
+      <button type="button" class="btn btn-info ml-auto" [disabled]="disableEditBtn()" (click)="editModeWrapper()">{{ 'APP.MODIFY' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-left">
+      <button type="button" class="btn btn-info ml-auto" (click)="onClickReset()" [disabled]="controlDisabled">{{ 'APP.CLEAN' | translate }}</button>
+    </div>
+    <div class="form-group offset-md-6 col-sm-1 text-right">
+      <button type="button" class="btn btn-info ml-auto" [disabled]="disableCopy" (click)="openCopiaDaModal()">{{ 'APP.COPY_FROM' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-right">
+      <button type="button" class="btn btn-info ml-auto" [disabled]="disableNuovaRigaBtn()" (click)="nuovaRiga()">{{ 'APP.NEW_LINE' | translate }}</button>
+    </div>
+    <div class="form-group col-sm-1 text-right" >
+      <button type="button" class="btn btn-info ml-auto" [disabled]="controlDisabled || !formDestinatario.valid" (click)="onSaveClicked()">{{ 'APP.SAVE' | translate }}</button>
+    </div>
+
+    <div class="col-sm-12 text-left">
+      <ngb-accordion id="riga_accordion" class="custom-accordion" *ngFor="let riga of righeOrdine; let i = index" [activeIds]="rigaOpenId">
+        <ngb-panel id="panel_riga_{{ 0 + i }}" title="{{riga?.ods ? riga.ods.codice + '-' + riga.ods.descrizione : 'Nuova riga'}}" type="primary">
+          <ng-template ngbPanelContent>
+            <cpass-form-riga-ordine
+              [testataOrdine]="testataOrdine"
+              [destinatario]="destinatarioFromForm"
+              [elencoAliquoteIva]="elencoAliquoteIva"
+              [elencoUnitaMisura]="elencoUnitaMisura"
+              [elencoStatiElOrdineRiga]="elencoStatiElOrdineRiga"
+              [rigaOrdine]="riga"
+              (onSaveRiga)="onSaveRiga($event, i)"
+              (onDeleteRiga)="onDeleteRiga($event)"
+              (addRiga)="nuovaRiga()"
+            ></cpass-form-riga-ordine>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+</form>
+
+<ng-template #modalSettori let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-settore-title">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TITLE' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.FIND_SETTORE.TEXT' | translate}}
+    </ngb-alert>
+
+    <form [formGroup]="formModalSettori" *ngIf="modalElencoSettori">
+
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+        <tr>
+          <td style="width: 5%;">&nbsp;</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CODE' | translate }}</td>
+          <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.DESC' | translate }}</td>
+          <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.ADDRESS' | translate }}</td>
+          <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CIVICO' | translate }}</td>
+          <td style="width: 15%;">{{ 'ORD.ORDER.FIELD.SECTOR.LOCATION' | translate }}</td>
+          <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.PROV' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CAP' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.PHONE' | translate }}</td>
+          <td style="width: 20%;">{{ 'ORD.ORDER.FIELD.SECTOR.ENTE' | translate }}</td>
+        </tr>
+        <tr *ngFor="let modalSettore of modalElencoSettori;">
+          <td class="border-0" >
+            <input type="radio" value="{{ modalSettore.id }}" formControlName="modalSettoreId">
+          </td>
+          <td class="border-0" >{{ modalSettore.codice }}</td>
+          <td class="border-0" >{{ modalSettore.descrizione }}</td>
+          <td class="border-0" >{{ modalSettore.indirizzo }}</td>
+          <td class="border-0" >{{ modalSettore.numCivico }}</td>
+          <td class="border-0" >{{ modalSettore.localita }}</td>
+          <td class="border-0" >{{ modalSettore.provincia }}</td>
+          <td class="border-0" >{{ modalSettore.cap }} </td>
+          <td class="border-0" >{{ modalSettore.telefono }}</td>
+          <td class="border-0" >{{ modalSettore.ente.denominazione }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modalSettoriClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalSettoreIndirizzo let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-indirizzo-title">{{ 'ORD.ORDER.OPERATION.CHANGE_ADDRESS.TITLE' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.CHANGE_ADDRESS.TEXT' | translate}}</ngb-alert>
+
+    <form [formGroup]="formModalIndirizzi" *ngIf="modalElencoIndirizzi">
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+        <tr>
+          <td style="width: 5%;">&nbsp;</td>
+          <td style="width: 25%;">{{ 'ORD.ORDER.FIELD.SECTOR.ADDRESS' | translate }}</td>
+          <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CIVICO' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.LOCATION' | translate }}</td>
+          <td style="width: 5%;">{{ 'ORD.ORDER.FIELD.SECTOR.CAP' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.PROV' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.CONTACT' | translate }}</td>
+          <td style="width: 10%;">{{ 'ORD.ORDER.FIELD.SECTOR.EMAIL' | translate }}</td>
+          <td style="width: 25%;">{{ 'ORD.ORDER.FIELD.SECTOR.PHONE' | translate }}</td>
+        </tr>
+        <tr *ngFor="let modalIndirizzo of modalElencoIndirizzi;">
+          <td class="border-0" >
+            <input type="radio" value="{{ modalIndirizzo.id }}" formControlName="modalIndirizzoId">
+          </td>
+          <td class="border-0" >{{ modalIndirizzo.indirizzo }}</td>
+          <td class="border-0" >{{ modalIndirizzo.numCivico }}</td>
+          <td class="border-0" >{{ modalIndirizzo.localita }}</td>
+          <td class="border-0" >{{ modalIndirizzo.cap }} </td>
+          <td class="border-0" >{{ modalIndirizzo.provincia }}</td>
+          <td class="border-0" >{{ modalIndirizzo.contatto }}</td>
+          <td class="border-0" >{{ modalIndirizzo.email }}</td>
+          <td class="border-0" >{{ modalIndirizzo.telefono }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modalIndirizziClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalCopiaRighe let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-copia-title">{{ 'ORD.ORDER.OPERATION.COPY_FROM.TITLE' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'info'" [dismissible]="false">{{ 'ORD.ORDER.OPERATION.COPY_FROM.TEXT' | translate}}</ngb-alert>
+
+    <form [formGroup]="formModalCopiaDa" *ngIf="modalElencoDestinatariDaCopia">
+      <table class="table table-hover table-sm table-responsive">
+        <tbody>
+        <tr>
+          <td style="width: 15%;">&nbsp;</td>
+          <td style="width: 25%;">{{ 'ORD.ORDER.OPERATION.COPY_FROM.COL_DESTINATARIO' | translate }}</td>
+          <td style="width: 30%;">{{ 'ORD.ORDER.OPERATION.COPY_FROM.COL_DESC' | translate }}</td>
+        </tr>
+        <tr *ngFor="let destItem of modalElencoDestinatariDaCopia">
+          <td class="border-0" >
+            <input type="radio" value="{{ destItem.id }}" formControlName="modalIdDestDaCopia">
+          </td>
+          <td class="border-0" >{{ destItem.settore.codice }}</td>
+          <td class="border-0" >{{ destItem.settore.descrizione }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modalCopiaRigheClose(modal)">{{ 'APP.FIND_CONFIRM' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss()">{{ 'APP.FIND_CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalConfirmCopia let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD.DETAIL.TAB_NAME' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{textConfirmCopia}}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmCopia(modal)">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #modalConfirmDelete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-confirm-title">{{ 'ORD-ORD-A-0039' }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-alert [type]="'danger'" [dismissible]="false">{{ 'MESSAGES.ORD-ORD-A-0039' | translate }}</ngb-alert>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModalConfirmDelete(modal)">{{ 'APP.YES' | translate }}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">{{ 'APP.NO' | translate }}</button>
+  </div>
+</ng-template>

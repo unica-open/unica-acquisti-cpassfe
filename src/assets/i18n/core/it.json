@@ -1,0 +1,986 @@
+{
+  "APP": {
+    "AUTHORITY": "Ente",
+    "AUTHORIZE": "Autorizza",
+    "BACK": "Indietro",
+    "CANCEL": "Cancella",
+    "CHANGE_INVOICE": "Cambia Fattura",
+    "CHECK": "Controlla",
+    "CLEAN": "Pulisci",
+    "CLEAN_SEARCH_FIELDS":"Serve a pulire i campi di ricerca",
+    "CLOSE": "Chiudi",
+    "CONFIRM": "Conferma",
+    "COPY_FROM": "Copia da",
+    "DELETE": "Elimina",
+    "DELETE-ALL": "Elimina tutti",
+    "DELETE-SELECTION": "Elimina selezionati",
+    "DUPLICATE": "Duplica",
+    "EXAMINE": "Consulta",
+    "EXIT": "Esci",
+    "FIND_CANCEL": "Annulla selezione",
+    "FIND_CONFIRM": "Conferma selezione",
+    "HIDE_SEARCH_FILTERS": "Nascondi filtri di ricerca",
+    "IMPEGNI_ORDINI": "Impegni Ordini",
+    "INSERT": "Inserisci",
+    "LOADING": "Caricamento...",
+    "LOAD_DATA": "Carica dati",
+    "MODIFY": "Modifica",
+    "NEW_COMMITMENT": "Nuovo impegno",
+    "NEW_LINE": "Nuova riga",
+    "NO": "No",
+    "NO_DATA_FOUND": "Non ci sono dati",
+    "PRINT": "Stampa",
+    "PROCEED": "Prosegui",
+    "REMOVE_FILTERS": "Rimuovi filtri",
+    "RESET": "Ripristina",
+    "SAVE": "Salva",
+    "SAVE_INSERT": "Salva e inserisci",
+    "SEARCH": "Cerca",
+    "SEARCH_INTERVENTION": "Cerca acquisti",
+    "SEARCH_INVOICE": "Cerca Fattura",
+    "SEARCH_LISTINO_FORNITORE": "Listino",
+    "SEARCH_RESULT": "Risultati ricerca",
+    "SEND_MIT": "Trasmetti",
+    "SEND_NSO": "Invia a NSO",
+    "SEND_TO_CONT": "Invia a Contabilità",
+    "SHOW_SEARCH_FILTERS": "Mostra filtri di ricerca",
+    "SIDEBAR": {
+      "ORDINI": {
+        "LIST_ORDER": "Elenco ordini da evadere"
+      }
+    },
+    "START": "Avvia",
+    "TITLE": "Acquisti",
+    "TOTAL": "Totale",
+    "UNDO": "Annulla",
+    "YES": "Sì"
+  },
+  "ERROR": {
+    "ERROR_TITLE": "Errore",
+    "FIELD": {
+      "CURRENCY": "Inserire solo importi positivi",
+      "FILE": {
+        "EXT_INVALID": "Estensione non valida"
+      },
+      "FISCAL_CODE": {
+        "INVALID": "Codice fiscale non valido",
+        "INVALID_CHAR": "Codice fiscale non valido: deve essere un alfanumerico",
+        "INVALID_LENGTH": "Codice fiscale non valido: deve essere un alfanumerico di 16 caratteri"
+      },
+      "INTERVENTION_START_YEAR": "L'anno acquisto deve essere coerente con gli anni del programma",
+      "LENGTH_EXACT": "Inserire {{length}} caratteri",
+      "LENGTH_EXACT_NUMERIC": "Inserire {{length}} caratteri numerici",
+      "NUMERIC": "Inserire solo caratteri numerici",
+      "PROGRAM": "Selezionare un programma",
+      "PROVISION": "Selezionare un provvedimento",
+      "REQUIRED": "Dato obbligatorio",
+      "SENDING_METHOD": "Selezionare una modalità di invio",
+      "SETTORE": {
+        "EMPTY": "Selezionare un settore"
+      },
+      "SUPPLIER": "Selezionare un fornitore",
+      "YEAR": {
+        "EXACT_RANGE": "La prima annualità può essere {{min}} o {{max}} ",
+        "HIGHER_CURRENT": "La prima annualità non può essere superiore all'anno in corso",
+        "INVALID": "Prima annualità non valida"
+      }
+    },
+    "POPUP_BLOCKED": "Si prega di disabilitare il blocco dei Pop-up e di riprovare.",
+    "TOTALI": {
+      "IMPORTI": {
+        "IMPEGNO": {
+          "TESTATA": {
+            "NONCOERENTE ": "Il totale Ordine e il totale impegnato sono differenti"
+          }
+        }
+      }
+    }
+  },
+  "FOOTER": {
+    "ACCESSIBILITY": "Accessibilità",
+    "CALL_CENTER": "CALL CENTER",
+    "COOKIE_POLICY": "Cookie policy",
+    "GO_UP": "Torna su",
+    "PART_OF": "Questo servizio è parte di",
+    "PRIVACY": "Privacy",
+    "SUPPORT": "ASSISTENZA"
+  },
+  "HEADER": {
+    "MENU": "menu",
+    "ROLE": "Ruolo",
+    "SETTORE": {
+      "DEFAULT_DESCRIPTION": "Selezionare un settore"
+    }
+  },
+  "LANGUAGE": {
+    "ENGLISH": "ENG",
+    "ITALIAN": "ITA"
+  },
+  "MESSAGES": {
+    "ORD-ORD-A-0017": null,
+    "ORD-ORD-A-0028": null,
+    "ORD-ORD-A-0032": null,
+    "ORD-ORD-A-0037": null,
+    "ORD-ORD-A-0038": null,
+    "ORD-ORD-A-0039": null,
+    "ORD-ORD-A-0040": null,
+    "ORD-ORD-A-0041": null,
+    "ORD-ORD-A-0062": null,
+    "ORD-ORD-A-0063": null,
+    "ORD-ORD-A-0064": null,
+    "ORD-ORD-A-0066": null,
+    "ORD-ORD-A-0073": null,
+    "ORD-ORD-A-0097": null,
+    "ORD-ORD-A-0100": null,
+    "ORD-ORD-A-0107": null,
+    "ORD-ORD-A-0109": null,
+    "ORD-ORD-E-0002": null,
+    "ORD-ORD-E-0003": null,
+    "ORD-ORD-E-0008": null,
+    "ORD-ORD-E-0009": null,
+    "ORD-ORD-E-0011": null,
+    "ORD-ORD-E-0012": null,
+    "ORD-ORD-E-0043": null,
+    "ORD-ORD-E-0081": null,
+    "ORD-ORD-E-0091": null,
+    "ORD-ORD-E-0092": null,
+    "ORD-ORD-E-0099": null,
+    "ORD-ORD-I-0046": null,
+    "ORD-ORD-P-0007": null,
+    "PBA-ACQ-A-0008": null,
+    "PBA-ACQ-A-0009": null,
+    "PBA-ACQ-A-0016": null,
+    "PBA-ACQ-A-0021": null,
+    "PBA-ACQ-A-0048": null,
+    "PBA-ACQ-A-0049": null,
+    "PBA-ACQ-A-0050": null,
+    "PBA-ACQ-A-0052": null,
+    "PBA-ACQ-A-0054": null,
+    "PBA-ACQ-A-0057": null,
+    "PBA-ACQ-A-0060": null,
+    "PBA-ACQ-E-0064": null,
+    "PBA-ACQ-E-0065": null,
+    "PBA-ACQ-P-0001": "E' stato inserito l'acquisto con CUI: {{cui}}",
+    "PBA-ACQ-P-0006": "L'acquisto con CUI: {{cui}} è stato modificato correttamente",
+    "PBA-ACQ-P-0018": "Il CUI indicato non è valido",
+    "PBA-ACQ-P-0030": null,
+    "PBA-ACQ-P-0055": null,
+    "PBA-PGR-A-0046": null,
+    "PBA-PRG-A-0031": null,
+    "PBA-PRG-A-0067": null,
+    "PBA-PRG-E-0034": null,
+    "PBA-PRG-P-0029": null,
+    "PBA-PRG-P-0032": null,
+    "SYS-SYS-A-0014": null,
+    "SYS-SYS-E-0007": null,
+    "SYS-SYS-E-0009": null,
+    "SYS-SYS-P-0011": null
+  },
+  "ORD": {
+    "DETAIL": {
+      "COMMITMENTS": "Impegni",
+      "COMPRESS": "Comprimi tutto",
+      "EXPAND": "Espandi tutto",
+      "FIELD": {
+        "ADDRESS": "Indirizzo",
+        "CAP": "CAP",
+        "CHANGE_ADDRESS": "Cambia indirizzo",
+        "COD_SECTOR": "Codice settore",
+        "CONTACT": "Contatto",
+        "DESCRIPTION": "Descrizione",
+        "EMAIL": "email",
+        "LOCATION": "Località",
+        "NSO_DATE": "Data invio NSO",
+        "NSO_STATE": "Stato invio NSO",
+        "N_CIVIC": "Civico",
+        "PHONE": "Telefono",
+        "PROGRESSIVE": "Progressivo",
+        "PROV": "Provincia",
+        "STATE": "Stato"
+      },
+      "NUOVO_DESTINATARIO": "Nuovo destinatario",
+      "RIGA": {
+        "FIELD": {
+          "ALIQ_IVA": "Aliquota IVA",
+          "AMMONT_SCO_1": "Ammontare sconto 1",
+          "AMMONT_SCO_2": "Ammontare sconto 2",
+          "IVA": "IVA",
+          "NETTO": "Importo netto",
+          "PERCENT_SCO_1": "% sconto 1",
+          "PERCENT_SCO_2": "% sconto 2",
+          "PREZZO_UNITARIO": "Prezzo unitario",
+          "QTA": "Quantità",
+          "TOT": "Importo totale",
+          "UNITA_MISURA": "Unità di misura"
+        }
+      },
+      "TAB_NAME": "Dettaglio"
+    },
+    "EVASIONE": {
+      "COMPOSITION": {
+        "LIST_SELECTED_ITEMS": {
+          "AMOUNT_TO_PROCESS": "Importo da evadere",
+          "CPV": "CPV",
+          "NAME": "Lista elementi selezionati",
+          "ODS": "ODS",
+          "ORDER": "Ordine",
+          "PROGRESS_DEST": "Progr. dest. ordine",
+          "PROGRESS_ROW": "Progr. riga ordine",
+          "SECTOR": "Settore",
+          "TOTAL_PROCESSABLE": "Totale evadibile",
+          "TOTAL_ROW": "Totale riga"
+        }
+      },
+      "DATI_CONSEGNA": "Dati consegna",
+      "DETAIL": {
+        "COMMITMENT": {
+          "NAME": "Impegni"
+        },
+        "DESTINATARIO": {
+          "FIELD": {
+            "ADDRESS": "Indirizzo",
+            "BTN_CHANGE_ADDRESS": "Sostituisci",
+            "CAP": "CAP",
+            "CIVIC": "Civico",
+            "CONTACT": "Contatto",
+            "EMAIL": "eMail",
+            "LOCATION": "Località",
+            "ORD_NUMBER": "Numero",
+            "ORD_STATUS": "Stato destinatario ordine",
+            "ORD_YEAR": "Anno",
+            "PHONE": "Telefono",
+            "PROGRESSIVO": "Progressivo",
+            "PROV": "Provincia",
+            "SETTORE_CODICE": "Codice settore",
+            "SETTORE_DESC": "Descrizione",
+            "STATUS": "Stato"
+          },
+          "NAME": "Destinatario",
+          "ORD_DATA": "Dati Ordine"
+        },
+        "RIGA": {
+          "CPV": "CPV",
+          "FIELD": {
+            "CPV_CODE": "Codice",
+            "CPV_DESC": "Descrizione",
+            "LISTINO_CODE": "Codice",
+            "LISTINO_DESC": "Descrizione",
+            "ODS_CODE": "Codice",
+            "ODS_DESC": "Descrizione",
+            "ORD_NUMBER": "Numero",
+            "ORD_STATUS": "Riga evasione dettaglio",
+            "ORD_YEAR": "Anno",
+            "PROGRESSIVO": "Progressivo",
+            "STATUS": "Stato",
+            "TOT_DA_EVADERE": "Ancora da evadere",
+            "TOT_EVASIONE": "Totale in questa evasione",
+            "TOT_EVASO": "Totale evaso",
+            "TOT_ORD": "Totale ordinato"
+          },
+          "LISTINO": "Listino",
+          "NAME": "Riga Evasione",
+          "ODS": "ODS",
+          "ORD_DATA": "Dati Ordine",
+          "TOTALS": "Totali"
+        },
+        "TAB_NAME": "Dettaglio"
+      },
+      "FIELD": {
+        "ASS_ORD": {
+          "DESC": "Descrizione",
+          "NAME": "Ordini associati",
+          "ORD": "Ordine"
+        },
+        "AUTH_DATE": "Data autorizzazione",
+        "COD_SECTOR": "Codice settore",
+        "COD_UNIVOCO": "Codice Univoco Ufficio",
+        "COMPILER": "Compilatore",
+        "DATE_DELIVERY": "Data ricevimento",
+        "DATE_SEND_CONT": "Data invio contabilità",
+        "DATI_CONSEGNA": {
+          "DATE_CONS": "Data documento di consegna",
+          "DATE_DOC": "Data ricevimento",
+          "DOC": "Documento"
+        },
+        "DESCR": "Descrizione evasione",
+        "DESCRIPTION": "Descrizione",
+        "DOCUMENT_DATE_DELIVERY": "Data documento di consegna",
+        "DOCUMENT_DELIVERY": "Documento di consegna",
+        "FIND_ORDER": {
+          "ERROR_ORDER_NUMBER": "Indicare numero dell'ordine",
+          "ERROR_ORDER_YEAR": "Indicare anno dell'ordine",
+          "MORE": "Più ordini",
+          "ONE": "Unico ordine"
+        },
+        "FORNITORE": {
+          "CF": "Codice fiscale",
+          "CODE": "Codice",
+          "NAME": "Fornitore",
+          "P_IVA": "Partita iva",
+          "RAG_SOC": "Ragione sociale"
+        },
+        "INPUT_DATE": "Data inserimento",
+        "NOTE": "Note",
+        "NO_RESULT": "Nessun esito",
+        "NUMBER": "Numero",
+        "RESULT_SEND_CONT": "Esito invio contabilità",
+        "STATUS": "Stato",
+        "YEAR": "Anno"
+      },
+      "IMPEGNO": {
+        "FIELD": {
+          "CAUSAL": "Causale",
+          "COMMITMENT_NUMBER": "Numero impegno",
+          "COMMITMENT_ON_ORD": "Impegno su ordine",
+          "COMMITMENT_YEAR": "Anno impegno",
+          "SPREAD": "Ripartito",
+          "SUB_COMMITMENT_NUMBER": "Numero Subimpegno",
+          "SUB_COMMITMENT_YEAR": "Anno Subimpegno",
+          "SUSPENDED": "Sospeso",
+          "SUSPENSION_DATE": "Data Fine Sospensione",
+          "TOT_SPREAD": "Totale Ripartito",
+          "TOT_SPREADABLE": "Totale Ripartibile",
+          "TOT_SUSPENDED": "Totale Sospeso"
+        }
+      },
+      "NAME": "Evasione",
+      "RIEPILOGO": {
+        "TAB_NAME": "Riepilogo fattura"
+      },
+      "SEARCH": {
+        "FIELD": {
+          "DATE_EMISSION": "Data inserimento",
+          "DESCRIPTION": "Descrizione",
+          "EVASION": {
+            "FROM": "Da evasione",
+            "TO": "Ad evasione"
+          },
+          "EVASION_TYPE": {
+            "LONG": "Tipo evasione",
+            "SHORT": "Tipo"
+          },
+          "FINANZ": {
+            "ANNO": {
+              "ESERCIZIO": "Anno esercizio",
+              "IMP": "Anno  impegno",
+              "SUBIMP": "Anno subimpegno"
+            },
+            "NUM": {
+              "IMP": "Numero impegno",
+              "SUBIMP": "Numero subimpegno"
+            },
+            "TITLE": "Impegno"
+          },
+          "NUMBER": {
+            "LONG": "Numero evasione",
+            "SHORT": "Numero"
+          },
+          "ODS": {
+            "CODICE": "Codice ods",
+            "DESCRIZIONE": "Descrizione ods",
+            "TITLE": "Oggetto di spesa"
+          },
+          "ORDER": {
+            "FROM": "Da ordine",
+            "TO": "Ad ordine"
+          },
+          "PROVISION": {
+            "DESCRIPTION": "Descrizione",
+            "NUMBER": "Numero",
+            "SECTOR": "Settore",
+            "TITLE": {
+              "LONG": "Provvedimento di spesa",
+              "SHORT": "Provvedimento"
+            },
+            "YEAR": "Anno"
+          },
+          "SECTOR": {
+            "CODE": "Codice settore",
+            "DESC": "Descrizione",
+            "ISSUER": {
+              "TITLE": "Struttura competente"
+            },
+            "RECIPIENT": {
+              "TITLE": "Destinatario"
+            }
+          },
+          "STATE": {
+            "LONG": "Stato evasione",
+            "SHORT": "Stato"
+          },
+          "SUPPLIER": {
+            "BUSINESS_NAME": "Ragione sociale",
+            "CF": "Codice fiscale",
+            "CODE": "Codice",
+            "TITLE": "Fornitore",
+            "VAT_NUMBER": "Partita iva"
+          },
+          "YEAR": {
+            "LONG": "Anno evasione",
+            "SHORT": "Anno"
+          }
+        },
+        "OPERATION": {
+          "FIND_EVASION": "Cerca evasioni"
+        },
+        "TAB_NAME": null
+      },
+      "STRUCTURE": "Struttura competente",
+      "SUMMARY": {
+        "COMMITMENTS": {
+          "CAUSAL": "Causale sospensione",
+          "COMMITMENT_NUMBER": "Numero Impegno",
+          "COMMITMENT_YEAR": "Anno Impegno",
+          "NAME": "Riepilogo Impegni",
+          "SUB_COMMITMENT_NUMBER": "Numero Subimpegno",
+          "SUB_COMMITMENT_YEAR": "Anno Subimpegno",
+          "SUSPENDED": "Sospeso",
+          "SUSPENSION_DATE": "Data Sospensione",
+          "TOTAL_SPREAD": "Totale Ripartito"
+        },
+        "INVOICE_DATA": {
+          "FIELD": {
+            "CF": "Codice fiscale",
+            "CODE": "Codice",
+            "NUMBER": "Numero Fattura",
+            "P_IVA": "Partita Iva",
+            "RAG_SOC": "Ragione sociale",
+            "TYPE": "Tipo Fattura",
+            "YEAR": "Anno Fattura"
+          },
+          "FORNITORE": "Fornitore",
+          "NAME": "Dati Fattura",
+          "PROTOCOL_NUMBER": "Numero Protocollo",
+          "PROTOCOL_YEAR": "Anno Protocollo",
+          "SEARCH_DATA": "Ricerca per Estremi Fattura",
+          "SEARCH_PROTOCOL": "Ricerca per Protocollo Fattura"
+        },
+        "TOTALS": {
+          "FIELD": {
+            "INVOICE": "Totale Fattura",
+            "NCD": "Arrotondamento/NCD",
+            "PAYABLE": "Totale Liquidabile",
+            "PROCESSED": "Totale Evaso",
+            "SPREAD": "Totale Ripartito su Impegni",
+            "TO_SPREAD": "Totale Da ripartire"
+          },
+          "NAME": "Riepilogo Totali"
+        }
+      },
+      "TAB_NAME": "Evasione"
+    },
+    "FINANZ": {
+      "FIELD": {
+        "AMOUNT": "Importo",
+        "ANNO": {
+          "ESERCIZIO": "Anno esercizio",
+          "IMP": "Anno impegno",
+          "SUBIMP": "Anno subimpegno"
+        },
+        "AVAILABLE": "Disponibile",
+        "CHAPTER": "Capitolo",
+        "CHART_OD_ACCOUNTS": "Piano dei conti",
+        "COMMITMENT_NUMBER": "Numero impegno",
+        "COMMITMENT_YEAR": "Anno impegno",
+        "DESCR_FUNZ": "Associando in questa pagina dei finanziari alla testata dell’ordine che si sta inserendo o modificando, nel momento in cui verrà creata una nuova riga sull’ordine, in automatico il sistema provvederà a collegare gli impegni sulla riga, leggendoli da questa pagina.",
+        "NUM": {
+          "ART": "Numero articolo",
+          "CAP": "Numero capitolo",
+          "IMP": "Numero impegno",
+          "SUBIMP": "Numero subimpegno"
+        },
+        "SECTOR": "Settore",
+        "SELECT": "Seleziona",
+        "SUB_COMMITMENT_NUMBER": "Numero Subimpegno",
+        "SUB_COMMITMENT_YEAR": "Anno Subimpegno"
+      },
+      "SEARCH": {
+        "ERROR": {
+          "ANNO-NUM-IMP": "Indicare sia anno che numero impegno",
+          "ANNO-NUM-IMP-MISS": "Indicare anche anno e numero impegno",
+          "CAP-ART": "Indicare sia capitolo che articolo"
+        }
+      },
+      "TAB_NAME": "Finanziari associati"
+    },
+    "IMPEGNO": {
+      "FIELD": {
+        "TOT": "Importo totale"
+      }
+    },
+    "LISTINO_FORNITORI": {
+      "CODICE": "Codice",
+      "DESCRIZIONE": "Descrizione",
+      "SELEZIONA_NEW": "Nuovo Inserimento",
+      "TITLE": "Listino Fornitori"
+    },
+    "ORDER": {
+      "ERROR": {
+        "DATE_MIN": "La data non può essere precedente alla data odierna",
+        "DELIVERY_DATE": "Date di consegna non coerenti tra di loro",
+        "LOT_ANNO_NUM": "Indicare sia anno che numero"
+      },
+      "FIELD": {
+        "AUTHORIZING": "Ordinatore",
+        "CPV": {
+          "CAT": "Categoria",
+          "CLASS": "Classe",
+          "CODE": "Codice",
+          "DESC": "Descrizione",
+          "DIVISION": "Divisione",
+          "GROUP": "Gruppo",
+          "TYPE": "Tipologia"
+        },
+        "DATE_AUTHORIZATION": "Data autorizzazione",
+        "DATE_CONFIRM": "Data conferma",
+        "DATE_DEADLINE": "Data scadenza",
+        "DATE_EMISSION": "Data inserimento",
+        "DELIVERY": {
+          "ADDRESS": "Indirizzo unico consegna",
+          "DATE_FROM": "Data consegna da",
+          "DATE_TO": "Data consegna a",
+          "POSTAL_CODE": "CAP",
+          "REFERENCE": "Riferimento",
+          "RESORT": "Località"
+        },
+        "DESCRIPTION": {
+          "LONG": "Descrizione acquisto",
+          "SHORT": "Descrizione"
+        },
+        "INVOICE": {
+          "DESC_STATUS": "Stato",
+          "DOC_LIQ_TOTAL": "Totale liquidabile",
+          "DOC_NUMBER": "Numero",
+          "DOC_TOTAL": "Totale",
+          "DOC_TYPE": "Tipo",
+          "DOC_YEAR": "Anno",
+          "SUBJ_CODE": "Codice soggetto"
+        },
+        "LOT": {
+          "NUMBER": "Lotto numero",
+          "YEAR": "Lotto anno"
+        },
+        "NOTE": "Note",
+        "NUMBER": {
+          "LONG": "Numero ordine",
+          "SHORT": "Numero"
+        },
+        "ODS": {
+          "CODE": "Codice",
+          "DESC": "Descrizione",
+          "TITLE": "Oggetto di spesa"
+        },
+        "OFFICE": "Codice univoco ufficio",
+        "ORDER_TYPE": "Tipo ordine",
+        "PROCEDURE_NUMBER": "Numero procedura",
+        "PROCEDURE_TYPE": "Tipo procedura",
+        "PROVISION": {
+          "DESCRIPTION": "Descrizione",
+          "NUMBER": "Numero",
+          "SECTOR": "Settore",
+          "TITLE": {
+            "LONG": "Provvedimento di spesa",
+            "SHORT": "Provvedimento"
+          },
+          "YEAR": "Anno"
+        },
+        "SECTOR": {
+          "ADDRESS": "Indirizzo",
+          "CAP": "CAP",
+          "CIVICO": "Civico",
+          "CODE": "Codice",
+          "CONTACT": "Contatto",
+          "DESC": "Descrizione",
+          "EMAIL": "email",
+          "ENTE": "Ente",
+          "ISSUER": {
+            "TITLE": "Struttura emittente"
+          },
+          "LOCATION": "Località",
+          "PHONE": "Telefono",
+          "PROV": "Provincia",
+          "RECIPIENT": {
+            "TITLE": "Destinatario"
+          }
+        },
+        "STATE": {
+          "LONG": "Stato ordine",
+          "SHORT": "Stato"
+        },
+        "STATE_SEND_NSO": "Stato invio NSO",
+        "SUPPLIER": {
+          "ADDRESS": "Indirizzo",
+          "BUSINESS_NAME": "Ragione sociale",
+          "CF": "Codice fiscale",
+          "CODE": "Codice",
+          "POSTAL_CODE": "CAP",
+          "PROVINCE": "Provincia",
+          "RESORT": "Località",
+          "TITLE": "Fornitore",
+          "VAT_NUMBER": "Partita Iva"
+        },
+        "TAB_NAME": "Ordine",
+        "YEAR": {
+          "LONG": "Anno ordine",
+          "SHORT": "Anno"
+        }
+      },
+      "OPERATION": {
+        "CHANGE_ADDRESS": {
+          "TEXT": "Seleziona il nuovo indirizzo",
+          "TITLE": "Cambia indirizzo"
+        },
+        "COPY_FROM": {
+          "COL_DESC": "Descrizione",
+          "COL_DESTINATARIO": "Destinatario",
+          "TEXT": "Selezionare il destinatario dal quale copiare righe (se presente)",
+          "TITLE": "Copia righe"
+        },
+        "FIND_INVOICE": {
+          "TEXT": "Selezionare un documento",
+          "TITLE": "Elenco documenti"
+        },
+        "FIND_ODS": {
+          "TITLE": "Ricerca oggetto di spesa"
+        },
+        "FIND_ORDER": {
+          "TITLE": "Cerca ordini"
+        },
+        "FIND_SETTORE": {
+          "TEXT": "Seleziona",
+          "TITLE": "Ricerca settore"
+        },
+        "FIND_SUPPLIER": {
+          "TEXT": "Selezionare un fornitore",
+          "TITLE": "Ricerca fornitore"
+        }
+      },
+      "SECTION": {
+        "DELIVERY": "Dati per la consegna",
+        "ORDER": "Ordine",
+        "PROCEDURE": "Procedura",
+        "PROVISION": "Provvedimento di spesa",
+        "STRCUCTURE_ISSUING": "Struttura emittente",
+        "SUPPLIER": "Fornitore"
+      }
+    },
+    "RIEPILOGOIMP": {
+      "COL": {
+        "ANNOES": "Anno esercizio",
+        "ANNO_IMP": "Anno Impegno",
+        "ANNO_SUB": "Anno Sub.",
+        "ARTICOLO": "Articolo",
+        "CAPITOLO": "Capitolo",
+        "IMPORTO": "Importo",
+        "NUMERO_IMP": "Numero Impegno",
+        "NUMERO_SUB": "Numero Sub."
+      },
+      "FIELD": {
+        "TOTALEIMPEGNATO": "Totale Impegnato",
+        "TOTALEORDINIIVA": "Totale Ordine con Iva",
+        "TOTALEORDININOIVA": "Totale Ordine senza Iva"
+      }
+    },
+    "RIEPILOGOIMPEGNI": {
+      "TAB_NAME": "Riepilogo Impegni"
+    }
+  },
+  "PAGINATION": {
+    "FIRST": "Inizio",
+    "INFO": "{{first}} - {{last}} di {{total}} elementi",
+    "LAST": "Fine",
+    "NEXT": "Succ.",
+    "PREV": "Prec."
+  },
+  "PBA": {
+    "INTERVENTION": {
+      "ERROR": {
+        "IVA_GREATER_TOTAL": "Importo IVA non deve essere maggiore del totale"
+      },
+      "FIELD": {
+        "ADDED_CHANGED": "Acquisto aggiunto o variato",
+        "AMOUNTS": "Importi",
+        "ASSIGNMENT_METHOD": "Modalità di affidamento",
+        "AUSA": "AUSA stazione appaltante delegata",
+        "AUTHORITY": {
+          "DENOMINATION": "Amministrazione"
+        },
+        "COPY": {
+          "KEEP_AMOUNTS": "Copia mantenendo gli importi",
+          "MOTIVATION": {
+            "BUTTON": "Copia motivazione sugli acquisti selezionati",
+            "LONG": "Inserire motivazione sugli acquisti selezionati",
+            "SHORT": "Motivazione"
+          },
+          "NOT_REPEATED": "Acquisto non avviato e non riproposto",
+          "TRANSLATE_AMOUNTS": "Copia traslando gli importi",
+          "WITHOUT_CUI": "Copia acquisti attribuendo nuovo CUI",
+          "WITH_CUI": {
+            "LONG": "Copia acquisti mantenendo CUI",
+            "SHORT": "Copia mantenendo CUI"
+          }
+        },
+        "CPV": {
+          "SHORT": "CPV"
+        },
+        "CUI": {
+          "LONG": "CUI acquisto",
+          "SHORT": "CUI"
+        },
+        "CUP": "CUP",
+        "CUP_EXEMPTION": "Esente CUP",
+        "DESCRIPTION": "Descrizione acquisto",
+        "DURATION": "Durata (in mesi)",
+        "EXPENSES_ALREADY_INCURRED": "Spese già sostenute",
+        "FUNCTIONAL_BATCH": "Lotto funzionale",
+        "GENERAL_DATA": "Dati generali",
+        "INCLUDED": "Acquisto ricompreso",
+        "INCLUDED_CUI": "CUI lavoro o altra acquisizione",
+        "NEW_TRUST": "Nuovo affidamento per un contratto in essere",
+        "NUTS": "Codice NUTS",
+        "ORDINAMENTO": {
+          "COLONNA": "Colonna",
+          "PROGRESSIVO": "Progressivo",
+          "TITLE": "Ordinamento"
+        },
+        "PRINTS": {
+          "PRINT_INTERVENTIONS": "Stampa Acquisti",
+          "PROSPECTUS_ANNEX_II": "Prospetto Allegato II",
+          "REPORT_BY_AGGREGATOR_SUBJECTS": "Report per soggetti aggregatori"
+        },
+        "PRIORITY": "Priorità",
+        "PROGRAM": {
+          "DESTINATION": "Programma di destinazione",
+          "REFERENT": "Referente programma",
+          "SOURCE": "Programma di origine",
+          "TYPE": "Programma"
+        },
+        "RESOURCE_LIST": "Elenco Risorse",
+        "RESOURCE_PRIVATE_CAPITAL": "Tipologia capitale privato",
+        "RESOURCE_TYPE": "Tipologia risorsa",
+        "RUP": {
+          "HISTORY": {
+            "DATE": "Data modifica",
+            "LABEL": "Storico RUP",
+            "RUP_USER": "Utente RUP",
+            "USER_EDIT": "Utente modifica"
+          },
+          "LONG": "Responsabile unico procedimento",
+          "SEARCH": "Responsabile unico procedimento (Cognome)",
+          "SHORT": "RUP"
+        },
+        "SECTOR": "Tipo settore",
+        "SPECIFY": "* specificare",
+        "START_YEAR": "Prima annualità",
+        "STATE": {
+          "HISTORY": {
+            "DATE": "Data",
+            "LABEL": "Storico Stato",
+            "STATUS_DESC": "Stato",
+            "USER_EDIT": "Utente modifica"
+          },
+          "LONG": "Stato acquisto",
+          "SHORT": "Stato"
+        },
+        "STRUCTURE": {
+          "CODE": "Codice",
+          "DESC": "Descrizione",
+          "TITLE": "Struttura"
+        },
+        "TOTALS": "Totali",
+        "TOTALS_NET": "Totale al netto di IVA",
+        "TOTALS_VAT": "Di cui IVA",
+        "TOTAL_GRAND": "Totale generale",
+        "YEAR": {
+          "FIRST": "Primo anno",
+          "FOLLOWING": "Anni successivi",
+          "SECOND": "Secondo anno"
+        }
+      },
+      "OPERATION": {
+        "APPROVE": {
+          "SIMPLE": "Valida",
+          "TEXT": "Si desidera validare l'acquisto?",
+          "TITLE": "Valida acquisto"
+        },
+        "CANCEL": {
+          "TEXT": "Si desidera cancellare l'acquisto?",
+          "TITLE": "Annulla acquisto"
+        },
+        "PRINT": "Stampa",
+        "REJECT": {
+          "SIMPLE": "Rifiuta"
+        },
+        "TRANSFER": {
+          "SIMPLE": "Voltura",
+          "TEXT": "Scegliere  il rup che si vuole assegnare (saranno volturati solo gli acquisti non cancellati e non assegnati già allo stesso RUP)",
+          "TEXTSINGLE": "Scegliere il rup che si vuole assegnare",
+          "TITLE": "Voltura acquisto",
+          "TOOLTIP": "Occorre selezionare solo acquisti non cancellati della stessa struttura"
+        },
+        "TRANSFERHIMSELF": {
+          "SIMPLE": "Prendi in carico",
+          "TOOLTIP": "Occorre selezionare solo acquisti non cancellati della stessa struttura e di cui non si è già RUP"
+        },
+        "VISTA": {
+          "SIMPLE": "Vista"
+        },
+        "VISTAEVALIDA": {
+          "SIMPLE": "Vista&Valida"
+        }
+      },
+      "OTHER_DATA": {
+        "FIELD": {
+          "CODE": "Codice",
+          "CPV_FIND": "Ricerca per codice o per descrizione",
+          "DESCR": "Descrizione",
+          "GREEN": {
+            "CPV": "CPV Acquisti Verdi",
+            "CPV_FIND": "Ricerca CPV",
+            "IVA": "IVA",
+            "LAW": "Normativa di riferimento",
+            "NET": "Importo Netto",
+            "OBJECT": "Oggetto",
+            "QUESTION_LABEL": "Si tratta di acquisti verdi?",
+            "TOT": "Totale",
+            "TYPE": "Seleziona"
+          },
+          "INTERNAL_CODE": "Codice acquisto interno all'Ente",
+          "MAT_RIC": {
+            "CPV": "CPV Acquisti Materiali Riciclati",
+            "CPV_FIND": "Ricerca CPV",
+            "IVA": "IVA",
+            "NET": "Importo Netto",
+            "OBJECT": "Oggetto",
+            "QUESTION_LABEL": "Si tratta di beni prodotti con materiali riciclati?",
+            "TOT": "Totale",
+            "TYPE": "Seleziona"
+          },
+          "NOTE": "Note",
+          "SELECT": "Sel."
+        },
+        "SECTION": {
+          "GREEN": "Acquisti Verdi (secondo l'art. 34 Dlgs 50/2016)",
+          "OTHER_CPVS": "Altri CPV dell'acquisto",
+          "RECYCLED": "Acquisti con Materiali Riciclati"
+        },
+        "TITLE": "Altri dati"
+      }
+    },
+    "PROGRAM": {
+      "FIELD": {
+        "BROWSE": "custom-file-label-ita",
+        "CF_REFERENTE": "Codice fiscale referente",
+        "DESCRIPTION": "Descrizione",
+        "ELABORATION": {
+          "STATE": "Stato",
+          "DATE": "Data",
+          "RESULT": "Esito",
+          "ID_EXT": "Id esterno",
+          "PARAMS": "Parametri"
+        },
+        "FILE_IMPORTI": "File importi",
+        "FILE_INTERVENTI": "File acquisti",
+        "FIRST_YEAR": "Prima annualità",
+        "MEASURE_DATE": "Data provvedimento",
+        "MEASURE_DESCRIPTION": "Descrizione provvedimento",
+        "MEASURE_NUMBER": "Numero provvedimento",
+        "PROGRAMMA": "Programma",
+        "PUBBLICATION_DATE": "Data pubblicazione",
+        "REFERENT": "Referente programma",
+        "STATE": {
+          "LONG": "Stato programma"
+        },
+        "TRANSMISSION": {
+          "CONTROL": "Controllo",
+          "PUBLICATION": "Pubblicazione",
+          "SENDING_METHOD": "Modalità di invio"
+        },
+        "URL": "Url",
+        "VERSION": "Versione"
+      },
+      "OPERATION": {
+        "APPROVE": {
+          "TEXT": "Approva"
+        },
+        "BACK_TO_DRAFT": {
+          "SIMPLE": "Riporta in bozza",
+          "TITLE": "Riporta in bozza programma"
+        },
+        "ELABORATION": {
+          "SIMPLE": "Elaborazioni trasmissione",
+          "TITLE": "Elaborazioni trasmissione programma",
+          "DESC": "Elaborazioni"
+        },
+        "CANCEL": {
+          "TEXT": "Si desidera cancellare il programma?",
+          "TITLE": "Annulla programma"
+        },
+        "CONFIRM": {
+          "SIMPLE": "Conferma",
+          "TITLE": "Conferma programma"
+        },
+        "COPY": {
+          "SIMPLE": "Copia",
+          "TITLE": "Copia Programma"
+        }
+      }
+    }
+  },
+  "SIDEBAR": {
+    "HOME": "Home",
+    "MAGAZZINI": {
+      "TITLE": "Magazzini"
+    },
+    "ORDINI": {
+      "EVASION": {
+        "COMPOSE": "Composizione evasione",
+        "CONSULT": "Consulta evasione",
+        "INSERT": "Inserisci evasione",
+        "SEARCH": "Ricerca evasioni",
+        "SEARCH_ORDER": "Ricerca ordini da evadere",
+        "TITLE": "Evasione",
+        "UPDATE": "Aggiorna"
+      },
+      "ORDER": {
+        "CONSULT": "Consulta ordine",
+        "INSERT": "Inserisci ordine",
+        "LINK_NSO": "Collegamento a NSO",
+        "PRINT_EXCEL": "Stampa ordini",
+        "SEARCH": "Ricerca ordini",
+        "TITLE": "Ordine",
+        "UPDATE": "Aggiorna ordine"
+      },
+      "TITLE": "Ordini"
+    },
+    "PBA": {
+      "HEADER": {
+        "PROGRAM": {
+          "DESCRIPTION": "Programma",
+          "STATE": "Stato"
+        }
+      },
+      "INTERVENTION": {
+        "CONSULT": "Consulta acquisto",
+        "INSERT": "Inserisci acquisto",
+        "INSERT_PREVIOUS_YEAR": "Carica acquisti anni precedenti",
+        "PRINT_EXCEL": "Prospetti",
+        "SEARCH": "Ricerca acquisti",
+        "TITLE": "Acquisto",
+        "UPDATE": "Aggiorna acquisto"
+      },
+      "PROGRAM": {
+        "CONSULT": "Consulta programma",
+        "INSERT": "Inserisci programma",
+        "SEND_MIT": "Trasmetti programma",
+        "TITLE": "Programma",
+        "UPDATE": "Modifica programma",
+        "UPLOAD": "Alimenta dati da fonte esterna"
+      },
+      "TITLE": "Programmazione biennale acquisti"
+    },
+    "RICHIESTE": {
+      "TITLE": "Richieste di acquisto"
+    }
+  }
+}

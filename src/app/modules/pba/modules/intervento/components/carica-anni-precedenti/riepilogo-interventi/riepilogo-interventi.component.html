@@ -1,0 +1,47 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="modal-body">
+  <form [formGroup]="formRiepilogo">
+    <div class="row">
+      <div class="form-group col-12 col-md-6">
+        <input type="text" class="form-control" id="motivazione" formControlName="motivazione" cpassHasValueClass>
+        <span class="form-highlight"></span>
+        <span class="form-bar"></span>
+        <label class="float-label" for="motivazione">{{ 'PBA.INTERVENTION.FIELD.COPY.MOTIVATION.LONG' | translate }}</label>
+      </div>
+      <div class="form-group col-12 col-md-6 sm-full-width">
+        <button type="button" class="btn btn-info ml-auto" (click)="onCopiaMotivazione()" [disabled]="!(formRiepilogo.controls.motivazione.valid &&   listInterventoSelect.length!==0)">{{ 'PBA.INTERVENTION.FIELD.COPY.MOTIVATION.BUTTON' | translate }}</button>
+      </div>
+    </div>
+    <div class="mt-5 scrollbar-table scrollbar-primary" formArrayName="righeInterventi">
+      <cpass-table [pagedResponse]="pagedResponse" #table [columnNumber]="5">
+        <ng-template cpassHead>
+          <tr>
+            <th scope="col">
+              <input type="checkbox" name="selectAll" (click)="onSelectAll(!_selectAll)" [checked]="isSelectAll()"> Sel.</th>
+            <th>{{ 'PBA.INTERVENTION.FIELD.CUI.SHORT' | translate }}</th>
+            <th>{{ 'PBA.INTERVENTION.FIELD.PROGRAM.TYPE' | translate }}</th>
+            <th>{{ 'PBA.INTERVENTION.FIELD.DESCRIPTION' | translate }}</th>
+            <th>{{ 'PBA.INTERVENTION.FIELD.COPY.MOTIVATION.SHORT' | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template cpassBody let-el let-index="index">
+          <tr [formGroupName]="index" >
+            <td><input type="checkbox" name="intervento" (click)="onInterventoSelect(el)" [checked]="isInterventoSelect(el)"></td>
+            <td>{{ el.cui }}</td>
+            <td>{{ el.programma?.anno +' / ' + (+el.programma?.anno+1) +' vers. '+ el.programma?.versione}}</td>
+            <td>{{ el.descrizioneAcquisto }}</td>
+            <td ><input type="text" formControlName="motivazione"></td>
+          </tr>
+        </ng-template>
+      </cpass-table>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <cpass-back-button></cpass-back-button>
+  <button type="button" class="btn btn-outline-dark" (click)="onReset()">{{ 'APP.RESET' | translate }}</button>
+  <button type="button" class="btn btn-info" (click)="onSubmit()" [disabled]="!formRiepilogo.controls.righeInterventi.valid">{{ 'APP.CONFIRM' | translate }}</button>
+</div>

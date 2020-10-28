@@ -1,0 +1,47 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+SPDX-License-Identifier: EUPL-1.2
+-->
+<nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">{{ 'APP.SEARCH_RESULT' | translate }}</li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-outline-info" [routerLink]="['/ord', 'ordine']">{{ 'APP.INSERT' | translate }}</button>
+    </div>
+    <!--<div class="col-auto">
+      <button type="button" class="btn btn-outline-info" [disabled]="!selectedOrdine">{{ 'APP.EXAMINE' | translate }}</button>
+    </div>-->
+  </div>
+  <div class="mt-5 scrollbar-table scrollbar-primary">
+    <cpass-paginated-table [pagedResponse]="pagedResponse" (changePaginationData)="onChangePaginationData($event)" #pagedTable [columnNumber]="10" [limit]="currentPaginationData.limit">
+      <ng-template cpassPaginationHead>
+        <tr>
+          <!--<th scope="col">Sel.</th>-->
+          <th cpassSortable="annoOrdine" (sort)="pagedTable.onSort($event)">{{ 'ORD.ORDER.FIELD.YEAR.LONG' | translate }}</th>
+          <th cpassSortable="numeroOrdine" (sort)="pagedTable.onSort($event)">{{ 'ORD.ORDER.FIELD.NUMBER.LONG' | translate }}</th>
+          <th cpassSortable="dataEmissione" (sort)="pagedTable.onSort($event)">{{ 'ORD.ORDER.FIELD.DATE_EMISSION' | translate }}</th>
+          <th cpassSortable="fornitore" (sort)="pagedTable.onSort($event)">{{'ORD.ORDER.FIELD.SUPPLIER.TITLE' | translate}}</th>
+          <th cpassSortable="provvedimento" (sort)="pagedTable.onSort($event)">{{ 'ORD.ORDER.FIELD.PROVISION.TITLE.SHORT' | translate}}</th>
+          <th cpassSortable="descrizione" (sort)="pagedTable.onSort($event)">{{ 'ORD.ORDER.FIELD.DESCRIPTION.SHORT' | translate }}</th>
+          <th cpassSortable="stato" (sort)="pagedTable.onSort($event)">{{ 'ORD.ORDER.FIELD.STATE.SHORT' | translate }}</th>
+          <th cpassSortable="enteEmittente" (sort)="pagedTable.onSort($event)">{{'ORD.ORDER.FIELD.SECTOR.ISSUER.TITLE' | translate}}</th>
+        </tr>
+      </ng-template>
+      <ng-template cpassPaginationBody let-el>
+        <tr class="clickable" (click)="consultaOrdine(el.id)">
+          <!--<td><input type="radio" name="ordine" (click)="onOrdineSelect(el)" [checked]="selectedOrdine?.id === el.id"></td>-->
+          <td>{{ el.anno}}</td>
+          <td>{{ el.numero}}</td>
+          <td>{{ el.dataEmissione | date: 'dd/MM/yyyy'}} </td>
+          <td>{{ el.fornitore?.codice +' - '+ el.fornitore?.ragioneSociale}}</td>
+          <td>{{ el.provvedimento?.anno +' - '+ el.provvedimento?.numero}}</td>
+          <td><span class="link-like">{{ el.descrizione}}</span></td>
+          <td>{{ el.stato?.descrizione }}</td>
+          <td>{{ el.settore?.codice +' - '+ el.settore?.descrizione  }}</td>
+        </tr>
+      </ng-template>
+    </cpass-paginated-table>
+  </div>
